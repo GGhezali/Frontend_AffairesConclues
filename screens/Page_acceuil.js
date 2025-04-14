@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Article from './Article';
 
 export default function PageAcceuilScreen({ navigation }) {
   const [categorie, setCategorie] = useState(false);
@@ -62,7 +63,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
       </View>
       <ScrollView style={styles.scrollview}> 
-
+          <Article />
       </ScrollView>
     </View>
   );
