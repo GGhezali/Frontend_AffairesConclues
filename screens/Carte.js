@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function CarteScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Carte</Text>
+      <Button title="Go back" onPress={() => navigation.navigate("Annonce")} />
     </View>
   );
 }

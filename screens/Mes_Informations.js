@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function MesInformationsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mes Informations</Text>
+      <Button title="Go Back" onPress={() => navigation.navigate("MonProfil")} />
     </View>
   );
 }

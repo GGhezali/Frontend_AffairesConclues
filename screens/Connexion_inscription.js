@@ -1,10 +1,13 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function ConnexionScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Connexion</Text>
+      <Button title="Home" onPress={() => navigation.navigate("PageAcceuil")} />
+      <Button title="Connexion" onPress={() => navigation.navigate("Connexion")} />
+      <Button title="Inscription" onPress={() => navigation.navigate("Inscription")} />
     </View>
   );
 }

@@ -1,10 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function MesEncheresScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mes Enchères</Text>
+      <Button title="Home" onPress={() => navigation.navigate("PageAcceuil")} />
+      <Button title="Continuer mes achats" onPress={() => navigation.navigate("PageAcceuil")} />
     </View>
   );
 }

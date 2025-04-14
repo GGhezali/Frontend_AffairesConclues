@@ -1,10 +1,15 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function PhotoScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Photo</Text>
+      <Button title="Go back" onPress={() => navigation.navigate("Publier")} />
+      <Button
+        title="Gallerie"
+        onPress={() => navigation.navigate("Gallerie")}
+      />
     </View>
   );
 }
