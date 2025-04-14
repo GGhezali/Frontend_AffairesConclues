@@ -1,0 +1,22 @@
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+
+export default function PhotoScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Photo</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "grey",
+  },
+  title: {
+    fontSize: 20,
+  },
+});
