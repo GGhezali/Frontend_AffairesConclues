@@ -1,13 +1,13 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+//import { GoogleOAuthProvider } from "@react-oauth/google";
+//import { GoogleLogin } from "@react-oauth/google";
+//import { jwtDecode } from "jwt-decode";
 
 export default function ConnexionInscriptionScreen({ navigation }) {
   
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  //const clientId = process.env.GOOGLE_CLIENT_ID;
   
   return (
     <View style={styles.container}>
@@ -27,7 +27,7 @@ export default function ConnexionInscriptionScreen({ navigation }) {
         onPress={() => navigation.navigate("Inscription")}
       />
 
-      <GoogleOAuthProvider clientId={clientId}>
+      {/*<GoogleOAuthProvider clientId={clientId}>
       <GoogleLogin
               onSuccess={(credentialResponse) => {
                 //console.log(credentialResponse.credential);
@@ -40,14 +40,11 @@ export default function ConnexionInscriptionScreen({ navigation }) {
                 //console.log(decoded.picture);
                 //setUser({ name: decoded.name, email: decoded.email });
               }}
-              //clientId
-              //credential
               onError={() => {
                 console.log("Login Failed");
               }}
             />
-
-      </GoogleOAuthProvider>
+      </GoogleOAuthProvider>*/}
 
     </View>
   );
