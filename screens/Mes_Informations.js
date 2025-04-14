@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-export default function MesInformationsScreen() {
+export default function MesInformationsScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mes Informations</Text>

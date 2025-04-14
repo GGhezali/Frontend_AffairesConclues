@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-export default function MesFavorisScreen() {
+export default function MesFavorisScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mes Favoris</Text>

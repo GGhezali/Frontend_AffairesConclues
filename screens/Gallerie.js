@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-export default function GallerieScreen() {
+export default function GallerieScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Gallerie</Text>

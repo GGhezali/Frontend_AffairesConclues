@@ -1,11 +1,15 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-export default function PageAcceuilScreen() {
+export default function PageAcceuilScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Page d'acceuil</Text>
-      <Button title="Home" onPress={() => navigation.navigate("PageAcceuil")} />
+      <Button
+        title="Connexion / Inscription"
+        onPress={() => navigation.navigate("ConnexionInscription")}
+      />
+      <Button title="Annonce" onPress={() => navigation.navigate("Annonce")} /> 
     </View>
   );
 }

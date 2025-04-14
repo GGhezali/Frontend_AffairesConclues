@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-export default function CarteScreen() {
+export default function CarteScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Carte</Text>

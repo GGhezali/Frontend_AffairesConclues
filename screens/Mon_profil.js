@@ -5,7 +5,7 @@ export default function MonProfilScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mon profil</Text>
-      <Button title="Home" onPress={() => navigation.navigate("PageAcceuil")} />
+     
       <Button
         title="Mes Informations"
         onPress={() => navigation.navigate("MesInformations")}
@@ -16,11 +16,11 @@ export default function MonProfilScreen({ navigation }) {
       />
       <Button
         title="Mes Favoris"
-        onPress={() => navigation.navigate("MesFavoris")}
+        onPress={() => navigation.navigate("TabNavigator", { screen: 'MesFavoris' })}
       />
       <Button
         title="Mes Enchères"
-        onPress={() => navigation.navigate("MesEncheres")}
+        onPress={() => navigation.navigate("TabNavigator", { screen: 'MesEncheres' })}
       />
     </View>
   );
