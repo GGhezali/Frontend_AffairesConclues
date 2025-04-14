@@ -1,10 +1,6 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-
 export default function ConnexionInscriptionScreen({ navigation }) {
   
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -27,27 +23,7 @@ export default function ConnexionInscriptionScreen({ navigation }) {
         onPress={() => navigation.navigate("Inscription")}
       />
 
-      <GoogleOAuthProvider clientId={clientId}>
-      <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                //console.log(credentialResponse.credential);
-                const token = credentialResponse.credential;
-                const decoded = jwtDecode(token);
-                
-                console.log(decoded);
-                //console.log(decoded.name);
-                //console.log(decoded.email);
-                //console.log(decoded.picture);
-                //setUser({ name: decoded.name, email: decoded.email });
-              }}
-              //clientId
-              //credential
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-
-      </GoogleOAuthProvider>
+     
 
     </View>
   );
