@@ -3,7 +3,7 @@ import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function ConnexionInscriptionScreen({ navigation }) {
   
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  //const clientId = process.env.GOOGLE_CLIENT_ID;
   
   return (
     <View style={styles.container}>

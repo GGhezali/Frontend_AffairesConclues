@@ -13,16 +13,16 @@ export default function PageAcceuilScreen({ navigation }) {
   const toggleTri = () => {
     setTri(!tri)
   };
-  const selectCategorie = (item => {
+  const selectCategorie = ((item) => {
     setValue(item.value)
     setCategorie(false)
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.dropdownInputs}>
         <TouchableOpacity style={styles.categorie} onPress={toggleCategorie}>
-          <Text>Catégorie</Text>
+          <Text>{value || 'Catégorie'}</Text>
           <AntDesign name={categorie?'caretup':'caretdown'} size={12} />
         </TouchableOpacity>
         {categorie ? (

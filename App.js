@@ -14,7 +14,7 @@ import InscriptionScreen from './screens/Inscription';
 import MesEncheresScreen from './screens/Mes_encheres';
 import MesFavorisScreen from './screens/Mes_favoris';
 import MesInformationsScreen from './screens/Mes_Informations';
-import MesPublicationsScreen from './screens/Mes_Informations';
+import MesPublicationsScreen from './screens/Mes_publications';
 import MonProfilScreen from './screens/Mon_profil';
 import PageAcceuilScreen from './screens/Page_acceuil';
 import PhotoScreen from './screens/Photo';
