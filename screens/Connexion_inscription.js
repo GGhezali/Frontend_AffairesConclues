@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#1C7C54",
     borderRadius: 30,
     width: "80%",
-    height: 40,
+    height: '6%',
+    marginTop: 20,
   },
 
   textConnexion: {
