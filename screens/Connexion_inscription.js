@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
     top: 50,
     left: 20,
   },
+  header: {
+    alignItems: "flex-start",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#888",
@@ -86,7 +89,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#1C7C54",
     borderRadius: 30,
     width: "80%",
-    height: 40,
+    height: "40",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
   },
 
   textConnexion: {
