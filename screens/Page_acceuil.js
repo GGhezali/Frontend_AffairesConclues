@@ -166,7 +166,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <ScrollView style={styles.scrollview}>
         <Article navigation={navigation} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
