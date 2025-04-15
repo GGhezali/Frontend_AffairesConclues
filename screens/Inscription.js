@@ -14,12 +14,13 @@ export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSignup = () => {
     if (!email || !username || !password) {
       return;
     }
-    fetch("http://192.168.100.55:3000/users/sign-up", {
+    fetch(`${BACKEND_ADDRESS}:3000/users/sign-up`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),

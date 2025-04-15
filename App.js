@@ -1,6 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import user from './reducers/user';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -30,7 +34,7 @@ const TabNavigator = () => {
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
- 
+
         if (route.name === 'Acceuil') {
           iconName = 'home';
         } else if (route.name === 'MesFavoris') {
@@ -42,7 +46,7 @@ const TabNavigator = () => {
         } else if (route.name === 'Profil') {
           iconName = 'user';
         }
- 
+
         return <FontAwesome name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: '#2196f3',
@@ -56,28 +60,34 @@ const TabNavigator = () => {
       <Tab.Screen name="Profil" component={MonProfilScreen} />
     </Tab.Navigator>
   );
- }
+}
+
+const store = configureStore({
+  reducer: { user },
+});
 
 export default function App() {
   return (
-    <NavigationContainer>
-     <Stack.Navigator screenOptions={{ headerShown: false }}>
-       <Stack.Screen name="TabNavigator" component={TabNavigator} />
-       <Stack.Screen name="ConnexionInscription" component={ConnexionInscriptionScreen} />
-       <Stack.Screen name="MesInformations" component={MesInformationsScreen} />
-       <Stack.Screen name="MesPublications" component={MesPublicationsScreen} />
-       <Stack.Screen name="MesFavoris" component={MesFavorisScreen} />
-       <Stack.Screen name="MesEncheres" component={MesEncheresScreen} />
-       <Stack.Screen name="Connexion" component={ConnexionScreen} />
-       <Stack.Screen name="Inscription" component={InscriptionScreen} />
-       <Stack.Screen name="MonProfil" component={MonProfilScreen} />
-       <Stack.Screen name="Annonce" component={AnnonceScreen} />
-       <Stack.Screen name="Carte" component={CarteScreen} />
-       <Stack.Screen name="Photo" component={PhotoScreen} />
-       <Stack.Screen name="Gallerie" component={GallerieScreen} />
-       <Stack.Screen name="Publier" component={PublierScreen} />
-     </Stack.Navigator>
-   </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen name="ConnexionInscription" component={ConnexionInscriptionScreen} />
+          <Stack.Screen name="MesInformations" component={MesInformationsScreen} />
+          <Stack.Screen name="MesPublications" component={MesPublicationsScreen} />
+          <Stack.Screen name="MesFavoris" component={MesFavorisScreen} />
+          <Stack.Screen name="MesEncheres" component={MesEncheresScreen} />
+          <Stack.Screen name="Connexion" component={ConnexionScreen} />
+          <Stack.Screen name="Inscription" component={InscriptionScreen} />
+          <Stack.Screen name="MonProfil" component={MonProfilScreen} />
+          <Stack.Screen name="Annonce" component={AnnonceScreen} />
+          <Stack.Screen name="Carte" component={CarteScreen} />
+          <Stack.Screen name="Photo" component={PhotoScreen} />
+          <Stack.Screen name="Gallerie" component={GallerieScreen} />
+          <Stack.Screen name="Publier" component={PublierScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

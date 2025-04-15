@@ -11,16 +11,20 @@ import {
 import Headers from "./Headers";
 
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../reducers/user";
 
 export default function ConnexionScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSumbit = () => {
     if (!email || !password) {
       return;
     }
-    fetch("http://192.168.100.55:3000/users/sign-in", {
+    fetch(`${BACKEND_ADDRESS}:3000/users/sign-in`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -30,6 +34,7 @@ export default function ConnexionScreen({ navigation }) {
         console.log(data);
 
         if (data.result) {
+          dispatch(login(data.token));
           alert("Connexion reussi");
           navigation.navigate("TabNavigator", { screen: "Acceuil" });
         } else{
