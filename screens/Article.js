@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, Image } from "react-native";
+import { Button, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function Article({ navigation }) {
   return (
-    <View
+    <TouchableOpacity
       title="Annonce"
       style={styles.annonce}
       onPress={() => navigation.navigate("Annonce")}
@@ -23,7 +23,7 @@ export default function Article({ navigation }) {
           <Text>Lieu de vente</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
