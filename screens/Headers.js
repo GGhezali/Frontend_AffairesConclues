@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   header: {
-    height: "13%",
+    height: 125,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
