@@ -42,7 +42,10 @@ export default function Headers({
           <TextInput style={styles.input} placeholder="What's up ?" />
           <AntDesign style={styles.search} name={"search1"} size={20} />
         </View>
-        <FontAwesome style={styles.connection} name={"user-circle"} size={30} onPress={() => navigation.navigate("ConnexionInscription")} />
+        <TouchableOpacity style={styles.connection}>
+
+        <FontAwesome  name={"user-circle"} size={30} color={"#1B512D"} onPress={() => navigation.navigate("ConnexionInscription")} />
+        </TouchableOpacity>
       </LinearGradient>
     );
   }
@@ -57,7 +60,7 @@ export default function Headers({
       >
         <TouchableOpacity style={styles.homebutton} onPress={() => navigation.navigate("TabNavigator", { screen: "Acceuil" })} >
 
-        <Text style={styles.home}>Home</Text>
+        <AntDesign name={"home"} size={30} color={"#1B512D"}/>
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </LinearGradient>
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
     color: "#1B512D",
   },
   searchcontainer: {
-    width: "90%",
+    width: "88%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -123,11 +126,27 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginRight: 10,
     color: "#1B512D",
+    height: 50,
+    width: 50,
+    backgroundColor: "#fff",
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#1B512D",
+    justifyContent: "center",
+    alignItems: "center",
   },
   homebutton: {
     position: "absolute",
     left: 10,
-    top: 45,
+    top: 35,
+    backgroundColor: "#fff",
+    height: 45,
+    width: 45,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#1B512D",
   },
   home: {
     fontSize: 20,

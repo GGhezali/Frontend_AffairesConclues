@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar  } from "react-native";
+import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar } from "react-native";
 import Headers from "./Headers";
 
 export default function PublierScreen({ navigation }) {
