@@ -18,7 +18,7 @@ export default function InscriptionScreen({ navigation }) {
     if (!email || !username || !password) {
       return;
     }
-    fetch("http://192.168.100.34:3000/users/sign-up", {
+    fetch("http://192.168.100.34:8081/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),
@@ -38,8 +38,8 @@ export default function InscriptionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Headers navigation={navigation} isReturn={true} style={styles.header}/>
-    
+      <Headers navigation={navigation} isReturn={true} style={styles.header} />
+
       <View style={styles.topLeft}>
         <Button
           title="Home"

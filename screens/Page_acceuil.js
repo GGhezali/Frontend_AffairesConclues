@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-import React, { useState } from "react";
-import {
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  SafeAreaView,
-} from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Article from "./Article";
-=======
 import React, { useEffect, useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -27,7 +12,6 @@ export default function PageAcceuilScreen({ navigation }) {
   const [selectedTri, setSelectedTri] = useState("");
   const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
->>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
 
   const toggleCategorieDropdown = () => {
     setCategorieDropdownVisible(!isCategorieDropdownVisible);
@@ -162,11 +146,7 @@ export default function PageAcceuilScreen({ navigation }) {
           style={styles.categorieContainer}
           isVisible={isCategorieDropdownVisible}
           toggleVisibility={toggleCategorieDropdown}
-<<<<<<< HEAD
-          data={[{ value: "Catégorie 1" }, { value: "Catégorie 2" }]}
-=======
           data={categories.map((categorie) => ({ value: categorie.name }))}
->>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
           onSelect={(item) => setSelectedCategorie(item.value)}
           placeholder="Catégorie"
           selectedValue={selectedCategorie}
@@ -175,14 +155,10 @@ export default function PageAcceuilScreen({ navigation }) {
           style={styles.triContainer}
           isVisible={isTriDropdownVisible}
           toggleVisibility={toggleTriDropdown}
-<<<<<<< HEAD
-          data={[{ value: "Date" }, { value: "Prix" }]}
-=======
           data={[
             { value: 'Le plus récent' },
             { value: 'Prix croissant' },
           ]}
->>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
           onSelect={(item) => setSelectedTri(item.value)}
           placeholder="Trier par"
           selectedValue={selectedTri}
