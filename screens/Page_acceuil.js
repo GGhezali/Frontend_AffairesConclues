@@ -62,7 +62,7 @@ export default function PageAcceuilScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
       <View style={styles.dropdownInputs}>
         <Dropdown
@@ -90,7 +90,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <ScrollView style={styles.scrollview}>
         <Article />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
