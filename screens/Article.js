@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { Button, StyleSheet, View, Text, Image, TouchableOpacity, Platform, StatusBar  } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function Article({ navigation }) {

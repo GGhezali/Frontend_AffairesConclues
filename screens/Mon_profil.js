@@ -1,11 +1,15 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Platform, StatusBar  } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Headers from "./Headers";
 
 export default function MonProfilScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Mon profil</Text>
+    <SafeAreaView  style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+
+      <Headers navigation={navigation} isReturn={true} style={styles.header} title={"Mon Profil"} />
+      <View style={styles.container}>
 
       <View style={styles.inputsContainer}>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesInformations")}>
@@ -29,16 +33,25 @@ export default function MonProfilScreen({ navigation }) {
       <TouchableOpacity style={styles.logout}>
         <Text style={{ color: '#fff' }}>Déconnexion</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    safeareaview: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
   container: {
     flex: 1,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: '#f5fcee',
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
   },
   title: {
     fontSize: 20,
@@ -65,6 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
+    marginBottom: 100,
   }
 });

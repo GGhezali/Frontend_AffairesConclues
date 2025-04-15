@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  SafeAreaView,
+  SafeAreaView, Platform, StatusBar 
 } from "react-native";
 import Headers from "./Headers";
 
@@ -39,8 +39,12 @@ export default function ConnexionScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Headers style={styles.header} navigation={navigation} isReturn={true} />
+    <SafeAreaView  style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+
+      <Headers navigation={navigation} isReturn={true} title={"Connexion"} />
+      <View style={styles.container}>
+
       <View style={styles.topLeft}>
         <Button
           title="Home"
@@ -49,36 +53,38 @@ export default function ConnexionScreen({ navigation }) {
           }
         />
       </View>
-
-      <View style={styles.container}>
-        <Text style={styles.emailText}>Email</Text>
-        <View style={styles.input}>
-          <TextInput
-            onChangeText={(value) => setEmail(value)}
-            value={email}
-            placeholder="john.doe@hotmail.com"
-          />
-        </View>
-        <Text style={styles.passwordText}>Password</Text>
-        <View style={styles.input}>
-          <TextInput
-            secureTextEntry={true}
-            onChangeText={(value) => setPassword(value)}
-            value={password}
-            placeholder="********"
-          />
-        </View>
-        <View style={styles.connexion}>
-          <TouchableOpacity title="Connexion" onPress={() => handleSumbit()}>
-            <Text style={styles.textConnexion}>Connexion</Text>
-          </TouchableOpacity>
-        </View>
+      <Text style={styles.emailText}>Email</Text>
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={(value) => setEmail(value)}
+          value={email}
+          placeholder="john.doe@hotmail.com"
+        />
+      </View>
+      <Text style={styles.passwordText}>Password</Text>
+      <View style={styles.input}>
+        <TextInput
+          secureTextEntry={true}
+          onChangeText={(value) => setPassword(value)}
+          value={password}
+          placeholder="********"
+        />
+      </View>
+      <View style={styles.connexion}>
+        <TouchableOpacity title="Connexion" onPress={() => handleSumbit()}>
+          <Text style={styles.textConnexion}>Connexion</Text>
+        </TouchableOpacity>
+      </View>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    safeareaview: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
   container: {
     flex: 1,
     justifyContent: "center",

@@ -13,6 +13,7 @@
     "@react-navigation/native": "6",
     "@react-navigation/native-stack": "6",
     "@react-oauth/google": "^0.12.1",
+    "dotenv": "^16.5.0",
     "expo": "~52.0.43",
     "expo-linear-gradient": "~14.0.2",
     "expo-status-bar": "~2.0.1",

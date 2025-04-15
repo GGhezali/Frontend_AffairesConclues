@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text, Platform, StatusBar  } from "react-native";
 
 export default function GallerieScreen({navigation}) {
   return (

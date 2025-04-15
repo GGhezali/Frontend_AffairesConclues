@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Platform, StatusBar  } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -9,6 +9,7 @@ export default function Headers({
   isReturn,
   isHome,
   isNavigation,
+  title,
 }) {
   if (isReturn) {
     return (
@@ -24,7 +25,7 @@ export default function Headers({
           size={20}
           onPress={() => navigation.goBack()}
         />
-        <Text style={styles.title}>Titre</Text>
+        <Text style={styles.title}>{title}</Text>
       </LinearGradient>
     );
   }
@@ -58,19 +59,17 @@ export default function Headers({
 
         <Text style={styles.home}>Home</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Titre</Text>
+        <Text style={styles.title}>{title}</Text>
       </LinearGradient>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#F5FCEE",
-  },
+    safeareaview: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
   title: {
     fontSize: 20,
   },
