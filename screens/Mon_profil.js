@@ -2,8 +2,18 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Platform, StatusBar  } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Headers from "./Headers";
+import { useDispatch } from "react-redux";
+import { logout } from "../reducers/user";
 
 export default function MonProfilScreen({ navigation }) {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    // Dispatch the logout action to the Redux store
+    dispatch(logout());
+    navigation.navigate("TabNavigator", { screen: "Acceuil" });
+  }
+  
   return (
     <SafeAreaView  style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -30,7 +40,7 @@ export default function MonProfilScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.logout}>
+      <TouchableOpacity style={styles.logout} onPress={() => handleLogout()}>
         <Text style={{ color: '#fff' }}>Déconnexion</Text>
       </TouchableOpacity>
       </View>

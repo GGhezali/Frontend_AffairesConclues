@@ -6,7 +6,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  SafeAreaView, Platform, StatusBar 
+  SafeAreaView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import Headers from "./Headers";
 
@@ -14,12 +16,13 @@ export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSignup = () => {
     if (!email || !username || !password) {
       return;
     }
-    fetch("http://192.168.100.55:3000/users/sign-up", {
+    fetch(`${BACKEND_ADDRESS}:3000/users/sign-up`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),
@@ -38,7 +41,7 @@ export default function InscriptionScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView  style={styles.safeareaview}>
+    <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
 
       <Headers
@@ -91,10 +94,10 @@ export default function InscriptionScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    safeareaview: {
-      flex: 1,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    },
+  safeareaview: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
     justifyContent: "center",

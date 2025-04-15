@@ -1,8 +1,19 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar  } from "react-native";
+import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar } from "react-native";
 import Headers from "./Headers";
+import { useSelector } from "react-redux";
 
 export default function PublierScreen({ navigation }) {
+  const user = useSelector((state) => state.user.value);
+
+  const handlePublish = () => {
+    if (user.token) {
+      navigation.navigate("Annonce")
+    } else {
+      navigation.navigate("Connexion")
+    }
+  }
+  
   return (
       <SafeAreaView  style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
@@ -20,7 +31,7 @@ export default function PublierScreen({ navigation }) {
         <Button title="Photo" onPress={() => navigation.navigate("Photo")} />
         <Button
           title="Publier"
-          onPress={() => navigation.navigate("Annonce")}
+          onPress={() => handlePublish()}
         />
         </View>
         </View>

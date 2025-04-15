@@ -16,7 +16,8 @@ import Article from "./Article";
 import Headers from "./Headers";
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
+  const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
+    useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [selectedCategorie, setSelectedCategorie] = useState("");
   const [selectedTri, setSelectedTri] = useState("");
@@ -37,20 +38,23 @@ export default function PageAcceuilScreen({ navigation }) {
   useEffect(() => {
     // Fetch categories from the backend ---------------------------------
     (async () => {
-      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
+      const categoriesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/categories`
+      );
       const categoriesData = await categoriesResponse.json();
 
       setCategories(categoriesData);
 
       // Fetch articles from the backend based on selected category
       if (selectedCategorie) {
-        const response = await fetch(`${BACKEND_ADDRESS}:3000/articles?categorie=${selectedCategorie}`);
+        const response = await fetch(
+          `${BACKEND_ADDRESS}:3000/articles?categorie=${selectedCategorie}`
+        );
         const data = await response.json();
         setArticles(data);
         console.log("articles =>", data);
-        
       } else {
-        setArticles([])
+        setArticles([]);
       }
 
       //------- fetch articles from the backend---------------------------
@@ -102,7 +106,15 @@ export default function PageAcceuilScreen({ navigation }) {
     //--------------------------------------------------------------------
   }, []);
 
-  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+  function Dropdown({
+    isVisible,
+    toggleVisibility,
+    data,
+    onSelect,
+    placeholder,
+    selectedValue,
+    style,
+  }) {
     return (
       <SafeAreaView style={style}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
