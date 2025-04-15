@@ -25,11 +25,11 @@ export default function PageAcceuilScreen({ navigation }) {
   const [articles, setArticles] = useState([]);
 
   const toggleCategorieDropdown = () => {
-    setCategorieDropdownVisible(!isCategorieDropdownVisible);
+    setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
     setTriDropdownVisible(false); // Close other dropdown
   };
   const toggleTriDropdown = () => {
-    setTriDropdownVisible(!isTriDropdownVisible);
+    setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
   };
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -44,6 +44,18 @@ export default function PageAcceuilScreen({ navigation }) {
       const categoriesData = await categoriesResponse.json();
 
       setCategories(categoriesData);
+
+      // Fetch articles from the backend based on selected category
+      if (selectedCategorie) {
+        const response = await fetch(
+          `${BACKEND_ADDRESS}:3000/articles?categorie=${selectedCategorie}`
+        );
+        const data = await response.json();
+        setArticles(data);
+        console.log("articles =>", data);
+      } else {
+        setArticles([]);
+      }
 
       //------- fetch articles from the backend---------------------------
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
@@ -94,22 +106,6 @@ export default function PageAcceuilScreen({ navigation }) {
     //--------------------------------------------------------------------
   }, []);
 
-  useEffect(() => {
-    // Fetch articles from the backend
-    const fetchArticles = async () => {
-      if (selectedCategorie) {
-        const response = await fetch(
-          `http://192.168.100.51:3000/articles?categorie=${selectedCategorie}`
-        );
-        const data = await response.json();
-        setArticles(data);
-      } else {
-        setArticles([]);
-      }
-    };
-    fetchArticles();
-  }, [selectedCategorie]);
-
   function Dropdown({
     isVisible,
     toggleVisibility,
@@ -151,44 +147,50 @@ export default function PageAcceuilScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Button
-        title="Connexion / Inscription"
-        onPress={() => navigation.navigate("ConnexionInscription")}
-      />
-      <View style={styles.dropdownInputs}>
-        <Dropdown
-          style={styles.categorieContainer}
-          isVisible={isCategorieDropdownVisible}
-          toggleVisibility={toggleCategorieDropdown}
-          data={categories.map((categorie) => ({ value: categorie.name }))}
-          onSelect={(item) => setSelectedCategorie(item.value)}
-          placeholder="Catégorie"
-          selectedValue={selectedCategorie}
-        />
-        <Dropdown
-          style={styles.triContainer}
-          isVisible={isTriDropdownVisible}
-          toggleVisibility={toggleTriDropdown}
-          data={[{ value: "Le plus récent" }, { value: "Prix croissant" }]}
-          onSelect={(item) => setSelectedTri(item.value)}
-          placeholder="Trier par"
-          selectedValue={selectedTri}
-        />
+    <SafeAreaView style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation et isReturn*/}
+      <Headers navigation={navigation} isHome={true} style={styles.header} />
+      <View style={styles.container}>
+        <View style={styles.dropdownInputs}>
+          <Dropdown
+            style={styles.categorieContainer}
+            isVisible={isCategorieDropdownVisible}
+            toggleVisibility={toggleCategorieDropdown}
+            data={categories.map((categorie) => ({ value: categorie.name }))}
+            onSelect={(item) => setSelectedCategorie(item.value)}
+            placeholder="Catégorie"
+            selectedValue={selectedCategorie}
+          />
+          <Dropdown
+            style={styles.triContainer}
+            isVisible={isTriDropdownVisible}
+            toggleVisibility={toggleTriDropdown}
+            data={[{ value: "Le plus récent" }, { value: "Prix croissant" }]}
+            onSelect={(item) => setSelectedTri(item.value)}
+            placeholder="Trier par"
+            selectedValue={selectedTri}
+          />
+        </View>
+        <ScrollView style={styles.scrollview}>
+          <Article navigation={navigation} />
+        </ScrollView>
       </View>
-      <ScrollView style={styles.scrollview}>
-        <Article navigation={navigation} />
-      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeareaview: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F5FCEE",
     justifyContent: "space-around",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  header: {
+    top: 0,
   },
   dropdownInputs: {
     flexDirection: "row",
