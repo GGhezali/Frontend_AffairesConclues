@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 
@@ -46,7 +46,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
     return (
-      <View style={style}>
+      <SafeAreaView style={style}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
           <Text>{selectedValue || placeholder}</Text>
           <AntDesign name={isVisible ? 'caretup' : 'caretdown'} size={12} />
@@ -71,7 +71,7 @@ export default function PageAcceuilScreen({ navigation }) {
             />
           </View>
         )}
-      </View>
+      </SafeAreaView>
     );
   }
 
