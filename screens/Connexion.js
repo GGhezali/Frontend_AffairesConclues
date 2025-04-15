@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
+import Headers from "./Headers";
 
 import { useState, useEffect } from "react";
 
@@ -38,6 +39,7 @@ export default function ConnexionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Headers navigation={navigation} isReturn={true} />
       <View style={styles.topLeft}>
         <Button
           title="Home"

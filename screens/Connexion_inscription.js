@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import Headers from "./Headers";
 
 export default function ConnexionInscriptionScreen({ navigation }) {
   
@@ -7,6 +8,7 @@ export default function ConnexionInscriptionScreen({ navigation }) {
   
   return (
     <View style={styles.container}>
+      <Headers navigation={navigation} isNavigation={true}/>
       
       <Button
       style={styles.topLeft}
@@ -35,7 +37,7 @@ export default function ConnexionInscriptionScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#F5FCEE",
   },
