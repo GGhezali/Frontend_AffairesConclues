@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 
@@ -20,7 +20,7 @@ export default function PageAcceuilScreen({ navigation }) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
       <View style={styles.dropdownInputs}>
         <TouchableOpacity style={styles.categorie} onPress={toggleCategorie}>
@@ -65,7 +65,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <ScrollView style={styles.scrollview}> 
           <Article />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 

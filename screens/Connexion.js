@@ -43,21 +43,21 @@ export default function ConnexionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Email</Text>
+      <Text style={styles.emailText}>Email</Text>
       <View style={styles.email}>
         <TextInput
           onChangeText={(value) => setEmail(value)}
           value={email}
-          placeholder="Email"
+          placeholder="john.doe@hotmail.com"
         />
       </View>
-      <Text>Password</Text>
+      <Text style={styles.passwordText}>Password</Text>
       <View style={styles.password}>
         <TextInput
           secureTextEntry={true}
           onChangeText={(value) => setPassword(value)}
           value={password}
-          placeholder="password"
+          placeholder="********"
         />
       </View>
       <View style={styles.connexion}>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "beige",
+    backgroundColor: "#F5FCEE",
   },
   email: {
     fontSize: 20,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   connexion: {
-    backgroundColor: "green",
+    backgroundColor: "#1C7C54",
     borderRadius: 30,
     width: "80%",
     height: 40,
@@ -107,4 +107,8 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 7,
   },
+  emailText:{
+    display:'flex',
+    justifyContent:'flex-start',
+  }
 });
