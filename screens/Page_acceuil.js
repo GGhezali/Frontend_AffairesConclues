@@ -1,13 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Article from './Article';
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+} from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Article from "./Article";
+import { endAsyncEvent } from "react-native/Libraries/Performance/Systrace";
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
+  const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
+    useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
-  const [selectedCategorie, setSelectedCategorie] = useState('');
-  const [selectedTri, setSelectedTri] = useState('');
+  const [selectedCategorie, setSelectedCategorie] = useState("");
+  const [selectedTri, setSelectedTri] = useState("");
   const [categories, setCategories] = useState([]);
 
   const toggleCategorieDropdown = () => {
@@ -19,23 +32,84 @@ export default function PageAcceuilScreen({ navigation }) {
     setTriDropdownVisible(!isTriDropdownVisible);
     setCategorieDropdownVisible(false); // Close other dropdown
   };
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  //const BACKEND_ADDRESS = "http://192.168.100.65";
 
   useEffect(() => {
-    // Fetch categories from the backend
-    const fetchCategories = async () => {
-        const response = await fetch('http://192.168.100.51:3000/categories');
-        const data = await response.json();
-        setCategories(data);
-    };
-    fetchCategories();
+    // Fetch categories from the backend ---------------------------------
+    (async () => {
+      const categoriesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/categories`
+      );
+      const categoriesData = await categoriesResponse.json();
+
+      setCategories(categoriesData);
+
+      //------- fetch articles from the backend---------------------------
+      const articlesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/articles/`
+      );
+      // get all articles
+      const articlesData = await articlesResponse.json();
+
+      // create list of articles' _id to be updated 
+      let listId = articlesData.data.map((data) => {
+        const now = new Date();
+        const end = new Date(
+          new Date(data.timer).getTime() + 60 * 60 * 24 * 1000
+        );
+
+        if (end.getTime() < now.getTime()) {
+          // Select articles id whose isDone will be uddated to true
+          //console.log("data._id =>", data._id);
+          return data._id
+        } 
+        });
+
+        listId = listId.filter(( e ) => {
+          return e !== undefined;
+        });
+        //console.log("listId =>", listId);
+
+        // For each articles' id selected fetch the backend to update its isDone property to true
+        for (id of listId) {
+          console.log(id);
+          
+          const updateIdResponse = await fetch(
+            `${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
+            method: 'POST',
+            headers : {'Content-Type': 'application/json'},
+            body: JSON.stringify(id)
+            });
+          
+          const updateIdData = await updateIdResponse.json();
+          
+          console.log(updateIdData)
+        }
+  
+
+    })();
+    //--------------------------------------------------------------------
+
+    // Update articles' isDone category ---------------------------------
+
+    //--------------------------------------------------------------------
   }, []);
 
-  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+  function Dropdown({
+    isVisible,
+    toggleVisibility,
+    data,
+    onSelect,
+    placeholder,
+    selectedValue,
+    style,
+  }) {
     return (
       <View style={style}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
           <Text>{selectedValue || placeholder}</Text>
-          <AntDesign name={isVisible ? 'caretup' : 'caretdown'} size={12} />
+          <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
         </TouchableOpacity>
         {isVisible && (
           <View style={styles.dropdownList}>
@@ -49,7 +123,8 @@ export default function PageAcceuilScreen({ navigation }) {
                   onPress={() => {
                     onSelect(item);
                     toggleVisibility();
-                  }}>
+                  }}
+                >
                   <Text>{item.value}</Text>
                 </TouchableOpacity>
               )}
@@ -61,9 +136,13 @@ export default function PageAcceuilScreen({ navigation }) {
     );
   }
 
+
   return (
     <SafeAreaView style={styles.container}>
-      <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
+      <Button
+        title="Connexion / Inscription"
+        onPress={() => navigation.navigate("ConnexionInscription")}
+      />
       <View style={styles.dropdownInputs}>
         <Dropdown
           style={styles.categorieContainer}
@@ -78,10 +157,7 @@ export default function PageAcceuilScreen({ navigation }) {
           style={styles.triContainer}
           isVisible={isTriDropdownVisible}
           toggleVisibility={toggleTriDropdown}
-          data={[
-            { value: 'Date' },
-            { value: 'Prix' },
-          ]}
+          data={[{ value: "Date" }, { value: "Prix" }]}
           onSelect={(item) => setSelectedTri(item.value)}
           placeholder="Trier par"
           selectedValue={selectedTri}
@@ -99,16 +175,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5FCEE",
     justifyContent: "space-around",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
   },
   dropdown: {
-    backgroundColor: '#ffffff',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: "#ffffff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: 160,
     height: 40,
     paddingHorizontal: 10,
@@ -116,10 +193,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   dropdownList: {
-    backgroundColor: '#ffffff',
-    position: 'absolute',
+    backgroundColor: "#ffffff",
+    position: "absolute",
     top: 45,
-    width: '100%',
+    width: "100%",
     padding: 10,
     borderRadius: 10,
     borderWidth: 0.5,
@@ -130,11 +207,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   categorieContainer: {
-    position: 'relative',
+    position: "relative",
     width: 160,
   },
   triContainer: {
-    position: 'relative',
+    position: "relative",
     width: 160,
   },
   scrollview: {
