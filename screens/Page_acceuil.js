@@ -16,19 +16,26 @@ export default function PageAcceuilScreen({ navigation }) {
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
     useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
+<<<<<<< HEAD
   const [selectedCategorie, setSelectedCategorie] = useState("");
   const [selectedTri, setSelectedTri] = useState("");
+=======
+  const [selectedCategorie, setSelectedCategorie] = useState('');
+  const [selectedTri, setSelectedTri] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [articles, setArticles] = useState([]);
+>>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
 
   const toggleCategorieDropdown = () => {
     setCategorieDropdownVisible(!isCategorieDropdownVisible);
     setTriDropdownVisible(false); // Close other dropdown
   };
-
   const toggleTriDropdown = () => {
     setTriDropdownVisible(!isTriDropdownVisible);
     setCategorieDropdownVisible(false); // Close other dropdown
   };
 
+<<<<<<< HEAD
   function Dropdown({
     isVisible,
     toggleVisibility,
@@ -38,6 +45,33 @@ export default function PageAcceuilScreen({ navigation }) {
     selectedValue,
     style,
   }) {
+=======
+  useEffect(() => {
+    // Fetch categories from the backend
+    const fetchCategories = async () => {
+        const response = await fetch('http://192.168.100.51:3000/categories');
+        const data = await response.json();
+        setCategories(data);
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    // Fetch articles from the backend
+    const fetchArticles = async () => {
+      if (selectedCategorie) {
+        const response = await fetch(`http://192.168.100.51:3000/articles?categorie=${selectedCategorie}`);
+        const data = await response.json();
+        setArticles(data);
+      } else {
+        setArticles([])
+      }
+    };
+    fetchArticles();
+  }, [selectedCategorie]);
+
+  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+>>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
     return (
       <View style={style}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
@@ -70,17 +104,26 @@ export default function PageAcceuilScreen({ navigation }) {
   }
 
   return (
+<<<<<<< HEAD
     <SafeAreaView style={styles.container}>
       <Button
         title="Connexion / Inscription"
         onPress={() => navigation.navigate("ConnexionInscription")}
       />
+=======
+    <View style={styles.container}>
+      <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
+>>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
       <View style={styles.dropdownInputs}>
         <Dropdown
           style={styles.categorieContainer}
           isVisible={isCategorieDropdownVisible}
           toggleVisibility={toggleCategorieDropdown}
+<<<<<<< HEAD
           data={[{ value: "Catégorie 1" }, { value: "Catégorie 2" }]}
+=======
+          data={categories.map((categorie) => ({ value: categorie.name }))}
+>>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
           onSelect={(item) => setSelectedCategorie(item.value)}
           placeholder="Catégorie"
           selectedValue={selectedCategorie}
@@ -89,16 +132,23 @@ export default function PageAcceuilScreen({ navigation }) {
           style={styles.triContainer}
           isVisible={isTriDropdownVisible}
           toggleVisibility={toggleTriDropdown}
+<<<<<<< HEAD
           data={[{ value: "Date" }, { value: "Prix" }]}
+=======
+          data={[
+            { value: 'Le plus récent' },
+            { value: 'Prix croissant' },
+          ]}
+>>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
           onSelect={(item) => setSelectedTri(item.value)}
           placeholder="Trier par"
           selectedValue={selectedTri}
         />
       </View>
       <ScrollView style={styles.scrollview}>
-        <Article />
+        <Article navigation={navigation} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
