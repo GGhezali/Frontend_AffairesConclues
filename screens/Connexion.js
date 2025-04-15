@@ -14,45 +14,38 @@ export default function ConnexionScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
- 
-
   const handleSumbit = () => {
-    fetch('http://localhost:3000/users/sign-in', {
+    if (!email || !password) {
+      return;
+    }
+    fetch("http://192.168.100.55:3000/users/sign-in", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
 
-      method: 'POST',
-  
-      headers: { 'Content-Type': 'application/json' },
-  
-      body: JSON.stringify(email, password)
-  
-  })
-   .then(response => response.json())
-   .then(data => {
-     if(data.result){
-     
-      alert('Connexion reussi')
-      // On envoie l'utilisateur vers la page d'accueil   
-      navigation.navigate("TabNavigator", { screen: "Acceuil" });
-      
-     } else {
-      alert('Email ou mot de passe incorecte');
-    
-      
-     }
-   });
+        if (data.result) {
+          alert("Connexion reussi");
+          navigation.navigate("TabNavigator", { screen: "Acceuil" });
+        } else {
+          alert("Erreur lors de la connexion.");
+        }
+      });
   };
-
 
   return (
     <View style={styles.container}>
-     <View style={styles.topLeft}>
-            <Button
-              title="Home"
-              onPress={() =>
-                navigation.navigate("TabNavigator", { screen: "Acceuil" })
-              }
-            />
-          </View>
+      <View style={styles.topLeft}>
+        <Button
+          title="Home"
+          onPress={() =>
+            navigation.navigate("TabNavigator", { screen: "Acceuil" })
+          }
+        />
+      </View>
       <Text style={styles.emailText}>Email</Text>
       <View style={styles.input}>
         <TextInput
@@ -99,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 15,
     fontSize: 16,
-    borderColor:'#dcdedf',
+    borderColor: "#dcdedf",
     width: "80%",
   },
   connexion: {
@@ -117,8 +110,8 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 7,
   },
-  emailText:{
-    display:'flex',
-    justifyContent:'flex-start',
-  }
+  emailText: {
+    display: "flex",
+    justifyContent: "flex-start",
+  },
 });

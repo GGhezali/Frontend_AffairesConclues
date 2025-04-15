@@ -14,16 +14,19 @@ export default function InscriptionScreen({ navigation }) {
   const [email, setEmail] = useState("");
 
   const handleSignup = () => {
+    
     if (!email || !username || !password) {
       return;
     }
-    fetch("http://localhost:3000/users/sign-up", {
+    fetch("http://192.168.100.55:3000/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
+        
         if (data.result) {
           alert("Compte créé !");
           navigation.navigate("Connexion");
@@ -55,8 +58,8 @@ export default function InscriptionScreen({ navigation }) {
             <Text style={styles.emailText}>Username</Text>
             <View style={styles.input}>
               <TextInput
-                onChangeText={(value) => setEmail(value)}
-                value={email}
+                onChangeText={(value) => setUsername(value)}
+                value={username}
                 placeholder="John le républicain"
               />
               
