@@ -5,7 +5,7 @@ import Headers from "./Headers";
 export default function MesEncheresScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Headers  navigation={navigation} isHome={true}  />
+      <Headers  navigation={navigation} isReturn={true} title={"Mes enchères"}  />
 
       <Button
         title="Continuer mes achats"

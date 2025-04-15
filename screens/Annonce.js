@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
+import Headers from "./Headers";
 
 export default function AnnonceScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <Headers navigation={navigation} isReturn={true} title={"Annonce"} />
       <Text style={styles.title}>Annonce</Text>
       {/*  GO BACK !!! */}
       <Button

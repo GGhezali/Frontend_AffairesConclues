@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Headers from "./Headers";
 
 export default function MonProfilScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mon profil</Text>
-
+      <Headers navigation={navigation} isReturn={true} style={styles.header} title={"Mon Profil"} />
       <View style={styles.inputsContainer}>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesInformations")}>
           <Text>Mes informations</Text>
@@ -36,9 +36,13 @@ export default function MonProfilScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: '#f5fcee',
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
   },
   title: {
     fontSize: 20,
@@ -65,6 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
+    marginBottom: 100,
   }
 });

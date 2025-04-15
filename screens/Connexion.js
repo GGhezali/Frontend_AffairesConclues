@@ -39,7 +39,7 @@ export default function ConnexionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Headers navigation={navigation} isReturn={true} />
+      <Headers navigation={navigation} isReturn={true} title={"Connexion"} />
       <View style={styles.topLeft}>
         <Button
           title="Home"

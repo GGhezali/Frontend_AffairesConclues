@@ -9,6 +9,7 @@ export default function Headers({
   isReturn,
   isHome,
   isNavigation,
+  title,
 }) {
   if (isReturn) {
     return (
@@ -24,7 +25,7 @@ export default function Headers({
           size={20}
           onPress={() => navigation.goBack()}
         />
-        <Text style={styles.title}>Titre</Text>
+        <Text style={styles.title}>{title}</Text>
       </LinearGradient>
     );
   }
@@ -58,7 +59,7 @@ export default function Headers({
 
         <Text style={styles.home}>Home</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Titre</Text>
+        <Text style={styles.title}>{title}</Text>
       </LinearGradient>
     );
   }

@@ -2,14 +2,12 @@ import React from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Headers from "./Headers";
 
 export default function MesInformationsScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <View style={styles.head}>
-        <AntDesign name={'left'} size={20} onPress={() => navigation.goBack()}/>
-        <Text style={styles.title}>Mes Informations</Text>
-      </View>
+      <Headers navigation={navigation} isReturn={true} title={"Mes informations"} />
       <View style={styles.inputsContainer}>
         <View style={styles.input}>
           <TextInput style={styles.placeholder} placeholder="Email" />

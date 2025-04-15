@@ -8,7 +8,7 @@ export default function ConnexionInscriptionScreen({ navigation }) {
   
   return (
     <View style={styles.container}>
-      <Headers navigation={navigation} isNavigation={true}/>
+      <Headers navigation={navigation} isNavigation={true} title={"Connexion / Inscription"}/>
       
       <Button
       style={styles.topLeft}

@@ -1,10 +1,11 @@
 import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
+import Headers from "./Headers";
 
 export default function MesPublicationsScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mes Publications</Text>
+      <Headers navigation={navigation} isReturn={true} title={"Mes Publications"} />
       <Button title="Go Back" onPress={() => navigation.navigate("MonProfil")} />
       <Button title="Annonce" onPress={() => navigation.navigate("Annonce")} />  
     </View>

@@ -78,8 +78,8 @@ export default function PageAcceuilScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-        <Headers navigation={navigation} isHome={true}/>
-      <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
+        <Headers navigation={navigation} isHome={true} title={"Accueil"}/>
+      {/* <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} /> */}
       <View style={styles.dropdownInputs}>
         <Dropdown
           style={styles.categorieContainer}
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
+    marginTop: 30,
   },
   dropdown: {
     backgroundColor: '#ffffff',

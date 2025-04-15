@@ -39,7 +39,7 @@ export default function InscriptionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Headers navigation={navigation} isReturn={true} style={styles.header}/>
+      <Headers navigation={navigation} isReturn={true} style={styles.header} title={"Inscription"}/>
     
       <View style={styles.topLeft}>
         <Button
