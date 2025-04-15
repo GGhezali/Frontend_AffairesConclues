@@ -1,12 +1,16 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Platform, StatusBar  } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Headers from "./Headers";
 
 export default function MonProfilScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView  style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+
       <Headers navigation={navigation} isReturn={true} style={styles.header} title={"Mon Profil"} />
+      <View style={styles.container}>
+
       <View style={styles.inputsContainer}>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesInformations")}>
           <Text>Mes informations</Text>
@@ -29,11 +33,16 @@ export default function MonProfilScreen({ navigation }) {
       <TouchableOpacity style={styles.logout}>
         <Text style={{ color: '#fff' }}>Déconnexion</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    safeareaview: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
   container: {
     flex: 1,
     justifyContent: "space-between",

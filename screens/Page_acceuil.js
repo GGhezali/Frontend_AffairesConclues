@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Platform, StatusBar } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Article from './Article';
-import Headers from './Headers';
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+} from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Article from "./Article";
+import Headers from "./Headers";
 
 export default function PageAcceuilScreen({ navigation }) {
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
@@ -35,13 +46,11 @@ export default function PageAcceuilScreen({ navigation }) {
       setCategories(categoriesData);
 
       //------- fetch articles from the backend---------------------------
-      const articlesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/articles/`
-      );
+      const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       // get all articles
       const articlesData = await articlesResponse.json();
 
-      // create list of articles' _id to be updated 
+      // create list of articles' _id to be updated
       let listId = articlesData.data.map((data) => {
         const now = new Date();
         const end = new Date(
@@ -51,30 +60,32 @@ export default function PageAcceuilScreen({ navigation }) {
         if (end.getTime() < now.getTime()) {
           // Select articles id whose isDone will be uddated to true
           //console.log("data._id =>", data._id);
-          return data._id
-        } 
-        });
-
-        listId = listId.filter(( e ) => {
-          return e !== undefined;
-        });
-        console.log("listId =>", listId);
-
-        // For each articles' id selected fetch the backend to update its isDone property to true
-        for (let id of listId) {
-          console.log(id);
-          
-          const updateIdResponse = await fetch(
-            `${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
-            method: 'POST',
-            headers : {'Content-Type': 'application/json'},
-            body: JSON.stringify({id})
-            });
-          
-          const updateIdData = await updateIdResponse.json();
-          
-          console.log(updateIdData)
+          return data._id;
         }
+      });
+
+      listId = listId.filter((e) => {
+        return e !== undefined;
+      });
+      console.log("listId =>", listId);
+
+      // For each articles' id selected fetch the backend to update its isDone property to true
+      for (let id of listId) {
+        console.log(id);
+
+        const updateIdResponse = await fetch(
+          `${BACKEND_ADDRESS}:3000/articles/updateIsDone`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+          }
+        );
+
+        const updateIdData = await updateIdResponse.json();
+
+        console.log(updateIdData);
+      }
     })();
     //--------------------------------------------------------------------
 
@@ -83,23 +94,31 @@ export default function PageAcceuilScreen({ navigation }) {
     //--------------------------------------------------------------------
   }, []);
 
-
   useEffect(() => {
     // Fetch articles from the backend
     const fetchArticles = async () => {
       if (selectedCategorie) {
-        const response = await fetch(`http://192.168.100.51:3000/articles?categorie=${selectedCategorie}`);
+        const response = await fetch(
+          `http://192.168.100.51:3000/articles?categorie=${selectedCategorie}`
+        );
         const data = await response.json();
         setArticles(data);
       } else {
-        setArticles([])
+        setArticles([]);
       }
     };
     fetchArticles();
   }, [selectedCategorie]);
-  
 
-  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+  function Dropdown({
+    isVisible,
+    toggleVisibility,
+    data,
+    onSelect,
+    placeholder,
+    selectedValue,
+    style,
+  }) {
     return (
       <SafeAreaView style={style}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
@@ -131,52 +150,55 @@ export default function PageAcceuilScreen({ navigation }) {
     );
   }
 
-
   return (
-    <SafeAreaView style={styles.container}>
-        <Headers navigation={navigation} isHome={true}/>
-      <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
-      <View style={styles.dropdownInputs}>
-        <Dropdown
-          style={styles.categorieContainer}
-          isVisible={isCategorieDropdownVisible}
-          toggleVisibility={toggleCategorieDropdown}
-          data={categories.map((categorie) => ({ value: categorie.name }))}
-          onSelect={(item) => setSelectedCategorie(item.value)}
-          placeholder="Catégorie"
-          selectedValue={selectedCategorie}
-        />
-        <Dropdown
-          style={styles.triContainer}
-          isVisible={isTriDropdownVisible}
-          toggleVisibility={toggleTriDropdown}
-          data={[
-            { value: 'Le plus récent' },
-            { value: 'Prix croissant' },
-          ]}
-          onSelect={(item) => setSelectedTri(item.value)}
-          placeholder="Trier par"
-          selectedValue={selectedTri}
-        />
+    <SafeAreaView style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation et isReturn*/}
+      <Headers navigation={navigation} isHome={true} style={styles.header} />
+      <View style={styles.container}>
+        <View style={styles.dropdownInputs}>
+          <Dropdown
+            style={styles.categorieContainer}
+            isVisible={isCategorieDropdownVisible}
+            toggleVisibility={toggleCategorieDropdown}
+            data={categories.map((categorie) => ({ value: categorie.name }))}
+            onSelect={(item) => setSelectedCategorie(item.value)}
+            placeholder="Catégorie"
+            selectedValue={selectedCategorie}
+          />
+          <Dropdown
+            style={styles.triContainer}
+            isVisible={isTriDropdownVisible}
+            toggleVisibility={toggleTriDropdown}
+            data={[{ value: "Le plus récent" }, { value: "Prix croissant" }]}
+            onSelect={(item) => setSelectedTri(item.value)}
+            placeholder="Trier par"
+            selectedValue={selectedTri}
+          />
+        </View>
+        <ScrollView style={styles.scrollview}>
+          <Article navigation={navigation} />
+        </ScrollView>
       </View>
-      <ScrollView style={styles.scrollview}>
-        <Article navigation={navigation} />
-      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeareaview: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
     backgroundColor: "#F5FCEE",
     justifyContent: "space-around",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  header: {
+    top: 0,
   },
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 30,
   },
   dropdown: {
     backgroundColor: "#ffffff",

@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  SafeAreaView, Platform, StatusBar 
 } from "react-native";
 import Headers from "./Headers";
 
@@ -38,8 +39,12 @@ export default function ConnexionScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView  style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+
       <Headers navigation={navigation} isReturn={true} title={"Connexion"} />
+      <View style={styles.container}>
+
       <View style={styles.topLeft}>
         <Button
           title="Home"
@@ -70,11 +75,16 @@ export default function ConnexionScreen({ navigation }) {
           <Text style={styles.textConnexion}>Connexion</Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    safeareaview: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
   container: {
     flex: 1,
     justifyContent: "center",

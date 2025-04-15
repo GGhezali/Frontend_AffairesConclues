@@ -1,18 +1,28 @@
 import React from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar  } from "react-native";
 import Headers from "./Headers";
 
-export default function CarteScreen({navigation}) {
+export default function CarteScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView  style={styles.safeareaview}>
+      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
       <Headers navigation={navigation} isReturn={true} title={"Carte"} />
-      <Text style={styles.title}>Carte</Text>
-      <Button title="Go back" onPress={() => navigation.navigate("Annonce")} />
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Carte</Text>
+        <Button
+          title="Go back"
+          onPress={() => navigation.navigate("Annonce")}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+    safeareaview: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
   container: {
     flex: 1,
     justifyContent: "center",
