@@ -32,7 +32,7 @@ export default function InscriptionScreen({ navigation }) {
           alert("Compte créé !");
           navigation.navigate("Connexion");
         } else {
-          alert("Erreur lors de l'inscription.");
+          alert(data.error);
         }
       });
   };

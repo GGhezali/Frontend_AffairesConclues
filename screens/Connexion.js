@@ -32,8 +32,8 @@ export default function ConnexionScreen({ navigation }) {
         if (data.result) {
           alert("Connexion reussi");
           navigation.navigate("TabNavigator", { screen: "Acceuil" });
-        } else {
-          alert("Erreur lors de la connexion.");
+        } else{
+          alert(data.error);
         }
       });
   };
