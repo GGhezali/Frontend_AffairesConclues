@@ -28,9 +28,9 @@ export default function MesEncheresScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#F5FCEE",
   },
   title: {
     fontSize: 20,
