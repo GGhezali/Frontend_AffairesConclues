@@ -1,69 +1,86 @@
-import React, { useCallback, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [categorie, setCategorie] = useState(false);
-  const [tri, setTri] = useState(false);
-  const [value, setValue] = useState('');
+  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
+  const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
+  const [selectedCategorie, setSelectedCategorie] = useState('');
+  const [selectedTri, setSelectedTri] = useState('');
 
-  const toggleCategorie = () => {
-    setCategorie(!categorie)
+  const toggleCategorieDropdown = () => {
+    setCategorieDropdownVisible(!isCategorieDropdownVisible);
+    setTriDropdownVisible(false); // Close other dropdown
   };
-  const toggleTri = () => {
-    setTri(!tri)
+
+  const toggleTriDropdown = () => {
+    setTriDropdownVisible(!isTriDropdownVisible);
+    setCategorieDropdownVisible(false); // Close other dropdown
   };
-  const selectCategorie = ((item) => {
-    setValue(item.value)
-    setCategorie(false)
-  }, []);
+
+  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+    return (
+      <View style={style}>
+        <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
+          <Text>{selectedValue || placeholder}</Text>
+          <AntDesign name={isVisible ? 'caretup' : 'caretdown'} size={12} />
+        </TouchableOpacity>
+        {isVisible && (
+          <View style={styles.dropdownList}>
+            <FlatList
+              keyExtractor={(item) => item.value}
+              data={data}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.dropdownItem}
+                  onPress={() => {
+                    onSelect(item);
+                    toggleVisibility();
+                  }}>
+                  <Text>{item.value}</Text>
+                </TouchableOpacity>
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            />
+          </View>
+        )}
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
       <View style={styles.dropdownInputs}>
-        <TouchableOpacity style={styles.categorie} onPress={toggleCategorie}>
-          <Text>{value || 'Catégorie'}</Text>
-          <AntDesign name={categorie?'caretup':'caretdown'} size={12} />
-        </TouchableOpacity>
-        {categorie ? (
-          <View style={styles.categoriesList}>
-          <FlatList keyExtractor={(item) => item.value}
+        <Dropdown
+          style={styles.categorieContainer}
+          isVisible={isCategorieDropdownVisible}
+          toggleVisibility={toggleCategorieDropdown}
           data={[
-            {value: 'Catégorie 1'},
-            {value: 'Catégorie 2'},
+            { value: 'Catégorie 1' },
+            { value: 'Catégorie 2' },
           ]}
-          renderItem={({item}) => (
-            <TouchableOpacity activeOpacity={0.8} style={styles.categorieItem} onPress={() => selectCategorie(item)}>
-              <Text>{item.value}</Text>
-            </TouchableOpacity>
-          )}
-          ItemSeparatorComponent={() => <View style={{height: 10}} />} />
-          </View> ) : null}
-
-        <TouchableOpacity style={styles.tri} onPress={toggleTri}>
-          <Text>Trier par</Text>
-          <AntDesign name={tri?'caretup':'caretdown'} size={12} />
-        </TouchableOpacity>
-        {tri ? (
-          <View style={styles.triList}>
-          <FlatList keyExtractor={(item) => item.value}
+          onSelect={(item) => setSelectedCategorie(item.value)}
+          placeholder="Catégorie"
+          selectedValue={selectedCategorie}
+        />
+        <Dropdown
+          style={styles.triContainer}
+          isVisible={isTriDropdownVisible}
+          toggleVisibility={toggleTriDropdown}
           data={[
-            {value: 'Date'},
-            {value: 'Prix'},
+            { value: 'Date' },
+            { value: 'Prix' },
           ]}
-          renderItem={({item}) => (
-            <TouchableOpacity activeOpacity={0.8} style={styles.triItem}>
-              <Text>{item.value}</Text>
-            </TouchableOpacity>
-          )}
-          ItemSeparatorComponent={() => <View style={{height: 10}} />} />
-          </View> ) : null}
-
+          onSelect={(item) => setSelectedTri(item.value)}
+          placeholder="Trier par"
+          selectedValue={selectedTri}
+        />
       </View>
-      <ScrollView style={styles.scrollview}> 
-          <Article />
+      <ScrollView style={styles.scrollview}>
+        <Article />
       </ScrollView>
     </SafeAreaView>
   );
@@ -79,57 +96,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  categorie: {
+  dropdown: {
     backgroundColor: '#ffffff',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: 160,
     height: 40,
+    paddingHorizontal: 10,
     borderWidth: 0.5,
-    borderRadius: 50
+    borderRadius: 50,
   },
-  tri: {
+  dropdownList: {
     backgroundColor: '#ffffff',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: 120,
-    height: 40,
-    borderWidth: 0.5,
-    borderRadius: 50
-  },
-  categorieItem: {
-    height: 40,
-    justifyContent: 'center',
-  },
-  categoriesList: {
     position: 'absolute',
-    top: 50,
-    backgroundColor: '#ffffff',
+    top: 45,
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    maxHeight: 150,
+    zIndex: 1,
+  },
+  dropdownItem: {
+    paddingVertical: 10,
+  },
+  categorieContainer: {
+    position: 'relative',
     width: 160,
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    maxHeight: 250,
   },
-  triItem: {
-    height: 40,
-    justifyContent: 'center',
-  },
-  triList: {
-    position: 'absolute',
-    top: 50,
-    left: 240,
-    backgroundColor: '#ffffff',
-    width: 120,
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 0.5,
-    maxHeight: 250,
+  triContainer: {
+    position: 'relative',
+    width: 160,
   },
   scrollview: {
     flex: 1,
-    padding: 25
+    padding: 25,
   },
 });

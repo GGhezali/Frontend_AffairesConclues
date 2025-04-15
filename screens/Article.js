@@ -13,7 +13,7 @@ export default function Article({ navigation }) {
       <Image style={styles.picture} />
       <View style={styles.bookmarkContainer}>
         <View style={styles.bookmark}>
-          <FontAwesome name={"bookmark-o"} size={25} />
+          <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"}/>
         </View>
       </View>
       <View style={styles.description}>
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderRadius: 25,
+    borderColor: "#dcdedf",
     padding: 10,
     alignItems: "center",
   },
@@ -57,12 +58,14 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
+    borderColor: "#39D996",
+    backgroundColor: "white",
   },
   description: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 35,
   },
 });

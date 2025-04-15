@@ -7,7 +7,7 @@ export default function MesInformationsScreen({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.head}>
-        <AntDesign name={'left'} size={20} onPress={() => navigation.navigate('MonProfil')}/>
+        <AntDesign name={'left'} size={20} onPress={() => navigation.goBack()}/>
         <Text style={styles.title}>Mes Informations</Text>
       </View>
       <View style={styles.inputsContainer}>
