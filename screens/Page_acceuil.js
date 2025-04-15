@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
@@ -8,16 +8,41 @@ export default function PageAcceuilScreen({ navigation }) {
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [selectedCategorie, setSelectedCategorie] = useState('');
   const [selectedTri, setSelectedTri] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [articles, setArticles] = useState([]);
 
   const toggleCategorieDropdown = () => {
     setCategorieDropdownVisible(!isCategorieDropdownVisible);
     setTriDropdownVisible(false); // Close other dropdown
   };
-
   const toggleTriDropdown = () => {
     setTriDropdownVisible(!isTriDropdownVisible);
     setCategorieDropdownVisible(false); // Close other dropdown
   };
+
+  useEffect(() => {
+    // Fetch categories from the backend
+    const fetchCategories = async () => {
+        const response = await fetch('http://192.168.100.51:3000/categories');
+        const data = await response.json();
+        setCategories(data);
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    // Fetch articles from the backend
+    const fetchArticles = async () => {
+      if (selectedCategorie) {
+        const response = await fetch(`http://192.168.100.51:3000/articles?categorie=${selectedCategorie}`);
+        const data = await response.json();
+        setArticles(data);
+      } else {
+        setArticles([])
+      }
+    };
+    fetchArticles();
+  }, [selectedCategorie]);
 
   function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
     return (
@@ -58,10 +83,7 @@ export default function PageAcceuilScreen({ navigation }) {
           style={styles.categorieContainer}
           isVisible={isCategorieDropdownVisible}
           toggleVisibility={toggleCategorieDropdown}
-          data={[
-            { value: 'Catégorie 1' },
-            { value: 'Catégorie 2' },
-          ]}
+          data={categories.map((categorie) => ({ value: categorie.name }))}
           onSelect={(item) => setSelectedCategorie(item.value)}
           placeholder="Catégorie"
           selectedValue={selectedCategorie}
@@ -71,8 +93,8 @@ export default function PageAcceuilScreen({ navigation }) {
           isVisible={isTriDropdownVisible}
           toggleVisibility={toggleTriDropdown}
           data={[
-            { value: 'Date' },
-            { value: 'Prix' },
+            { value: 'Le plus récent' },
+            { value: 'Prix croissant' },
           ]}
           onSelect={(item) => setSelectedTri(item.value)}
           placeholder="Trier par"
@@ -80,7 +102,7 @@ export default function PageAcceuilScreen({ navigation }) {
         />
       </View>
       <ScrollView style={styles.scrollview}>
-        <Article />
+        <Article navigation={navigation} />
       </ScrollView>
     </View>
   );
@@ -89,12 +111,12 @@ export default function PageAcceuilScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCEE',
-    justifyContent: 'space-around',
+    backgroundColor: "#F5FCEE",
+    justifyContent: "space-around",
   },
   dropdownInputs: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   dropdown: {
     backgroundColor: '#ffffff',
