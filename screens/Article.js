@@ -17,7 +17,7 @@ export default function Article({ navigation }) {
         </View>
       </View>
       <View style={styles.description}>
-        <Text>Prix</Text>
+        <Text>Prix €</Text>
         <View>
           <Text>Categorie</Text>
           <Text>Lieu de vente</Text>
