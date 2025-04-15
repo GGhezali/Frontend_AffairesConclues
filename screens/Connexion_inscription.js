@@ -2,9 +2,14 @@ import React from "react";
 import { Button, StyleSheet, View, Text } from "react-native";
 
 export default function ConnexionInscriptionScreen({ navigation }) {
+<<<<<<< HEAD
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+
+=======
   
   //const clientId = process.env.GOOGLE_CLIENT_ID;
   
+>>>>>>> 9b44c6dedf24d26cc7b746ea8326d295abc1ffee
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Connexion</Text>
@@ -22,9 +27,12 @@ export default function ConnexionInscriptionScreen({ navigation }) {
         title="Inscription"
         onPress={() => navigation.navigate("Inscription")}
       />
+<<<<<<< HEAD
+=======
 
      
 
+>>>>>>> 9b44c6dedf24d26cc7b746ea8326d295abc1ffee
     </View>
   );
 }
