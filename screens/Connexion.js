@@ -11,26 +11,47 @@ import {
 import { useState, useEffect } from "react";
 
 export default function ConnexionScreen({ navigation }) {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSumbit = () => {
-    
-    fetch('h')
+ 
 
-    navigation.navigate("TabNavigator", { screen: "Acceuil" });
+  const handleSumbit = () => {
+    fetch('http://localhost:3000/users/sign-in', {
+
+      method: 'POST',
+  
+      headers: { 'Content-Type': 'application/json' },
+  
+      body: JSON.stringify(email)
+  
+  })
+   .then(response => response.json())
+   .then(data => {
+     if(email && password){
+      console.log('Conexion reussi ')
+      navigation.navigate("TabNavigator", { screen: "Acceuil" });
+      console.log(email)
+     } else {
+      console.log('Email ou mot de passe incorecte');
+      console.log(email, password)
+      
+     }
+   });
   };
+
 
   return (
     <View style={styles.container}>
-      <View style={styles.title}>
+      <Text>Email</Text>
+      <View style={styles.email}>
         <TextInput
           onChangeText={(value) => setEmail(value)}
           value={email}
           placeholder="Email"
         />
       </View>
+      <Text>Password</Text>
       <View style={styles.password}>
         <TextInput
           secureTextEntry={true}
@@ -55,12 +76,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "beige",
   },
-  title: {
+  email: {
     fontSize: 20,
     backgroundColor: "white",
     width: "80%",
     height: 40,
     marginBottom: 20,
+    borderRadius: 5,
   },
   password: {
     fontSize: 20,
@@ -68,6 +90,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 40,
     marginBottom: 20,
+    borderRadius: 5,
   },
   connexion: {
     backgroundColor: "green",
@@ -82,6 +105,6 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop:7,
+    marginTop: 7,
   },
 });
