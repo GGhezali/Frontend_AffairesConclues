@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Platform, StatusBar } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 import Headers from './Headers';
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
-    useState(false);
+  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [selectedCategorie, setSelectedCategorie] = useState("");
   const [selectedTri, setSelectedTri] = useState("");
@@ -14,11 +13,11 @@ export default function PageAcceuilScreen({ navigation }) {
   const [articles, setArticles] = useState([]);
 
   const toggleCategorieDropdown = () => {
-    setCategorieDropdownVisible(!isCategorieDropdownVisible);
+    setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
     setTriDropdownVisible(false); // Close other dropdown
   };
   const toggleTriDropdown = () => {
-    setTriDropdownVisible(!isTriDropdownVisible);
+    setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
   };
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -27,12 +26,21 @@ export default function PageAcceuilScreen({ navigation }) {
   useEffect(() => {
     // Fetch categories from the backend ---------------------------------
     (async () => {
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/categories`
-      );
+      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
       const categoriesData = await categoriesResponse.json();
 
       setCategories(categoriesData);
+
+      // Fetch articles from the backend based on selected category
+      if (selectedCategorie) {
+        const response = await fetch(`${BACKEND_ADDRESS}:3000/articles?categorie=${selectedCategorie}`);
+        const data = await response.json();
+        setArticles(data);
+        console.log("articles =>", data);
+        
+      } else {
+        setArticles([])
+      }
 
       //------- fetch articles from the backend---------------------------
       const articlesResponse = await fetch(
@@ -52,30 +60,30 @@ export default function PageAcceuilScreen({ navigation }) {
           // Select articles id whose isDone will be uddated to true
           //console.log("data._id =>", data._id);
           return data._id
-        } 
-        });
-
-        listId = listId.filter(( e ) => {
-          return e !== undefined;
-        });
-        //console.log("listId =>", listId);
-
-        // For each articles' id selected fetch the backend to update its isDone property to true
-        for (id of listId) {
-          console.log(id);
-          
-          const updateIdResponse = await fetch(
-            `${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
-            method: 'POST',
-            headers : {'Content-Type': 'application/json'},
-            body: JSON.stringify(id)
-            });
-          
-          const updateIdData = await updateIdResponse.json();
-          
-          console.log(updateIdData)
         }
-  
+      });
+
+      listId = listId.filter((e) => {
+        return e !== undefined;
+      });
+      //console.log("listId =>", listId);
+
+      // For each articles' id selected fetch the backend to update its isDone property to true
+      for (id of listId) {
+        console.log(id);
+
+        const updateIdResponse = await fetch(
+          `${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(id)
+        });
+
+        const updateIdData = await updateIdResponse.json();
+
+        console.log(updateIdData)
+      }
+
 
     })();
     //--------------------------------------------------------------------
@@ -84,22 +92,6 @@ export default function PageAcceuilScreen({ navigation }) {
 
     //--------------------------------------------------------------------
   }, []);
-
-
-  useEffect(() => {
-    // Fetch articles from the backend
-    const fetchArticles = async () => {
-      if (selectedCategorie) {
-        const response = await fetch(`http://192.168.100.51:3000/articles?categorie=${selectedCategorie}`);
-        const data = await response.json();
-        setArticles(data);
-      } else {
-        setArticles([])
-      }
-    };
-    fetchArticles();
-  }, [selectedCategorie]);
-  
 
   function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
     return (
