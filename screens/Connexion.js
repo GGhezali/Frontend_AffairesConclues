@@ -26,10 +26,10 @@ export default function ConnexionScreen({ navigation }) {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        
+
         if (data.result) {
-          alert("Connexion reussie !");
-          navigation.navigate("TabNavigator", { screen: "Acceuil" })
+          alert("Connexion reussi");
+          navigation.navigate("TabNavigator", { screen: "Acceuil" });
         } else {
           alert("Erreur lors de la connexion.");
         }
