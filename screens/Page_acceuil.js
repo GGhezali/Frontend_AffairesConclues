@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
+import Headers from './Headers';
 
 export default function PageAcceuilScreen({ navigation }) {
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
@@ -77,6 +78,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+        <Headers navigation={navigation} isHome={true}/>
       <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
       <View style={styles.dropdownInputs}>
         <Dropdown
