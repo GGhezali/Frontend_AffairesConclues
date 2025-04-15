@@ -16,6 +16,13 @@ export default function Article({ navigation }) {
           <FontAwesome name={"bookmark-o"} size={25} />
         </View>
       </View>
+      <View style={styles.description}>
+        <Text>Prix</Text>
+        <View>
+          <Text>Categorie</Text>
+          <Text>Lieu de vente</Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -50,5 +57,12 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
+  },
+  description: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: 20,
   },
 });
