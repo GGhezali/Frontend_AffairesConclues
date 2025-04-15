@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Article from './Article';
 
 export default function PageAcceuilScreen({ navigation }) {
   const [categorie, setCategorie] = useState(false);
@@ -20,6 +21,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
       <View style={styles.dropdownInputs}>
         <TouchableOpacity style={styles.categorie} onPress={toggleCategorie}>
           <Text>{value || 'Catégorie'}</Text>
@@ -60,10 +62,9 @@ export default function PageAcceuilScreen({ navigation }) {
           </View> ) : null}
 
       </View>
-      <View>
-        <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
-        <Button title="Annonce" onPress={() => navigation.navigate("Annonce")} /> 
-      </View>
+      <ScrollView style={styles.scrollview}> 
+          <Article />
+      </ScrollView>
     </View>
   );
 }
@@ -126,5 +127,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     maxHeight: 250,
+  },
+  scrollview: {
+    flex: 1,
+    padding: 25
   },
 });
