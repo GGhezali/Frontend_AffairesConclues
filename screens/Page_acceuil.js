@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+import React, { useState } from 'react';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+=======
 import React, { useEffect, useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+>>>>>>> 0485ea06d5ef6c916455fa96b0f7559b8be36fa5
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 
@@ -111,12 +116,12 @@ export default function PageAcceuilScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCEE',
-    justifyContent: 'space-around',
+    backgroundColor: "#F5FCEE",
+    justifyContent: "space-around",
   },
   dropdownInputs: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   dropdown: {
     backgroundColor: '#ffffff',
