@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import Headers from "./Headers";
 
 export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -38,6 +39,8 @@ export default function InscriptionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Headers navigation={navigation} isReturn={true} style={styles.header}/>
+    
       <View style={styles.topLeft}>
         <Button
           title="Home"
@@ -88,6 +91,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCEE",
+  },
+  header: {
+    position: "absolute",
+    top: 0,
   },
   topLeft: {
     position: "absolute",

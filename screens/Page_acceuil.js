@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  SafeAreaView,
-  Platform,
-  StatusBar,
-} from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Article from "./Article";
+import React, { useEffect, useState } from 'react';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Article from './Article';
+import Headers from './Headers';
 
 export default function PageAcceuilScreen({ navigation }) {
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
