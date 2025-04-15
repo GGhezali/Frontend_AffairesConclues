@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Platform, StatusBar } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 import Headers from './Headers';
@@ -58,25 +58,23 @@ export default function PageAcceuilScreen({ navigation }) {
         listId = listId.filter(( e ) => {
           return e !== undefined;
         });
-        //console.log("listId =>", listId);
+        console.log("listId =>", listId);
 
         // For each articles' id selected fetch the backend to update its isDone property to true
-        for (id of listId) {
+        for (let id of listId) {
           console.log(id);
           
           const updateIdResponse = await fetch(
             `${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
             method: 'POST',
             headers : {'Content-Type': 'application/json'},
-            body: JSON.stringify(id)
+            body: JSON.stringify({id})
             });
           
           const updateIdData = await updateIdResponse.json();
           
           console.log(updateIdData)
         }
-  
-
     })();
     //--------------------------------------------------------------------
 
@@ -167,7 +165,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <ScrollView style={styles.scrollview}>
         <Article navigation={navigation} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
