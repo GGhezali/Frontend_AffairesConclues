@@ -17,7 +17,7 @@ export default function InscriptionScreen({ navigation }) {
     if (!email || !username || !password) {
       return;
     }
-    fetch("http://localhost:3000/users/sign-up", {
+    fetch("http://192.168.100.34:8081/users/sign-up", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),
@@ -28,7 +28,7 @@ export default function InscriptionScreen({ navigation }) {
           alert("Compte créé !");
           navigation.navigate("Connexion");
         } else {
-          alert("Erreur lors de l'inscription.");
+          alert(data.error || "Erreur lors de l'inscription.");
         }
       });
   };
@@ -42,40 +42,37 @@ export default function InscriptionScreen({ navigation }) {
             navigation.navigate("TabNavigator", { screen: "Acceuil" })
           }
         />
-        </View>
-      <Text style={styles.emailText}>Email</Text>
-            <View style={styles.input}>
-              <TextInput
-                onChangeText={(value) => setEmail(value)}
-                value={email}
-                placeholder="john.doe@hotmail.com"
-              />
-              
-            </View>
-            <Text style={styles.emailText}>Username</Text>
-            <View style={styles.input}>
-              <TextInput
-                onChangeText={(value) => setEmail(value)}
-                value={email}
-                placeholder="John le républicain"
-              />
-              
-            </View>
-            <Text style={styles.passwordText}>Password</Text>
-            <View style={styles.input}>
-              <TextInput
-                secureTextEntry={true}
-                onChangeText={(value) => setPassword(value)}
-                value={password}
-                placeholder="********"
-              />
-            </View>
-
-        <TouchableOpacity style={styles.greenButton} onPress={handleSignup}>
-          <Text style={styles.greenButtonText}>Créer mon compte</Text>
-        </TouchableOpacity>
       </View>
-   
+      <Text style={styles.emailText}>Email</Text>
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={(value) => setEmail(value)}
+          value={email}
+          placeholder="john.doe@hotmail.com"
+        />
+      </View>
+      <Text style={styles.emailText}>Username</Text>
+      <View style={styles.input}>
+        <TextInput
+          onChangeText={(value) => setUsername(value)}
+          value={username}
+          placeholder="John le républicain"
+        />
+      </View>
+      <Text style={styles.passwordText}>Password</Text>
+      <View style={styles.input}>
+        <TextInput
+          secureTextEntry={true}
+          onChangeText={(value) => setPassword(value)}
+          value={password}
+          placeholder="********"
+        />
+      </View>
+
+      <TouchableOpacity style={styles.greenButton} onPress={handleSignup}>
+        <Text style={styles.greenButtonText}>Créer mon compte</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 15,
     fontSize: 16,
-    borderColor:'#dcdedf',
+    borderColor: "#dcdedf",
     width: "80%",
   },
   greenButton: {
@@ -117,8 +114,8 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 7,
   },
-  emailText:{
-    display:'flex',
-    justifyContent:'flex-start',
-  }
+  emailText: {
+    display: "flex",
+    justifyContent: "flex-start",
+  },
 });
