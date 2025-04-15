@@ -17,18 +17,14 @@ import React, { useEffect, useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
->>>>>>> 53d54a7fdf771c2c7ce32e75e23b1f5c1609a622
+import Headers from './Headers';
 
 export default function PageAcceuilScreen({ navigation }) {
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
     useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
-<<<<<<< HEAD
   const [selectedCategorie, setSelectedCategorie] = useState("");
   const [selectedTri, setSelectedTri] = useState("");
-=======
-  const [selectedCategorie, setSelectedCategorie] = useState('');
-  const [selectedTri, setSelectedTri] = useState('');
   const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
 >>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
@@ -41,27 +37,70 @@ export default function PageAcceuilScreen({ navigation }) {
     setTriDropdownVisible(!isTriDropdownVisible);
     setCategorieDropdownVisible(false); // Close other dropdown
   };
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  //const BACKEND_ADDRESS = "http://192.168.100.65";
 
-<<<<<<< HEAD
-  function Dropdown({
-    isVisible,
-    toggleVisibility,
-    data,
-    onSelect,
-    placeholder,
-    selectedValue,
-    style,
-  }) {
-=======
   useEffect(() => {
-    // Fetch categories from the backend
-    const fetchCategories = async () => {
-        const response = await fetch('http://192.168.100.51:3000/categories');
-        const data = await response.json();
-        setCategories(data);
-    };
-    fetchCategories();
+    // Fetch categories from the backend ---------------------------------
+    (async () => {
+      const categoriesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/categories`
+      );
+      const categoriesData = await categoriesResponse.json();
+
+      setCategories(categoriesData);
+
+      //------- fetch articles from the backend---------------------------
+      const articlesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/articles/`
+      );
+      // get all articles
+      const articlesData = await articlesResponse.json();
+
+      // create list of articles' _id to be updated 
+      let listId = articlesData.data.map((data) => {
+        const now = new Date();
+        const end = new Date(
+          new Date(data.timer).getTime() + 60 * 60 * 24 * 1000
+        );
+
+        if (end.getTime() < now.getTime()) {
+          // Select articles id whose isDone will be uddated to true
+          //console.log("data._id =>", data._id);
+          return data._id
+        } 
+        });
+
+        listId = listId.filter(( e ) => {
+          return e !== undefined;
+        });
+        //console.log("listId =>", listId);
+
+        // For each articles' id selected fetch the backend to update its isDone property to true
+        for (id of listId) {
+          console.log(id);
+          
+          const updateIdResponse = await fetch(
+            `${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
+            method: 'POST',
+            headers : {'Content-Type': 'application/json'},
+            body: JSON.stringify(id)
+            });
+          
+          const updateIdData = await updateIdResponse.json();
+          
+          console.log(updateIdData)
+        }
+  
+
+    })();
+    //--------------------------------------------------------------------
+
+    // Update articles' isDone category ---------------------------------
+
+    //--------------------------------------------------------------------
   }, []);
+
 
   useEffect(() => {
     // Fetch articles from the backend
@@ -76,6 +115,7 @@ export default function PageAcceuilScreen({ navigation }) {
     };
     fetchArticles();
   }, [selectedCategorie]);
+  
 
   function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
 >>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
@@ -110,17 +150,13 @@ export default function PageAcceuilScreen({ navigation }) {
     );
   }
 
+
   return (
-<<<<<<< HEAD
     <SafeAreaView style={styles.container}>
       <Button
         title="Connexion / Inscription"
         onPress={() => navigation.navigate("ConnexionInscription")}
       />
-=======
-    <View style={styles.container}>
-      <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
->>>>>>> bc3749131a8dc75b0641a3de1210b6d90d47f2eb
       <View style={styles.dropdownInputs}>
         <Dropdown
           style={styles.categorieContainer}
@@ -164,6 +200,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5FCEE",
     justifyContent: "space-around",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   dropdownInputs: {
     flexDirection: "row",
