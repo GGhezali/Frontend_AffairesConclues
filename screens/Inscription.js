@@ -42,61 +42,54 @@ export default function InscriptionScreen({ navigation }) {
             navigation.navigate("TabNavigator", { screen: "Acceuil" })
           }
         />
-      </View>
-      <Text style={styles.title}>S'inscrire</Text>
-      <View style={styles.content}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Nom d'utilisateur"
-          value={username}
-          onChangeText={setUsername}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Mot de passe"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        </View>
+      <Text style={styles.emailText}>Email</Text>
+            <View style={styles.input}>
+              <TextInput
+                onChangeText={(value) => setEmail(value)}
+                value={email}
+                placeholder="john.doe@hotmail.com"
+              />
+              
+            </View>
+            <Text style={styles.emailText}>Username</Text>
+            <View style={styles.input}>
+              <TextInput
+                onChangeText={(value) => setEmail(value)}
+                value={email}
+                placeholder="John le républicain"
+              />
+              
+            </View>
+            <Text style={styles.passwordText}>Password</Text>
+            <View style={styles.input}>
+              <TextInput
+                secureTextEntry={true}
+                onChangeText={(value) => setPassword(value)}
+                value={password}
+                placeholder="********"
+              />
+            </View>
 
         <TouchableOpacity style={styles.greenButton} onPress={handleSignup}>
           <Text style={styles.greenButtonText}>Créer mon compte</Text>
         </TouchableOpacity>
       </View>
-    </View>
+   
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "gris",
-    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCEE",
   },
   topLeft: {
     position: "absolute",
     top: 50,
     left: 20,
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
-    marginTop: 100,
-    marginBottom: 30,
   },
   input: {
     borderWidth: 1,
@@ -106,17 +99,26 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 15,
     fontSize: 16,
+    borderColor:'#dcdedf',
+    width: "80%",
   },
   greenButton: {
-    backgroundColor: "#005f00",
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
+    backgroundColor: "#1C7C54",
+    borderRadius: 30,
+    width: "80%",
+    height: 40,
   },
+
   greenButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+    justifyContent: "center",
+    textAlign: "center",
+    fontStyle: "bold",
+    fontSize: 20,
+    color: "white",
+    marginTop: 7,
   },
+  emailText:{
+    display:'flex',
+    justifyContent:'flex-start',
+  }
 });

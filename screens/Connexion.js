@@ -23,18 +23,20 @@ export default function ConnexionScreen({ navigation }) {
   
       headers: { 'Content-Type': 'application/json' },
   
-      body: JSON.stringify(email)
+      body: JSON.stringify(email, password)
   
   })
    .then(response => response.json())
    .then(data => {
-     if(email && password){
-      console.log('Conexion reussi ')
+     if(data.result){
+     
+      alert('Connexion reussi')
+      // On envoie l'utilisateur vers la page d'accueil   
       navigation.navigate("TabNavigator", { screen: "Acceuil" });
-      console.log(email)
+      
      } else {
-      console.log('Email ou mot de passe incorecte');
-      console.log(email, password)
+      alert('Email ou mot de passe incorecte');
+    
       
      }
    });
@@ -43,8 +45,16 @@ export default function ConnexionScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+     <View style={styles.topLeft}>
+            <Button
+              title="Home"
+              onPress={() =>
+                navigation.navigate("TabNavigator", { screen: "Acceuil" })
+              }
+            />
+          </View>
       <Text style={styles.emailText}>Email</Text>
-      <View style={styles.email}>
+      <View style={styles.input}>
         <TextInput
           onChangeText={(value) => setEmail(value)}
           value={email}
@@ -52,7 +62,7 @@ export default function ConnexionScreen({ navigation }) {
         />
       </View>
       <Text style={styles.passwordText}>Password</Text>
-      <View style={styles.password}>
+      <View style={styles.input}>
         <TextInput
           secureTextEntry={true}
           onChangeText={(value) => setPassword(value)}
@@ -76,21 +86,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F5FCEE",
   },
-  email: {
-    fontSize: 20,
-    backgroundColor: "white",
-    width: "80%",
-    height: 40,
-    marginBottom: 20,
-    borderRadius: 5,
+  topLeft: {
+    position: "absolute",
+    top: 50,
+    left: 20,
   },
-  password: {
-    fontSize: 20,
-    backgroundColor: "white",
+  input: {
+    borderWidth: 1,
+    borderColor: "#888",
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 15,
+    fontSize: 16,
+    borderColor:'#dcdedf',
     width: "80%",
-    height: 40,
-    marginBottom: 20,
-    borderRadius: 5,
   },
   connexion: {
     backgroundColor: "#1C7C54",
