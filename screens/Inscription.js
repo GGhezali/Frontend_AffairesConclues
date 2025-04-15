@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  TouchableOpacity, SafeAreaView
 } from "react-native";
 import Headers from "./Headers";
 
@@ -38,7 +38,8 @@ export default function InscriptionScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
       <Headers navigation={navigation} isReturn={true} style={styles.header}/>
     
       <View style={styles.topLeft}>
@@ -81,6 +82,7 @@ export default function InscriptionScreen({ navigation }) {
           <Text style={styles.greenButtonText}>Créer mon compte</Text>
         </TouchableOpacity>
       </View>
+      </SafeAreaView>
    
   );
 }
