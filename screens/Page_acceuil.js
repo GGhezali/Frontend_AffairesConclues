@@ -1,69 +1,87 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Article from './Article';
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [categorie, setCategorie] = useState(false);
-  const [tri, setTri] = useState(false);
+  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
+  const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [value, setValue] = useState('');
 
-  const toggleCategorie = () => {
-    setCategorie(!categorie)
+  const toggleCategorieDropdown = () => {
+    setCategorieDropdownVisible(!isCategorieDropdownVisible)
   };
-  const toggleTri = () => {
-    setTri(!tri)
+  const toggleTriDropdown = () => {
+    setTriDropdownVisible(!isTriDropdownVisible)
   };
-  const selectCategorie = ((item) => {
-    setValue(item.value)
-    setCategorie(false)
-  }, []);
+
+  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue }) {
+    return (
+      <>
+        <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
+          <Text>{selectedValue || placeholder}</Text>
+          <AntDesign name={isVisible ? 'caretup' : 'caretdown'} size={12} />
+        </TouchableOpacity>
+        {isVisible && (
+          <View style={styles.dropdownList}>
+            <FlatList
+              keyExtractor={(item) => item.value}
+              data={data}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.dropdownItem}
+                  onPress={() => onSelect(item)}>
+                  <Text>{item.value}</Text>
+                </TouchableOpacity>
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+            />
+          </View>
+        )}
+      </>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <Button title="Connexion / Inscription" onPress={() => navigation.navigate("ConnexionInscription")} />
+      
       <View style={styles.dropdownInputs}>
-        <TouchableOpacity style={styles.categorie} onPress={toggleCategorie}>
-          <Text>{value || 'Catégorie'}</Text>
-          <AntDesign name={categorie?'caretup':'caretdown'} size={12} />
-        </TouchableOpacity>
-        {categorie ? (
-          <View style={styles.categoriesList}>
-          <FlatList keyExtractor={(item) => item.value}
+        <Dropdown
+          style={styles.categorie}
+          isVisible={isCategorieDropdownVisible}
+          toggleVisibility={toggleCategorieDropdown}
           data={[
-            {value: 'Catégorie 1'},
-            {value: 'Catégorie 2'},
+            { value: 'Catégorie 1' },
+            { value: 'Catégorie 2' },
           ]}
-          renderItem={({item}) => (
-            <TouchableOpacity activeOpacity={0.8} style={styles.categorieItem} onPress={() => selectCategorie(item)}>
-              <Text>{item.value}</Text>
-            </TouchableOpacity>
-          )}
-          ItemSeparatorComponent={() => <View style={{height: 10}} />} />
-          </View> ) : null}
-
-        <TouchableOpacity style={styles.tri} onPress={toggleTri}>
-          <Text>Trier par</Text>
-          <AntDesign name={tri?'caretup':'caretdown'} size={12} />
-        </TouchableOpacity>
-        {tri ? (
-          <View style={styles.triList}>
-          <FlatList keyExtractor={(item) => item.value}
+          onSelect={(item) => {
+            setValue(item.value);
+            setCategorieDropdownVisible(false);
+          }}
+          placeholder="Catégorie"
+          selectedValue={value}
+        />
+        <Dropdown
+          style={styles.tri}
+          isVisible={isTriDropdownVisible}
+          toggleVisibility={toggleTriDropdown}
           data={[
-            {value: 'Date'},
-            {value: 'Prix'},
+            { value: 'Date' },
+            { value: 'Prix' },
           ]}
-          renderItem={({item}) => (
-            <TouchableOpacity activeOpacity={0.8} style={styles.triItem}>
-              <Text>{item.value}</Text>
-            </TouchableOpacity>
-          )}
-          ItemSeparatorComponent={() => <View style={{height: 10}} />} />
-          </View> ) : null}
+          onSelect={(item) => {
+            console.log(`Selected: ${item.value}`);
+            setTriDropdownVisible(false);
+          }}
+          placeholder="Trier par"
+          selectedValue={value}
+        />
 
       </View>
-      <ScrollView style={styles.scrollview}> 
-          <Article />
+      <ScrollView style={styles.scrollview}>
+        <Article />
       </ScrollView>
     </View>
   );
