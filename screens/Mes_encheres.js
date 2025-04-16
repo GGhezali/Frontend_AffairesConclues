@@ -21,7 +21,7 @@ export default function MesEncheresScreen({ navigation }) {
 
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
-  const [total, setTotal] = useState(17);
+  const [total, setTotal] = useState(18);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
