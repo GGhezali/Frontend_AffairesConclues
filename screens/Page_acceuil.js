@@ -19,6 +19,8 @@ import Dropdown from "./components/Dropdowns";
 export default function PageAcceuilScreen({ navigation }) {
   const [articles, setArticles] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
+  const [categorie, setCategorie] = useState("");
+  const [tri, setTri] = useState("");
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
@@ -72,6 +74,15 @@ export default function PageAcceuilScreen({ navigation }) {
     return (
       <Article key={i} navigation={navigation} {...data} />
     )})
+
+    const handleCategorie = (categorie) => {
+      setCategorie(categorie);
+      console.log("categorie ==", categorie);
+    };
+    const handleTri = (tri) => {
+      setArticles(tri);
+      console.log("tri ==", tri);
+    };
   
   
   return (
@@ -80,8 +91,8 @@ export default function PageAcceuilScreen({ navigation }) {
       <Headers navigation={navigation} isHome={true} style={styles.header} />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
-          <Dropdown isCategorie={true} />
-          <Dropdown isTri={true} />
+          <Dropdown isCategorie={true} handleCategorie={handleCategorie} />
+          <Dropdown isTri={true} handleTri={handleTri} />
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.articles}>
