@@ -18,7 +18,7 @@ if (isBookmarked) {
     <TouchableOpacity
       title="Annonce"
       style={styles.annonce}
-      onPress={() => props.navigation.navigate("Annonce")}
+      onPress={() => {props.navigation.navigate("Annonce", props)}}
     >
       <Text style={styles.titre}>{props.titre}</Text>
       <Image style={styles.picture} />
