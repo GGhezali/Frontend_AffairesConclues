@@ -10,7 +10,9 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 
-export default function Dropdowns({ isCategorie, isTri, isState }) {
+export default function Dropdowns(props) {
+  const { isCategorie, isTri, isState } = props;
+
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
@@ -47,23 +49,22 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();
       setState(stateData.etats);
-      // Fetch articles from the backend based on selected category
-      
-      {/*}
-      if (selectedCategorie) {
-        console.log("hey");
-        const response = await fetch(
-          `${BACKEND_ADDRESS}:3000/articles?categorie=${selectedCategorie}`
-        );
-        const data = await response.json();
-        setArticles(data);
-        console.log("articles =>", data);
-      } else {
-        setArticles([]);
-      }
-      */}
+
     })();
   }, []);
+
+  const selectCategorie = (item) => {
+    setSelectedCategorie(item.value);
+    props.handleCategorie(item.value);
+  };
+  const selectTri = (item) => {
+    setSelectedTri(item.value);
+    props.handleTri(item.value);
+  }
+  const selectEtat = (item) => {
+    setSelectedState(item.value);
+    props.handleEtat(item.value);
+  };
 
   function Dropdown({
     isVisible,
@@ -112,7 +113,7 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
         isVisible={isCategorieDropdownVisible}
         toggleVisibility={toggleCategorieDropdown}
         data={categories.map((categorie) => ({ value: categorie.name }))}
-        onSelect={(item) => setSelectedCategorie(item.value)}
+        onSelect={(item) => selectCategorie(item)}
         placeholder="Catégorie"
         selectedValue={selectedCategorie}
       />
@@ -125,7 +126,7 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
         isVisible={isTriDropdownVisible}
         toggleVisibility={toggleTriDropdown}
         data={[{ value: "Le plus récent" }, { value: "Prix croissant" }]}
-        onSelect={(item) => setSelectedTri(item.value)}
+        onSelect={(item) => selectTri(item)}
         placeholder="Trier par"
         selectedValue={selectedTri}
       />
@@ -138,7 +139,7 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
         isVisible={isStateDropdownVisible}
         toggleVisibility={toggleStateDropdown}
         data={state.map((etat) => ({ value: etat.condition }))}
-        onSelect={(item) => setSelectedState(item.value)}
+        onSelect={(item) => selectEtat(item)}
         placeholder="Etat"
         selectedValue={selectedState}
       />
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dcdedf",
     maxHeight: 150,
-    zIndex: 1,
+    zIndex: 10,
   },
   dropdownItem: {
     paddingVertical: 10,
