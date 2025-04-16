@@ -1,47 +1,29 @@
+import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 
-// On reçoit les données de l'enchère via la prop `data`
-export default function Enchere({ navigation, data }) {
+export default function Enchere(props) {
   return (
     <TouchableOpacity
       style={styles.enchere}
-      onPress={() => navigation.navigate("Annonce", { article: data })} // On envoie les infos à la page Annonce
+      onPress={() => props.navigation.navigate("Annonce")}
     >
       <View style={styles.leftContent}>
-        {/* Image du livre (ou image grise par défaut si absente) */}
-        <Image
-          alt="photo du livre"
-          style={styles.picture}
-          source={{ uri: data.photo || "https://via.placeholder.com/110x130" }}
-        />
-        {/* Titre du livre */}
-        <Text>{data.titre}</Text>
+        <Image alt="picture" style={styles.picture} />
+        <Text>Titre de l'annonce</Text>
       </View>
-
       <View style={styles.rightContent}>
         <View style={styles.sellContent}>
           <View style={styles.sellState}>
-            {/* Vente en cours ou terminée */}
-            <Text style={{ fontWeight: "bold" }}>
-              {data.isDone ? "Vente terminée" : "Vente en cours"}
-            </Text>
-            {/* Affiche "Temps restant" seulement si la vente est en cours */}
-            {!data.isDone && <Text>Temps restant : à calculer</Text>}
+            <Text>Vente en cours</Text>
+            <Text>Temps restant</Text>
           </View>
-          {/*  Icône verte de validation */}
           <FontAwesome name={"check"} size={20} color={"#39D996"} />
         </View>
-
         <View style={styles.priceContent}>
-          {/* Prix de départ */}
-          <Text>Prix de départ : {data.prixDepart} €</Text>
-          {/*  Prix actuel + pseudo du dernier acheteur (ou "aucun" si personne) */}
-          <Text>
-            Prix actuel : {data.prixActuel} € -{" "}
-            {data.dernierAcheteur ? data.dernierAcheteur.pseudo : "aucun"}
-          </Text>
+          <Text>Price de départ €</Text>
+          <Text>Price Actuel € - Username</Text>
         </View>
       </View>
     </TouchableOpacity>
