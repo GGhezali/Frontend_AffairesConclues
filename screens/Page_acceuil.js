@@ -24,7 +24,6 @@ export default function PageAcceuilScreen({ navigation }) {
   //const BACKEND_ADDRESS = "http://192.168.100.65";
 
   useEffect(() => {
-    // Fetch categories from the backend ---------------------------------
     (async () => {
       //------- fetch articles from the backend---------------------------
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
@@ -40,21 +39,18 @@ export default function PageAcceuilScreen({ navigation }) {
           new Date(data.timer).getTime() + 60 * 60 * 24 * 1000
         );
 
+        // Select articles id whose isDone will be uddated to true
         if (end.getTime() < now.getTime()) {
-          // Select articles id whose isDone will be uddated to true
-          //console.log("data._id =>", data._id);
           return data._id;
         }
       });
-
+      // clean listId
       listId = listId.filter((e) => {
         return e !== undefined;
       });
-      // console.log("listId =>", listId);
 
       // For each articles' id selected fetch the backend to update its isDone property to true
       for (let id of listId) {
-        // console.log(id);
 
         const updateIdResponse = await fetch(
           `${BACKEND_ADDRESS}:3000/articles/updateIsDone`,
@@ -67,14 +63,9 @@ export default function PageAcceuilScreen({ navigation }) {
 
         const updateIdData = await updateIdResponse.json();
 
-        // console.log(updateIdData);
       }
     })();
-    //--------------------------------------------------------------------
 
-    // Update articles' isDone category ---------------------------------
-
-    //--------------------------------------------------------------------
   }, []);
 
   const article = allArticles.map((data, i) => {

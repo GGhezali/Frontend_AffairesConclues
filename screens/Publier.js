@@ -19,29 +19,36 @@ import Dropdowns from "./components/Dropdowns";
 import DatalistInput from "@avul/react-native-datalist-input";
 
 export default function PublierScreen({ navigation }) {
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [auteur, setAuteur] = useState("");
   const [editeur, setEditeur] = useState("");
+  const [auteurList, setAuteurList] = useState([]);
+  const [editeurList, setEditeurList] = useState([]);
 
   useEffect(() => {
-    // Fetch categories from the backend ---------------------------------
+    // Fetch auteurs from the backend ---------------------------------
     (async () => {
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/categories`
+      const auteursResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/auteurs`
       );
-      const categoriesData = await categoriesResponse.json();
-      setCategories(
-        categoriesData.sort((a, b) => a.name.localeCompare(b.name))
-      );
+      const auteursData = await auteursResponse.json();
+      setAuteurList(auteursData.sort());
+      console.log(auteurList)
+     // --------------------------------------------------------------
 
-      const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
-      const stateData = await stateResponse.json();
-      setState(stateData);
-      console.log("stateData =>", stateData);
-      // Fetch articles from the backend based on selected category
+    // Fetch editeurs from the backend ---------------------------------  
+     const editeursResponse = await fetch(
+      `${BACKEND_ADDRESS}:3000/editeurs`
+    );
+    const editeursData = await editeursResponse.json();
+    setEditeurList(editeursData.sort());
+    console.log(editeurList)
+   // --------------------------------------------------------------
+
     })();
   }, []);
 
@@ -91,16 +98,7 @@ export default function PublierScreen({ navigation }) {
           <DatalistInput
             value={auteur}
             onChangeText={(value) => setAuteur(value)}
-            data={[
-              "Javascript",
-              "JAVA",
-              "Python",
-              "C#",
-              "C++",
-              "R",
-              "PHP",
-              "Go",
-            ]}
+            data={auteurList}
             style={styles.datalistInput}
             placeholder="Auteur"
           />
@@ -109,16 +107,7 @@ export default function PublierScreen({ navigation }) {
           <DatalistInput
             value={editeur}
             onChangeText={(value) => setEditeur(value)}
-            data={[
-              "Javascript",
-              "JAVA",
-              "Python",
-              "C#",
-              "C++",
-              "R",
-              "PHP",
-              "Go",
-            ]}
+            data={editeurList}
             style={styles.datalistInput}
             placeholder="Editeur"
           />
@@ -175,7 +164,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: "red",
     padding: 20,
   },
   input: {
@@ -199,12 +187,12 @@ const styles = StyleSheet.create({
   etat: {},
   alignButtons: {
     width: "100%",
-    height: 1000,
+    height: 100,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "black",
+
   },
   alignDropdowns: {
     display: "flex",
@@ -217,7 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#A0D9C1",
     borderRadius: 30,
     width: "40%",
-    height: "25%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -242,5 +230,15 @@ const styles = StyleSheet.create({
   },
   datalistInput: {
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#888",
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 15,
+    fontSize: 16,
+    borderColor: "#dcdedf",
+    width: "100%",
+    height: 70,
   },
 });
