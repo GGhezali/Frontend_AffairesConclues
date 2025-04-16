@@ -30,13 +30,15 @@ export default function PublierScreen({ navigation }) {
   const [editeurList, setEditeurList] = useState([]);
 
   useEffect(() => {
+    
     // Fetch auteurs from the backend ---------------------------------
     (async () => {
       const auteursResponse = await fetch(
         `${BACKEND_ADDRESS}:3000/auteurs`
       );
       const auteursData = await auteursResponse.json();
-      setAuteurList(auteursData.sort());
+
+      setAuteurList(auteursData.sort((a, b) => a.name.localeCompare(b.name)));
       console.log(auteurList)
      // --------------------------------------------------------------
 
@@ -45,7 +47,7 @@ export default function PublierScreen({ navigation }) {
       `${BACKEND_ADDRESS}:3000/editeurs`
     );
     const editeursData = await editeursResponse.json();
-    setEditeurList(editeursData.sort());
+    setEditeurList(editeursData.sort((a, b) => a.name.localeCompare(b.name)));
     console.log(editeurList)
    // --------------------------------------------------------------
 
