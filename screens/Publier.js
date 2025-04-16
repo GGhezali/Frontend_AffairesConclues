@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar } from "react-native";
-import Headers from "./Headers";
+import Headers from "./components/Headers";
 import { useSelector } from "react-redux";
 
 export default function PublierScreen({ navigation }) {

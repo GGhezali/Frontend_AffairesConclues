@@ -10,7 +10,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import Headers from "./Headers";
+import Headers from "./components/Headers";
 
 export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
