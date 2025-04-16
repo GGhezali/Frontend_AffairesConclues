@@ -41,6 +41,11 @@ export default function ConnexionScreen({ navigation }) {
           alert(data.error);
         }
       });
+      if (password.length < 8) return setErr('Min. 8 caractères');
+      if (!/[A-Z]/.test(pwd)) return setErr('Majuscule requise');
+      if (!/\d/.test(pwd)) return setErr('Chiffre requis');
+      setErr('');
+      alert('Mot de passe OK ✅');
   };
 
   return (
