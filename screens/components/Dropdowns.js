@@ -26,7 +26,6 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
     };
     const toggleStateDropdown= () => {
         setStateDropdownVisible(!isStateDropdownVisible); // Open dropdown
-        console.log(isStateDropdownVisible);
         setCategorieDropdownVisible(false); // Close other dropdown
         setTriDropdownVisible(false); // Close other dropdown
     };
@@ -38,8 +37,7 @@ useEffect(() => {
         `${BACKEND_ADDRESS}:3000/categories`
       );
       const categoriesData = await categoriesResponse.json();
-
-      setCategories(categoriesData);
+      setCategories(categoriesData.sort((a, b) => a.name.localeCompare(b.name)));
 
       // Fetch articles from the backend based on selected category
       if (selectedCategorie) {
@@ -55,6 +53,7 @@ useEffect(() => {
 
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`)
       const stateData = await stateResponse.json()
+      connsole.log("stateData =>", stateData)
       setState(stateData)
     })();
   }, []);
