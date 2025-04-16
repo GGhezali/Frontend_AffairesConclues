@@ -48,29 +48,27 @@ console.log(props)
           </TouchableOpacity>
         </View>
         <View style={styles.informationContainer}>
-          <Text style={styles.title}>Nom de l'annonce</Text>
-          <Text style={styles.description}>Etat : </Text>
+          <Text style={styles.title}>{props.titre}</Text>
+          <Text style={styles.description}>Etat : {props.etat.condition}</Text>
+          <Text style={styles.description}>Categorie : {props.categorie.name}</Text>
           <Text style={styles.description}>
-            Description : En ce début d'année à Poudlard, une grande nouvelle
-            attend Harry, Ron et Hermione : la tenue d'un tournoi de magie
-            exceptionnel entre les plus célèbres écoles de sorcellerie. Déjà les
-            délégations étrangères font leur entrée. Harry se réjouit... Trop...
+            Description : {props.description}
           </Text>
-          <Text style={styles.description}>Auteur : </Text>
-          <Text style={styles.description}>Editeur : </Text>
+          <Text style={styles.description}>Auteur : {props.auteur.name} </Text>
+          <Text style={styles.description}>Editeur : {props.editeur.name} </Text>
           <View style={styles.priceContainer}>
             <Text style={styles.priceInfoLeft}>Prix de départ :</Text>
-            <Text>XX €</Text>
-            <Text style={styles.priceInfoRight}>Vendeur</Text>
+            <Text>{props.startPrice} €</Text>
+            <Text style={styles.priceInfoRight}>{props.annonceur.username}</Text>
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.priceInfoLeft}>Prix actuel :</Text>
-            <Text>XX €</Text>
-            <Text style={styles.priceInfoRight}>Encherisseur</Text>
+            <Text>{props.currentPrice} €</Text>
+            <Text style={styles.priceInfoRight}>{props.acheteur.username}</Text>
           </View>
         </View>
         <View style={styles.timerContainer}>
-          <Text style={styles.timer}>Temps restant</Text>
+          <Text style={styles.timer}>{props.timer}</Text>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonContact}>
@@ -96,10 +94,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCEE",
   },
   container: {
-    height: 1000,
+    height: "100%",
     width: "100%",
     flexDirection: "column",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#F5FCEE",
     padding: 20,
@@ -107,14 +105,13 @@ const styles = StyleSheet.create({
   },
   pictureContainer: {
     width: "100%",
-    height: "50%",
+    height: 500,
     backgroundColor: "grey",
   },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
     width: "100%",
-    marginTop: -100,
   },
   icon: {
     width: 50,
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
   },
   timerContainer: {
     width: "65%",
-    height: "8%",
+    height: 50,
     backgroundColor: "#B1CF5F",
     justifyContent: "center",
     alignItems: "center",
