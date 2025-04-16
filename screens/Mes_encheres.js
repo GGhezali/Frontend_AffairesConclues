@@ -42,6 +42,40 @@ export default function MesEncheresScreen({ navigation }) {
     }
   }, []);
 
+  useEffect(() => {
+    if (user.token) {
+      fetchEncheres(); // Appel de la fonction quand on change d’onglet
+    }
+  }, [ongletActif]); // déclenché quand ongletActif change
+
+  // Fonction qui va chercher les enchères de l'utilisateur selon l'onglet sélectionné
+  const fetchEncheres = () => {
+    // URL de base vers  backend
+    const baseUrl = "http://<TON_IP>:3000/articles";
+
+    // Choix de la route selon l'onglet actif
+    let route = "";
+    if (ongletActif === "enCours") {
+      route = `/open/${user._id}`;
+    } else {
+      route = `/closed/${user._id}`;
+    }
+
+    // Appel à l'API
+    fetch(baseUrl + route)
+      .then((response) => response.json()) // conversion de la réponse en JSON
+      .then((data) => {
+        if (data.result) {
+          setMesEncheres(data.articles); // on stocke les articles dans le state
+        } else {
+          console.log("Erreur dans les données :", data.error);
+        }
+      })
+      .catch((error) => {
+        console.log("Erreur de connexion au serveur :", error);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -107,9 +141,23 @@ export default function MesEncheresScreen({ navigation }) {
             </View>
           )}
         </View>
+
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
-            <Enchere navigation={navigation} />
+            {mesEncheres.length > 0 ? (
+              // Si on a reçu des enchères depuis l'API, on les affiche
+              mesEncheres.map((enchere, index) => (
+                // On crée un composant Enchere pour chaque article du tableau
+                <Enchere
+                  key={index} // Clé unique nécessaire pour chaque élément d'une liste
+                  navigation={navigation} // On transmet la navigation au composant
+                  data={enchere} // On envoie les infos de l'enchère
+                />
+              ))
+            ) : (
+              // Si le tableau est vide, on affiche un petit message
+              <Text>Aucune enchère à afficher.</Text>
+            )}
           </View>
         </ScrollView>
         <View style={styles.separator} />
