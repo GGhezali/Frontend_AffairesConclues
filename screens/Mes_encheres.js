@@ -16,12 +16,12 @@ import Enchere from "./components/Enchere";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
   const [ongletActif, setOngletActif] = useState("enCours");
-  const [mesEncheres, setMesEncheres] = useState(0);
+  const [nbArticles, setNbArticles] = useState(2);
+  const [total, setTotal] = useState(17);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
@@ -72,7 +72,6 @@ export default function MesEncheresScreen({ navigation }) {
             >
               <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
             </View>
-
           ) : (
             <View
               style={{
@@ -87,10 +86,14 @@ export default function MesEncheresScreen({ navigation }) {
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
-            <Enchere/>
+            <Enchere />
           </View>
         </ScrollView>
-
+        <View style={styles.separator} />
+        <View style={styles.total}>
+          <Text style={styles.text}>Nombre d'articles : {nbArticles},</Text>
+          <Text style={styles.text}> Total : {total}</Text>
+        </View>
         <Button
           title="Continuer mes achats"
           onPress={() =>
@@ -149,5 +152,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     padding: 10,
+  },
+  separator: {
+    height: 4,                      // épaisseur de la ligne
+    backgroundColor: 'black',     // couleur vive (bleu iOS)
+    marginVertical: 50,  
+    borderRadius:10,           // espace autour de la ligne
+    width: '90%',                  // occupe toute la largeur
+  },
+  total:{
+    display: 'flex',
+    flexDirection: "row",
+    justifyContent: 'space-between',
+  },
+  text:{
+    fontSize: 15, 
+    fontWeight: 'bold',
   }
 });
