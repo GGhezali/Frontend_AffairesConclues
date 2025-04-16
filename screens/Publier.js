@@ -55,9 +55,9 @@ export default function PublierScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safeareaview}>
-      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
-      <KeyboardAvoidingView>
-      <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+      <KeyboardAvoidingView style={{width: "100%", height: "100%"}}> 
+        {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
+        <Headers navigation={navigation} isReturn={true} title={"Publier"} />
         <ScrollView style={styles.container}>
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
@@ -173,10 +173,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
-    width: "90%",
+    width: "100%",
     height: "100%",
-
     backgroundColor: "red",
+    padding: 20,
   },
   input: {
     borderWidth: 1,
