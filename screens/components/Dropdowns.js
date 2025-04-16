@@ -176,6 +176,8 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     maxHeight: 150,
     zIndex: 10,
+    elevation: 5,
+    overflow: "hidden",
   },
   dropdownItem: {
     paddingVertical: 10,
