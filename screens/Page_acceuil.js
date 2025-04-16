@@ -12,53 +12,20 @@ import {
   StatusBar,
   KeyboardAvoidingView
 } from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import Article from "./components/Article";
 import Headers from "./components/Headers";
+import Dropdown from "./components/Dropdowns";
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
-    useState(false);
-  const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
-  const [selectedCategorie, setSelectedCategorie] = useState("");
-  const [selectedTri, setSelectedTri] = useState("");
-  const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
 
-  const toggleCategorieDropdown = () => {
-    setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
-    setTriDropdownVisible(false); // Close other dropdown
-  };
-  const toggleTriDropdown = () => {
-    setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
-    setCategorieDropdownVisible(false); // Close other dropdown
-  };
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
 
   useEffect(() => {
     // Fetch categories from the backend ---------------------------------
     (async () => {
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/categories`
-      );
-      const categoriesData = await categoriesResponse.json();
-
-      setCategories(categoriesData);
-
-      // Fetch articles from the backend based on selected category
-      if (selectedCategorie) {
-        const response = await fetch(
-          `${BACKEND_ADDRESS}:3000/articles?categorie=${selectedCategorie}`
-        );
-        const data = await response.json();
-        setArticles(data);
-        console.log("articles =>", data);
-      } else {
-        setArticles([]);
-      }
-
       //------- fetch articles from the backend---------------------------
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       // get all articles
@@ -115,46 +82,6 @@ export default function PageAcceuilScreen({ navigation }) {
       <Article key={i} navigation={navigation} {...data} />
     )})
   
-
-  function Dropdown({
-    isVisible,
-    toggleVisibility,
-    data,
-    onSelect,
-    placeholder,
-    selectedValue,
-    style,
-  }) {
-    return (
-      <SafeAreaView style={style}>
-        <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
-          <Text>{selectedValue || placeholder}</Text>
-          <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
-        </TouchableOpacity>
-        {isVisible && (
-          <View style={styles.dropdownList}>
-            <FlatList
-              keyExtractor={(item) => item.value}
-              data={data}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    onSelect(item);
-                    toggleVisibility();
-                  }}
-                >
-                  <Text>{item.value}</Text>
-                </TouchableOpacity>
-              )}
-              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-            />
-          </View>
-        )}
-      </SafeAreaView>
-    );
-  }
   
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -162,24 +89,8 @@ export default function PageAcceuilScreen({ navigation }) {
       <Headers navigation={navigation} isHome={true} style={styles.header} />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
-          <Dropdown
-            style={styles.categorieContainer}
-            isVisible={isCategorieDropdownVisible}
-            toggleVisibility={toggleCategorieDropdown}
-            data={categories.map((categorie) => ({ value: categorie.name }))}
-            onSelect={(item) => setSelectedCategorie(item.value)}
-            placeholder="Catégorie"
-            selectedValue={selectedCategorie}
-          />
-          <Dropdown
-            style={styles.triContainer}
-            isVisible={isTriDropdownVisible}
-            toggleVisibility={toggleTriDropdown}
-            data={[{ value: "Le plus récent" }, { value: "Prix croissant" }]}
-            onSelect={(item) => setSelectedTri(item.value)}
-            placeholder="Trier par"
-            selectedValue={selectedTri}
-          />
+          <Dropdown isCategorie={true} />
+          <Dropdown isTri={true} />
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.articles}>
