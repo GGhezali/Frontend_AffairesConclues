@@ -30,14 +30,18 @@ export default function PublierScreen({ navigation }) {
   const [editeurList, setEditeurList] = useState([]);
 
   useEffect(() => {
+    
     // Fetch auteurs from the backend ---------------------------------
     (async () => {
       const auteursResponse = await fetch(
         `${BACKEND_ADDRESS}:3000/auteurs`
       );
       const auteursData = await auteursResponse.json();
-      setAuteurList(auteursData.sort());
-      console.log(auteurList)
+
+      const sortedAuteurList = auteursData.auteurs.sort((a, b) => a.name.localeCompare(b.name))
+      const auteursList = sortedAuteurList.map((data) => {return data.name})
+      setAuteurList(auteursList);
+      
      // --------------------------------------------------------------
 
     // Fetch editeurs from the backend ---------------------------------  
@@ -45,12 +49,18 @@ export default function PublierScreen({ navigation }) {
       `${BACKEND_ADDRESS}:3000/editeurs`
     );
     const editeursData = await editeursResponse.json();
-    setEditeurList(editeursData.sort());
-    console.log(editeurList)
+
+    const sortedEditeurList = editeursData.editeurs.sort((a, b) => a.name.localeCompare(b.name))
+    const editeursList = sortedEditeurList.map((data) => {return data.name})
+    setEditeurList(editeursList);
+
    // --------------------------------------------------------------
 
     })();
   }, []);
+
+  console.log("auteurList =>", auteurList);
+  console.log("editeurList =>", editeurList);
 
   const handlePublish = () => {
     if (user.token) {
@@ -69,7 +79,6 @@ export default function PublierScreen({ navigation }) {
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
             <TextInput
-              secureTextEntry={true}
               onChangeText={(value) => setTitle(value)}
               value={title}
               placeholder="Titre"
