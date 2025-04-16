@@ -2,6 +2,7 @@ import React from "react";
 import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar  } from "react-native";
 import Headers from "./components/Headers";
 
+
 export default function MesFavorisScreen({navigation}) {
   return (
     <SafeAreaView  style={styles.safeareaview}>
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "yellow",
+    backgroundColor: "#F5FCEE",
   },
   title: {
     fontSize: 20,
