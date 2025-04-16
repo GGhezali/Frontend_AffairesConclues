@@ -19,6 +19,7 @@ export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
   const [ongletActif, setOngletActif] = useState("enCours");
+  const [mesEncheres, setMesEncheres] = useState(0);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
