@@ -46,7 +46,7 @@ export default function ConnexionScreen({ navigation }) {
       if (!/[A-Z]/.test(password)) return setErr('Majuscule requise');
       if (!/\d/.test(password)) return setErr('Chiffre requis');
       setErr('');
-      alert('Mot de passe OK ✅');
+      
   };
 
   return (
