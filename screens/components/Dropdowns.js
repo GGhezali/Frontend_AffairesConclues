@@ -123,7 +123,7 @@ useEffect(() => {
                 style={styles.stateContainer}
                 isVisible={isStateDropdownVisible}
                 toggleVisibility={toggleStateDropdown}
-                data={etats.map((etat) => ({ value: etat.name }))}
+                data={etats.map((etat) => ({ value: etat.condition }))}
                 onSelect={(item) => setSelectedState(item.value)}
                 placeholder="Etat"
                 selectedValue={selectedState}
