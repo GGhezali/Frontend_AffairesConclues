@@ -16,6 +16,7 @@ export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [err, setErr] = useState("");
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSignup = () => {
@@ -38,11 +39,7 @@ export default function InscriptionScreen({ navigation }) {
           alert(data.error);
         }
       });
-      if (password.length < 8) return setErr('Min. 8 caractères');
-      if (!/[A-Z]/.test(pwd)) return setErr('Majuscule requise');
-      if (!/\d/.test(pwd)) return setErr('Chiffre requis');
-      setErr('');
-      alert('Mot de passe OK ✅');
+   
   };
 
   return (
