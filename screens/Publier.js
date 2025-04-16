@@ -1,10 +1,13 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar, TouchableOpacity } from "react-native";
-import Headers from "./Headers";
+import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import Headers from "./components/Headers";
 import { useSelector } from "react-redux";
+import { useState } from 'react';
 
 export default function PublierScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const handlePublish = () => {
     if (user.token) {
@@ -19,8 +22,32 @@ export default function PublierScreen({ navigation }) {
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
 
         <Headers navigation={navigation} isReturn={true} title={"Publier"} />
-        <View style={styles.container}>
-          
+        <ScrollView style={styles.container}>
+
+         <Text style={styles.inputText}>Titre</Text>
+        <View style={styles.input}>
+                <TextInput
+                  secureTextEntry={true}
+                  onChangeText={(value) => setTitle(value)}
+                  value={title}
+                  placeholder="Titre"
+                />
+        </View>
+
+        <Text style={styles.inputText}>Description</Text>
+        <View style={styles.input}>
+                <TextInput           
+                  editable
+                  textAlignVertical="top"
+                  multiline={true}
+                  numberOfLines={4}
+                  maxLength={600}
+                  onChangeText={(value) => setDescription(value)}
+                  value={description}
+                  placeholder="Description"
+                />
+        </View>
+
        <View style={styles.alignButtons}>
        <View style={styles.button1}>
           <TouchableOpacity
@@ -49,7 +76,8 @@ export default function PublierScreen({ navigation }) {
           <Text style={styles.textButton}>Publier</Text>
           </TouchableOpacity>
        </View>
-        </View>
+
+        </ScrollView>
       </SafeAreaView>
   );
 }
@@ -58,21 +86,34 @@ const styles = StyleSheet.create({
     safeareaview: {
       flex: 1,
       paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      backgroundColor: "#F5FCEE",
+      justifyContent: "center",
+      alignItems: "center",
+
+
     },
   container: {
-    width: "100%",
+    width: "80%",
     height: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#F5FCEE",
+    
+    backgroundColor: "white",
   },
-  containt: {
+  input: {
+    borderWidth: 1,
+    borderColor: "#888",
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 15,
+    fontSize: 16,
+    borderColor: "#dcdedf",
     width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCEE",
   },
+  inputText: {
+    display: "flex",
+    justifyContent: "flex-start",
+  },
+
   alignButtons: {
     width: "100%",
     height: "100%",
@@ -93,11 +134,10 @@ const styles = StyleSheet.create({
   button2: {
     backgroundColor: "#1C7C54",
     borderRadius: 30,
-    width: "80%",
+    width: "100%",
     height: "40",
-    justifyContent: "center",
-    alignItems: "center",
     marginBottom: 30,
+    
   },
   textButton: {
     justifyContent: "center",
@@ -106,5 +146,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
     marginTop: 7,
+
   },
 });
