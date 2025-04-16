@@ -19,12 +19,13 @@ import Dropdown from "./components/Dropdowns";
 export default function PageAcceuilScreen({ navigation }) {
   const [articles, setArticles] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
+  const [categorie, setCategorie] = useState("");
+  const [tri, setTri] = useState("");
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
 
   useEffect(() => {
-    // Fetch categories from the backend ---------------------------------
     (async () => {
       //------- fetch articles from the backend---------------------------
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
@@ -40,21 +41,18 @@ export default function PageAcceuilScreen({ navigation }) {
           new Date(data.timer).getTime() + 60 * 60 * 24 * 1000
         );
 
+        // Select articles id whose isDone will be uddated to true
         if (end.getTime() < now.getTime()) {
-          // Select articles id whose isDone will be uddated to true
-          //console.log("data._id =>", data._id);
           return data._id;
         }
       });
-
+      // clean listId
       listId = listId.filter((e) => {
         return e !== undefined;
       });
-      // console.log("listId =>", listId);
 
       // For each articles' id selected fetch the backend to update its isDone property to true
       for (let id of listId) {
-        // console.log(id);
 
         const updateIdResponse = await fetch(
           `${BACKEND_ADDRESS}:3000/articles/updateIsDone`,
@@ -67,20 +65,24 @@ export default function PageAcceuilScreen({ navigation }) {
 
         const updateIdData = await updateIdResponse.json();
 
-        // console.log(updateIdData);
       }
     })();
-    //--------------------------------------------------------------------
 
-    // Update articles' isDone category ---------------------------------
-
-    //--------------------------------------------------------------------
   }, []);
 
   const article = allArticles.map((data, i) => {
     return (
       <Article key={i} navigation={navigation} {...data} />
     )})
+
+    const handleCategorie = (categorie) => {
+      setCategorie(categorie);
+      console.log("categorie ==", categorie);
+    };
+    const handleTri = (tri) => {
+      setArticles(tri);
+      console.log("tri ==", tri);
+    };
   
   
   return (
@@ -89,8 +91,8 @@ export default function PageAcceuilScreen({ navigation }) {
       <Headers navigation={navigation} isHome={true} style={styles.header} />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
-          <Dropdown isCategorie={true} />
-          <Dropdown isTri={true} />
+          <Dropdown isCategorie={true} handleCategorie={handleCategorie} />
+          <Dropdown isTri={true} handleTri={handleTri} />
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.articles}>

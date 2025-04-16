@@ -19,31 +19,50 @@ import Dropdowns from "./components/Dropdowns";
 import DatalistInput from "@avul/react-native-datalist-input";
 
 export default function PublierScreen({ navigation }) {
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [auteur, setAuteur] = useState("");
   const [editeur, setEditeur] = useState("");
+  const [auteurList, setAuteurList] = useState([]);
+  const [editeurList, setEditeurList] = useState([]);
+  const [categorie, setCategorie] = useState("");
+  const [etat, setEtat] = useState("");
 
   useEffect(() => {
-    // Fetch categories from the backend ---------------------------------
+    
+    // Fetch auteurs from the backend ---------------------------------
     (async () => {
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/categories`
+      const auteursResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/auteurs`
       );
-      const categoriesData = await categoriesResponse.json();
-      setCategories(
-        categoriesData.sort((a, b) => a.name.localeCompare(b.name))
-      );
+      const auteursData = await auteursResponse.json();
 
-      const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
-      const stateData = await stateResponse.json();
-      setState(stateData);
-      console.log("stateData =>", stateData);
-      // Fetch articles from the backend based on selected category
+      const sortedAuteurList = auteursData.auteurs.sort((a, b) => a.name.localeCompare(b.name))
+      const auteursList = sortedAuteurList.map((data) => {return data.name})
+      setAuteurList(auteursList);
+      
+     // --------------------------------------------------------------
+
+    // Fetch editeurs from the backend ---------------------------------  
+     const editeursResponse = await fetch(
+      `${BACKEND_ADDRESS}:3000/editeurs`
+    );
+    const editeursData = await editeursResponse.json();
+
+    const sortedEditeurList = editeursData.editeurs.sort((a, b) => a.name.localeCompare(b.name))
+    const editeursList = sortedEditeurList.map((data) => {return data.name})
+    setEditeurList(editeursList);
+
+   // --------------------------------------------------------------
+
     })();
   }, []);
+
+  // console.log("auteurList =>", auteurList);
+  // console.log("editeurList =>", editeurList);
 
   const handlePublish = () => {
     if (user.token) {
@@ -53,25 +72,35 @@ export default function PublierScreen({ navigation }) {
     }
   };
 
+  const handleCategorie = (categorie) => {
+    setCategorie(categorie);
+    // console.log("categorie ==", categorie);
+  };
+  const handleEtat = (etat) => {
+    setEtat(etat);
+    // console.log("etat ==", etat);
+  };
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       <KeyboardAvoidingView style={{width: "100%", height: "100%"}}> 
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
         <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+        <View style={styles.alignDropdowns}>
+            <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
+            <Dropdowns isState={true} handleEtat={handleEtat} />
+          </View>
         <ScrollView style={styles.container}>
+        
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
             <TextInput
-              secureTextEntry={true}
               onChangeText={(value) => setTitle(value)}
               value={title}
               placeholder="Titre"
             />
           </View>
-          <View style={styles.alignDropdowns}>
-            <Dropdowns isCategorie={true} />
-            <Dropdowns isState={true} />
-          </View>
+          
 
           <Text style={styles.inputText}>Description</Text>
           <View style={styles.input}>
@@ -91,16 +120,7 @@ export default function PublierScreen({ navigation }) {
           <DatalistInput
             value={auteur}
             onChangeText={(value) => setAuteur(value)}
-            data={[
-              "Javascript",
-              "JAVA",
-              "Python",
-              "C#",
-              "C++",
-              "R",
-              "PHP",
-              "Go",
-            ]}
+            data={auteurList}
             style={styles.datalistInput}
             placeholder="Auteur"
           />
@@ -109,16 +129,7 @@ export default function PublierScreen({ navigation }) {
           <DatalistInput
             value={editeur}
             onChangeText={(value) => setEditeur(value)}
-            data={[
-              "Javascript",
-              "JAVA",
-              "Python",
-              "C#",
-              "C++",
-              "R",
-              "PHP",
-              "Go",
-            ]}
+            data={editeurList}
             style={styles.datalistInput}
             placeholder="Editeur"
           />
@@ -175,7 +186,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: "red",
     padding: 20,
   },
   input: {
@@ -199,12 +209,12 @@ const styles = StyleSheet.create({
   etat: {},
   alignButtons: {
     width: "100%",
-    height: 1000,
+    height: 100,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "black",
+
   },
   alignDropdowns: {
     display: "flex",
@@ -217,7 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#A0D9C1",
     borderRadius: 30,
     width: "40%",
-    height: "25%",
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -242,5 +252,15 @@ const styles = StyleSheet.create({
   },
   datalistInput: {
     marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#888",
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 15,
+    fontSize: 16,
+    borderColor: "#dcdedf",
+    width: "100%",
+    height: 70,
   },
 });
