@@ -36,7 +36,6 @@ export default function PublierScreen({ navigation }) {
 
       <Headers navigation={navigation} isReturn={true} title={"Publier"} />
       <ScrollView style={styles.container}>
-        <View>
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
             <TextInput
@@ -46,10 +45,10 @@ export default function PublierScreen({ navigation }) {
               placeholder="Titre"
             />
           </View>
-
+          <View style={styles.alignDropdowns}>
           <Dropdowns isCategorie={true} />
-
-          <Dropdowns isState={true} />
+          <Dropdowns  isState={true} />
+          </View>
 
           <Text style={styles.inputText}>Description</Text>
           <View style={styles.input}>
@@ -101,7 +100,6 @@ export default function PublierScreen({ navigation }) {
               <Text style={styles.textButton}>Publier</Text>
             </TouchableOpacity>
           </View>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container: {
-    width: "80%",
+    width: "90%",
     height: "100%",
 
     backgroundColor: "white",
@@ -136,7 +134,12 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-start",
   },
+   categorie: {
+    margin: 10,
+   },
+   etat: {
 
+   },
   alignButtons: {
     width: "100%",
     height: "100%",
@@ -145,6 +148,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  alignDropdowns: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin : 10,
+  },  
   button1: {
     backgroundColor: "#A0D9C1",
     borderRadius: 30,
