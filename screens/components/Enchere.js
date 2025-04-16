@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Image, TouchableOpacity} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 
-export default function Enchere() {
+export default function Enchere(props) {
     return (
-    <TouchableOpacity style={styles.enchere}>
+    <TouchableOpacity style={styles.enchere} onPress={() => props.navigation.navigate("Annonce")}>
         <View style={styles.leftContent}>
             <Image alt="picture" style={styles.picture} />
             <Text>Titre de l'annonce</Text>
@@ -30,7 +30,7 @@ export default function Enchere() {
 const styles = StyleSheet.create({
     enchere: {
         height: 200,
-        width: "95%",
+        width: "100%",
         backgroundColor: "white",
         borderWidth: 1,
         borderRadius: 25,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     picture: {
         backgroundColor: "grey",
-        width: 130,
+        width: 110,
         height: 130,
         borderRadius: 10,
     },

@@ -11,14 +11,17 @@ import {
   ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
+import Enchere from "./components/Enchere";
 
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+
 
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
   const [ongletActif, setOngletActif] = useState("enCours");
+  const [mesEncheres, setMesEncheres] = useState(0);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
@@ -58,7 +61,7 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <ScrollView style={styles.content}>
+        <View style={styles.content}>
           {ongletActif === "enCours" ? (
             <View
               style={{
@@ -69,6 +72,7 @@ export default function MesEncheresScreen({ navigation }) {
             >
               <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
             </View>
+
           ) : (
             <View
               style={{
@@ -80,6 +84,11 @@ export default function MesEncheresScreen({ navigation }) {
               <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
             </View>
           )}
+        </View>
+        <ScrollView style={styles.scrollview}>
+          <View style={styles.encheres}>
+            <Enchere navigation={navigation} />
+          </View>
         </ScrollView>
 
         <Button
@@ -128,4 +137,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
   },
+  scrollview: {
+    flex: 1,
+    width: "100%",
+  },
+  encheres: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    width: "100%",
+    padding: 10,
+  }
 });
