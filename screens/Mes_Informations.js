@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput, SafeAreaView, Platform, StatusBar  } from "react-native";
+import { StyleSheet, View, Text, TextInput, SafeAreaView, Platform, StatusBar } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
 
 export default function MesInformationsScreen({ navigation }) {
   return (
-    <SafeAreaView  style={styles.safeareaview}>
+    <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
 
       <Headers
@@ -16,28 +16,40 @@ export default function MesInformationsScreen({ navigation }) {
       />
       <View style={styles.container}>
         <View style={styles.inputsContainer}>
-          <View style={styles.input}>
-            <TextInput style={styles.placeholder} placeholder="Email" />
-            <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <View style={styles.head}>
+            <Text style={styles.title}>Email</Text>
+            <View style={styles.input}>
+              <TextInput style={styles.placeholder} placeholder="Email" />
+              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            </View>
           </View>
-          <View style={styles.input}>
-            <TextInput style={styles.placeholder} placeholder="Username" />
-            <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <View style={styles.head}>
+            <Text style={styles.title}>Username</Text>
+            <View style={styles.input}>
+              <TextInput style={styles.placeholder} placeholder="Username" />
+              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            </View>
           </View>
-          <View style={styles.input}>
-            <TextInput style={styles.placeholder} placeholder="Password" />
-            <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <View style={styles.head}>
+            <Text style={styles.title}>Password</Text>
+            <View style={styles.input}>
+              <TextInput style={styles.placeholder} placeholder="Password" />
+              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            </View>
           </View>
-          <View style={styles.input}>
-            <TextInput
-              style={styles.placeholder}
-              placeholder="Données bancaires"
-            />
-            <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <View style={styles.head}>
+            <Text style={styles.title}>Données bancaires</Text>
+            <View style={styles.input}>
+              <TextInput style={styles.placeholder} placeholder="Données bancaires" />
+              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            </View>
           </View>
-          <View style={styles.input}>
-            <TextInput style={styles.placeholder} placeholder="Téléphone" />
-            <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <View style={styles.head}>
+            <Text style={styles.title}>Téléphone</Text>
+            <View style={styles.input}>
+              <TextInput style={styles.placeholder} placeholder="Téléphone" />
+              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            </View>
           </View>
         </View>
       </View>
@@ -46,17 +58,17 @@ export default function MesInformationsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    safeareaview: {
-      flex: 1,
-      // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    },
+  safeareaview: {
+    flex: 1,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
     backgroundColor: "#f5fcee",
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
   },
   head: {
     flexDirection: "row",

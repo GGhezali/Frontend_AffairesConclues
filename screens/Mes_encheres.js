@@ -49,15 +49,38 @@ export default function MesEncheresScreen({ navigation }) {
       <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
       <View style={styles.container}>
         <View style={styles.buttonGroup}>
-          <TouchableOpacity style={styles.greenButton} onPress={handleEnCours}>
-            <Text style={styles.greenButtonText}>Ventes en cours</Text>
+          <TouchableOpacity
+            style={[
+              styles.greenButton,
+              ongletActif === "enCours" && styles.activeButton,
+            ]}
+            onPress={handleEnCours}
+          >
+            <Text
+              style={[
+                styles.greenButtonText,
+                ongletActif === "enCours" && styles.activeButtonText,
+              ]}
+            >
+              Ventes en cours
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.greenButton}
+            style={[
+              styles.greenButton,
+              ongletActif === "terminees" && styles.activeButton,
+            ]}
             onPress={handleTerminees}
           >
-            <Text style={styles.greenButtonText}>Ventes terminées</Text>
+            <Text
+              style={[
+                styles.greenButtonText,
+                ongletActif === "terminees" && styles.activeButtonText,
+              ]}
+            >
+              Ventes terminées
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -86,6 +109,7 @@ export default function MesEncheresScreen({ navigation }) {
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
+            <Enchere navigation={navigation} />
             <Enchere />
           </View>
         </ScrollView>
@@ -94,12 +118,14 @@ export default function MesEncheresScreen({ navigation }) {
           <Text style={styles.text}>Nombre d'articles : {nbArticles},</Text>
           <Text style={styles.text}> Total : {total}</Text>
         </View>
-        <Button
+        <TouchableOpacity
           title="Continuer mes achats"
           onPress={() =>
             navigation.navigate("TabNavigator", { screen: "Acceuil" })
           }
-        />
+        >
+          <Text style={styles.greenButtonText}>Continuer mes achats</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -154,19 +180,19 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   separator: {
-    height: 4,                      // épaisseur de la ligne
-    backgroundColor: 'black',     // couleur vive (bleu iOS)
-    marginVertical: 50,  
-    borderRadius:10,           // espace autour de la ligne
-    width: '90%',                  // occupe toute la largeur
+    height: 4, // épaisseur de la ligne
+    backgroundColor: "black", // couleur vive (bleu iOS)
+    marginVertical: 50,
+    borderRadius: 10, // espace autour de la ligne
+    width: "90%", // occupe toute la largeur
   },
-  total:{
-    display: 'flex',
+  total: {
+    display: "flex",
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
-  text:{
-    fontSize: 15, 
-    fontWeight: 'bold',
-  }
+  text: {
+    fontSize: 15,
+    fontWeight: "bold",
+  },
 });
