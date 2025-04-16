@@ -11,6 +11,7 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
     const [selectedTri, setSelectedTri] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [categories, setCategories] = useState([]);
+    const [state, setState] = useState([]);
     const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
     const toggleCategorieDropdown = () => {
@@ -50,6 +51,10 @@ useEffect(() => {
       } else {
         setArticles([]);
       }
+
+      const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`)
+      const stateData = await stateResponse.json()
+      setState(stateData)
     })();
   }, []);
 

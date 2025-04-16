@@ -8,14 +8,20 @@ import {
   Platform,
   StatusBar,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
+
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
-  const [ongletActif, setOngletActif] = useState("");
+  const [ongletActif, setOngletActif] = useState("enCours");
 
+  //Accéder au token dans Redux
+  const user = useSelector((state) => state.user.value);
   // Fonction appelée quand on clique sur "Ventes en cours"
   const handleEnCours = () => {
     setOngletActif("enCours");
@@ -25,6 +31,14 @@ export default function MesEncheresScreen({ navigation }) {
   const handleTerminees = () => {
     setOngletActif("terminees");
   };
+
+  //Rediriger si pas connecté
+  useEffect(() => {
+    if (!user.token) {
+      navigation.navigate("Connexion"); // ou "Connexion/Inscription" selon ton nom de screen
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -43,6 +57,30 @@ export default function MesEncheresScreen({ navigation }) {
             <Text style={styles.greenButtonText}>Ventes terminées</Text>
           </TouchableOpacity>
         </View>
+
+        <ScrollView style={styles.content}>
+          {ongletActif === "enCours" ? (
+            <View
+              style={{
+                backgroundColor: "#D0F0C0",
+                padding: 20,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                backgroundColor: "#FADBD8",
+                padding: 20,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
+            </View>
+          )}
+        </ScrollView>
 
         <Button
           title="Continuer mes achats"
@@ -75,10 +113,10 @@ const styles = StyleSheet.create({
   greenButton: {
     backgroundColor: "#27AE60",
     paddingVertical: 10,
-    paddingHorizontal: 12, // ⬅️ légèrement réduit
+    paddingHorizontal: 12,
     borderRadius: 10,
-    marginHorizontal: 8, // ⬅️ espace entre les deux boutons
-    minWidth: 130, // ⬅️ largeur mini uniforme (optionnel)
+    marginHorizontal: 8,
+    minWidth: 130,
     alignItems: "center",
   },
   greenButtonText: {
