@@ -8,6 +8,8 @@ export default function PublierScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+
 
   const handlePublish = () => {
     if (user.token) {
@@ -45,6 +47,17 @@ export default function PublierScreen({ navigation }) {
                   onChangeText={(value) => setDescription(value)}
                   value={description}
                   placeholder="Description"
+                />
+        </View>
+
+        <Text style={styles.inputText}>Prix de départ</Text>
+        <View style={styles.input}>
+                <TextInput
+                  keyboardType='numeric'
+                  secureTextEntry={true}
+                  onChangeText={(value) => setPrice(value)}
+                  value={price}
+                  placeholder="Prix de départ"
                 />
         </View>
 
