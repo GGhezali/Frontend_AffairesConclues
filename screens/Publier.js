@@ -28,6 +28,8 @@ export default function PublierScreen({ navigation }) {
   const [editeur, setEditeur] = useState("");
   const [auteurList, setAuteurList] = useState([]);
   const [editeurList, setEditeurList] = useState([]);
+  const [categorie, setCategorie] = useState("");
+  const [etat, setEtat] = useState("");
 
   useEffect(() => {
     
@@ -59,8 +61,8 @@ export default function PublierScreen({ navigation }) {
     })();
   }, []);
 
-  console.log("auteurList =>", auteurList);
-  console.log("editeurList =>", editeurList);
+  // console.log("auteurList =>", auteurList);
+  // console.log("editeurList =>", editeurList);
 
   const handlePublish = () => {
     if (user.token) {
@@ -70,12 +72,26 @@ export default function PublierScreen({ navigation }) {
     }
   };
 
+  const handleCategorie = (categorie) => {
+    setCategorie(categorie);
+    // console.log("categorie ==", categorie);
+  };
+  const handleEtat = (etat) => {
+    setEtat(etat);
+    // console.log("etat ==", etat);
+  };
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       <KeyboardAvoidingView style={{width: "100%", height: "100%"}}> 
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
         <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+        <View style={styles.alignDropdowns}>
+            <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
+            <Dropdowns isState={true} handleEtat={handleEtat} />
+          </View>
         <ScrollView style={styles.container}>
+        
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
             <TextInput
@@ -84,10 +100,7 @@ export default function PublierScreen({ navigation }) {
               placeholder="Titre"
             />
           </View>
-          <View style={styles.alignDropdowns}>
-            <Dropdowns isCategorie={true} />
-            <Dropdowns isState={true} />
-          </View>
+          
 
           <Text style={styles.inputText}>Description</Text>
           <View style={styles.input}>
