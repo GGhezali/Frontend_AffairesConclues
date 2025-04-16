@@ -1,7 +1,4 @@
-express = require("express"); // On importe express pour créer une route
-var router = express.Router(); // On crée un objet routeur express
-const Articles = require("../models/articles"); // recuperer le models
-
+import React, { useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -23,7 +20,8 @@ export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
   const [ongletActif, setOngletActif] = useState("enCours");
-  const [mesEncheres, setMesEncheres] = useState(0);
+  const [nbArticles, setNbArticles] = useState(2);
+  const [total, setTotal] = useState(18);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
@@ -114,9 +112,13 @@ export default function MesEncheresScreen({ navigation }) {
             <Enchere navigation={navigation} />
           </View>
         </ScrollView>
-
+        <View style={styles.separator} />
+        <View style={styles.total}>
+          <Text style={styles.text}>Nombre d'articles : {nbArticles},</Text>
+          <Text style={styles.text}> Total : {total}</Text>
+        </View>
         <TouchableOpacity
-          style={[styles.greenButton, { marginTop: 20 }]}
+          title="Continuer mes achats"
           onPress={() =>
             navigation.navigate("TabNavigator", { screen: "Acceuil" })
           }
@@ -176,11 +178,20 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
   },
-  activeButton: {
-    backgroundColor: "#1E8449", // un vert plus foncé
+  separator: {
+    height: 4, // épaisseur de la ligne
+    backgroundColor: "black", // couleur vive (bleu iOS)
+    marginVertical: 50,
+    borderRadius: 10, // espace autour de la ligne
+    width: "90%", // occupe toute la largeur
   },
-  activeButtonText: {
-    color: "#fff",
+  total: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontSize: 15,
     fontWeight: "bold",
   },
 });
