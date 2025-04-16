@@ -94,7 +94,6 @@ export default function PageAcceuilScreen({ navigation }) {
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.articles}>
-
             {article}
           </View>
         </ScrollView>
