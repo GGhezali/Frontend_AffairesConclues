@@ -93,7 +93,7 @@ export default function MesEncheresScreen({ navigation }) {
                 borderRadius: 10,
               }}
             >
-              <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
+              <Text style={{ fontSize: 16, }}>Enchères en cours</Text>
             </View>
           ) : (
             <View
