@@ -110,7 +110,6 @@ export default function MesEncheresScreen({ navigation }) {
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
             <Enchere navigation={navigation} />
-            <Enchere />
           </View>
         </ScrollView>
         <View style={styles.separator} />
