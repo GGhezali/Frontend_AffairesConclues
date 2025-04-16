@@ -13,8 +13,8 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Article from "./Article";
-import Headers from "./Headers";
+import Article from "./components/Article";
+import Headers from "./components/Headers";
 
 export default function PageAcceuilScreen({ navigation }) {
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
