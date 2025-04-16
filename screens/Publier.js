@@ -1,101 +1,124 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, SafeAreaView, Platform, StatusBar, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import Headers from "./components/Headers";
 import { useSelector } from "react-redux";
-import { useState } from 'react';
+import { useState } from "react";
+import Dropdowns from "./components/Dropdowns";
 
 export default function PublierScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
 
   const handlePublish = () => {
     if (user.token) {
-      navigation.navigate("Annonce")
+      navigation.navigate("Annonce");
     } else {
-      navigation.navigate("Connexion")
+      navigation.navigate("Connexion");
     }
-  }
-  
+  };
+
   return (
-      <SafeAreaView  style={styles.safeareaview}>
+    <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
 
-        <Headers navigation={navigation} isReturn={true} title={"Publier"} />
-        <ScrollView style={styles.container}>
+      <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+      <ScrollView style={styles.container}>
+        <View>
+          <Text style={styles.inputText}>Titre</Text>
+          <View style={styles.input}>
+            <TextInput
+              secureTextEntry={true}
+              onChangeText={(value) => setTitle(value)}
+              value={title}
+              placeholder="Titre"
+            />
+          </View>
 
-         <Text style={styles.inputText}>Titre</Text>
-        <View style={styles.input}>
-                <TextInput
-                  secureTextEntry={true}
-                  onChangeText={(value) => setTitle(value)}
-                  value={title}
-                  placeholder="Titre"
-                />
+          <Dropdowns isCategorie={true} />
+
+          <Dropdowns isState={true} />
+
+          <Text style={styles.inputText}>Description</Text>
+          <View style={styles.input}>
+            <TextInput
+              editable
+              textAlignVertical="top"
+              multiline={true}
+              numberOfLines={4}
+              maxLength={600}
+              onChangeText={(value) => setDescription(value)}
+              value={description}
+              placeholder="Description"
+            />
+          </View>
+
+          <Text style={styles.inputText}>Prix de départ</Text>
+          <View style={styles.input}>
+            <TextInput
+              keyboardType="numeric"
+              secureTextEntry={true}
+              onChangeText={(value) => setPrice(value)}
+              value={price}
+              placeholder="Prix de départ"
+            />
+          </View>
+
+          <View style={styles.alignButtons}>
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Gallerie"
+                onPress={() => navigation.navigate("Gallerie")}
+              >
+                <Text style={styles.textButton}>Gallerie</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Photo"
+                onPress={() => navigation.navigate("Photo")}
+              >
+                <Text style={styles.textButton}>Photo</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.button2}>
+            <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
+              <Text style={styles.textButton}>Publier</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <Text style={styles.inputText}>Description</Text>
-        <View style={styles.input}>
-                <TextInput           
-                  editable
-                  textAlignVertical="top"
-                  multiline={true}
-                  numberOfLines={4}
-                  maxLength={600}
-                  onChangeText={(value) => setDescription(value)}
-                  value={description}
-                  placeholder="Description"
-                />
-        </View>
-
-       <View style={styles.alignButtons}>
-       <View style={styles.button1}>
-          <TouchableOpacity
-            title="Gallerie"
-            onPress={() => navigation.navigate("Gallerie")}
-            >
-          <Text style={styles.textButton}>Gallerie</Text>
-          </TouchableOpacity>
-       </View>
-
-       <View style={styles.button1}>
-          <TouchableOpacity
-            title="Photo"
-            onPress={() => navigation.navigate("Photo")}
-            >
-          <Text style={styles.textButton}>Photo</Text>
-          </TouchableOpacity>
-       </View>
-       </View>   
-
-       <View style={styles.button2}>
-          <TouchableOpacity
-            title="Publier"
-            onPress={() => handlePublish()}
-          >
-          <Text style={styles.textButton}>Publier</Text>
-          </TouchableOpacity>
-       </View>
-
-        </ScrollView>
-      </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    safeareaview: {
-      flex: 1,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-      backgroundColor: "#F5FCEE",
-      justifyContent: "center",
-      alignItems: "center",
-
-
-    },
+  safeareaview: {
+    flex: 1,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: "#F5FCEE",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     width: "80%",
     height: "100%",
-    
+
     backgroundColor: "white",
   },
   input: {
@@ -137,7 +160,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "40",
     marginBottom: 30,
-    
   },
   textButton: {
     justifyContent: "center",
@@ -146,6 +168,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
     marginTop: 7,
-
   },
 });

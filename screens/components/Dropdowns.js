@@ -25,7 +25,7 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
         setStateDropdownVisible(false); // Close other dropdown 
     };
     const toggleStateDropdown= () => {
-        setStateDropdownVisible(!isState); // Open dropdown
+        setStateDropdownVisible(!isStateDropdownVisible); // Open dropdown
         setCategorieDropdownVisible(false); // Close other dropdown
         setTriDropdownVisible(false); // Close other dropdown
     };
@@ -37,8 +37,7 @@ useEffect(() => {
         `${BACKEND_ADDRESS}:3000/categories`
       );
       const categoriesData = await categoriesResponse.json();
-
-      setCategories(categoriesData);
+      setCategories(categoriesData.sort((a, b) => a.name.localeCompare(b.name)));
 
       // Fetch articles from the backend based on selected category
       if (selectedCategorie) {
@@ -54,6 +53,7 @@ useEffect(() => {
 
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`)
       const stateData = await stateResponse.json()
+      connsole.log("stateData =>", stateData)
       setState(stateData)
     })();
   }, []);
@@ -123,7 +123,7 @@ useEffect(() => {
                 style={styles.stateContainer}
                 isVisible={isStateDropdownVisible}
                 toggleVisibility={toggleStateDropdown}
-                data={etats.map((etat) => ({ value: etat.name }))}
+                data={state.map((etat) => ({ value: etat.condition }))}
                 onSelect={(item) => setSelectedState(item.value)}
                 placeholder="Etat"
                 selectedValue={selectedState}
@@ -170,6 +170,10 @@ const styles = StyleSheet.create({
         width: 160,
     },
     triContainer: {
+        position: "relative",
+        width: 160,
+    },
+    stateContainer: {
         position: "relative",
         width: 160,
     },

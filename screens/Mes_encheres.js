@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
+
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -83,9 +84,6 @@ export default function MesEncheresScreen({ navigation }) {
               <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
             </View>
           )}
-
-          
-
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
@@ -107,7 +105,7 @@ export default function MesEncheresScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
@@ -141,13 +139,15 @@ const styles = StyleSheet.create({
   },
   scrollview: {
     flex: 1,
-    padding: 10,
+    width: "100%",
   },
   encheres: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-  },
+    width: "100%",
+    padding: 10,
+  }
 });
