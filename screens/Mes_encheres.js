@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
+import Enchere from "./components/Enchere";
 
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -58,7 +59,7 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <ScrollView style={styles.content}>
+        <View style={styles.content}>
           {ongletActif === "enCours" ? (
             <View
               style={{
@@ -80,6 +81,11 @@ export default function MesEncheresScreen({ navigation }) {
               <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
             </View>
           )}
+        </View>
+        <ScrollView style={styles.scrollview}>
+          <View style={styles.encheres}>
+            <Enchere/>
+          </View>
         </ScrollView>
 
         <Button
@@ -96,7 +102,7 @@ export default function MesEncheresScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
@@ -128,4 +134,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
   },
+  scrollview: {
+    flex: 1,
+    width: "100%",
+  },
+  encheres: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    width: "100%",
+    padding: 10,
+  }
 });

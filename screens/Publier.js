@@ -108,7 +108,7 @@ export default function PublierScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     backgroundColor: "#F5FCEE",
     justifyContent: "center",
     alignItems: "center",

@@ -45,8 +45,7 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
         `${BACKEND_ADDRESS}:3000/categories`
       );
       const categoriesData = await categoriesResponse.json();
-
-      setCategories(categoriesData);
+      setCategories(categoriesData.sort((a, b) => a.name.localeCompare(b.name)));
 
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();

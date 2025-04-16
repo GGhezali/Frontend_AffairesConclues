@@ -51,7 +51,7 @@ export default function MonProfilScreen({ navigation }) {
 const styles = StyleSheet.create({
     safeareaview: {
       flex: 1,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
   container: {
     flex: 1,
