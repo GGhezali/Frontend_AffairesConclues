@@ -8,7 +8,7 @@ import {
   TextInput,
   SafeAreaView, Platform, StatusBar 
 } from "react-native";
-import Headers from "./Headers";
+import Headers from "./components/Headers";
 
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
