@@ -28,6 +28,7 @@ export default function PublierScreen({ navigation }) {
   const [editeur, setEditeur] = useState("");
   const [auteurList, setAuteurList] = useState([]);
   const [editeurList, setEditeurList] = useState([]);
+  const [localisation, setLocalisation] = useState("");
 
   useEffect(() => {
     
@@ -84,6 +85,7 @@ export default function PublierScreen({ navigation }) {
               placeholder="Titre"
             />
           </View>
+
           <View style={styles.alignDropdowns}>
             <Dropdowns isCategorie={true} />
             <Dropdowns isState={true} />
@@ -129,6 +131,15 @@ export default function PublierScreen({ navigation }) {
               onChangeText={(value) => setPrice(value)}
               value={price}
               placeholder="Prix de départ"
+            />
+          </View>
+
+          <Text style={styles.inputText}>Localisation</Text>
+          <View style={styles.input}>
+            <TextInput
+              onChangeText={(value) => setLocalisation(value)}
+              value={localisation}
+              placeholder="Localisation"
             />
           </View>
 
