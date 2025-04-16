@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Platform, StatusBar  } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Headers from "./Headers";
+import Headers from "./components/Headers";
 import { useDispatch } from "react-redux";
 import { logout } from "../reducers/user";
 
