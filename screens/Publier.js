@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Dropdowns from "./components/Dropdowns";
 import DatalistInput from "@avul/react-native-datalist-input";
+import { AutocompleteDropdownContextProvider, AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -30,7 +31,9 @@ export default function PublierScreen({ navigation }) {
   const [editeurList, setEditeurList] = useState([]);
   const [categorie, setCategorie] = useState("");
   const [etat, setEtat] = useState("");
-  const [localisation, setLocalisation] = useState("");
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     
@@ -61,6 +64,25 @@ export default function PublierScreen({ navigation }) {
 
     })();
   }, []);
+
+  useEffect(() => {
+    fetch(`https://api-adresse.data.gouv.fr/search/?q=${input}`)
+      .then((response) => response.json())
+      .then((data) => {
+        let table = [];
+        for (let obj of data.features) {
+          //console.log(obj.properties.label);
+          table.push({
+            title: obj.properties.label,
+            context: obj.properties.context,
+          });
+        }
+        setPlaces(table);
+        //console.log("coordinates", data.features[0].geometry.coordinates)
+      });
+  }, [input]);
+
+  console.log("output", output);
 
   // console.log("auteurList =>", auteurList);
   // console.log("editeurList =>", editeurList);
@@ -147,13 +169,16 @@ export default function PublierScreen({ navigation }) {
           </View>
 
           <Text style={styles.inputText}>Localisation</Text>
-          <View style={styles.input}>
-            <TextInput
-              onChangeText={(value) => setLocalisation(value)}
-              value={localisation}
-              placeholder="Localisation"
-            />
-          </View>
+          <AutocompleteDropdownContextProvider>
+          <AutocompleteDropdown
+            clearOnFocus={false}
+            closeOnBlur={true}
+            closeOnSubmit={true}
+            onChangeText={(value) => setInput(value)}
+            onSelectItem={(value) => setOutput(value)}
+            dataSet={places}
+          />
+          </AutocompleteDropdownContextProvider>
 
           <View style={styles.alignButtons}>
             <View style={styles.button1}>
