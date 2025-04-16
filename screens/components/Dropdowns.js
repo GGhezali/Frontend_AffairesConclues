@@ -39,18 +39,15 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
   };
 
   useEffect(() => {
-    // Fetch categories from the backend ---------------------------------
+    // Fetch categories from the backend
     (async () => {
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/categories`
-      );
+      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
       const categoriesData = await categoriesResponse.json();
-      setCategories(categoriesData.sort((a, b) => a.name.localeCompare(b.name)));
+      setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
 
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();
-      setState(stateData);
-      console.log("stateData =>", stateData);
+      setState(stateData.etats);
       // Fetch articles from the backend based on selected category
       
       {/*}
