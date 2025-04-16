@@ -11,8 +11,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 
 export default function Dropdowns({ isCategorie, isTri, isState }) {
-  const [isCategorieDropdownVisible, setCategorieDropdownVisible] =
-    useState(false);
+  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
   const [selectedCategorie, setSelectedCategorie] = useState("");
