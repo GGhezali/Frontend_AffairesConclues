@@ -3,11 +3,13 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 
-export default function Dropdowns({ isCategorie, isTri }) {
+export default function Dropdowns({ isCategorie, isTri, isState }) {
     const [isCategorieDropdownVisible, setCategorieDropdownVisible] =useState(false);
     const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
+    const [isState, setIsState] = useState(false);
     const [selectedCategorie, setSelectedCategorie] = useState("");
     const [selectedTri, setSelectedTri] = useState("");
+    const [selectedState, setSelectedState] = useState("");
     const [categories, setCategories] = useState([]);
     const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
@@ -18,6 +20,10 @@ export default function Dropdowns({ isCategorie, isTri }) {
       const toggleTriDropdown = () => {
         setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
         setCategorieDropdownVisible(false); // Close other dropdown
+    };
+    const toggleStateDropdown= () => {
+        setIsState(!isState); // Open dropdown
+        setTriDropdownVisible(false); // Close other dropdown
     };
 
 useEffect(() => {
@@ -100,6 +106,19 @@ useEffect(() => {
                 onSelect={(item) => setSelectedTri(item.value)}
                 placeholder="Trier par"
                 selectedValue={selectedTri}
+            />
+        )
+    }
+    if (isState) {
+        return (
+            <Dropdown
+                style={styles.stateContainer}
+                isVisible={isStateDropdownVisible}
+                toggleVisibility={toggleStateDropdown}
+                data={etats.map((etat) => ({ value: etat.name }))}
+                onSelect={(item) => setSelectedState(item.value)}
+                placeholder="Etat"
+                selectedValue={selectedState}
             />
         )
     }
