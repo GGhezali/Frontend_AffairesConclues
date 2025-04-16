@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export default function Dropdowns({ isCategorie, isTri, isState }) {
     const [isCategorieDropdownVisible, setCategorieDropdownVisible] =useState(false);
     const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
-    const [isState, setIsState] = useState(false);
+    const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
     const [selectedCategorie, setSelectedCategorie] = useState("");
     const [selectedTri, setSelectedTri] = useState("");
     const [selectedState, setSelectedState] = useState("");
@@ -16,13 +16,16 @@ export default function Dropdowns({ isCategorie, isTri, isState }) {
     const toggleCategorieDropdown = () => {
         setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
         setTriDropdownVisible(false); // Close other dropdown
+        setStateDropdownVisible(false); // Close other dropdown
     };
       const toggleTriDropdown = () => {
         setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
         setCategorieDropdownVisible(false); // Close other dropdown
+        setStateDropdownVisible(false); // Close other dropdown 
     };
     const toggleStateDropdown= () => {
-        setIsState(!isState); // Open dropdown
+        setStateDropdownVisible(!isState); // Open dropdown
+        setCategorieDropdownVisible(false); // Close other dropdown
         setTriDropdownVisible(false); // Close other dropdown
     };
 
