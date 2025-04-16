@@ -10,12 +10,17 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
+
+import { Ionicons } from "@expo/vector-icons"; // Assure-toi d’avoir installé expo/vector-icons ou react-native-vector-icons
+
 import Headers from "./components/Headers";
 
 export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState(false);
+
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSignup = () => {
@@ -38,6 +43,10 @@ export default function InscriptionScreen({ navigation }) {
           alert(data.error);
         }
       });
+  };
+
+  const handleIconPress = () => {
+    setMessage(!message);
   };
 
   return (
@@ -83,6 +92,24 @@ export default function InscriptionScreen({ navigation }) {
             value={password}
             placeholder="********"
           />
+
+          <View style={styles.row}>
+            <TouchableOpacity onPress={handleIconPress}>
+              <Ionicons
+                name="information-circle-outline"
+                size={28}
+                color="#007AFF"
+              />
+            </TouchableOpacity>
+          </View>
+
+          {message && (
+            <View style={styles.messageBox}>
+              <Text style={styles.message}>• 8 caractères minimum</Text>
+              <Text style={styles.message}>• 1 Majuscule requise</Text>
+              <Text style={styles.message}>• 1 Caractère spécial requis</Text>
+            </View>
+          )}
         </View>
 
         <TouchableOpacity style={styles.greenButton} onPress={handleSignup}>
@@ -123,12 +150,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: "#dcdedf",
     width: "80%",
+    height:40
   },
   greenButton: {
     backgroundColor: "#1C7C54",
     borderRadius: 30,
     width: "80%",
     height: 40,
+    marginTop: 60
   },
 
   greenButtonText: {
@@ -142,5 +171,25 @@ const styles = StyleSheet.create({
   emailText: {
     display: "flex",
     justifyContent: "flex-start",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+height: 40,
+    marginTop: -25,
+    marginRight: 10,
+  },
+
+  messageBox: {
+    backgroundColor: "#f8f8f8",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    height: 55,
+  },
+  message: {
+    fontSize: 14,
+    color: "#333",
   },
 });

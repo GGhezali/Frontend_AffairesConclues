@@ -16,10 +16,12 @@ import Enchere from "./components/Enchere";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
+
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
   const [ongletActif, setOngletActif] = useState("enCours");
+  const [mesEncheres, setMesEncheres] = useState(0);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
@@ -70,6 +72,7 @@ export default function MesEncheresScreen({ navigation }) {
             >
               <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
             </View>
+
           ) : (
             <View
               style={{
