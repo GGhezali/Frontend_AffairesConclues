@@ -16,7 +16,6 @@ export default function InscriptionScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [err, setErr] = useState("");
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSignup = () => {
