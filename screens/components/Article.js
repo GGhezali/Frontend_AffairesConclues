@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 export default function Article(props) {
 const [isBookmarked, setIsBookmarked] = useState(false);
 
-let bookmarkName = "bookmark-o";
+let bookmarkIcon = <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} onPress={() => setIsBookmarked(!isBookmarked)}/>;
+let bookmarkStyle = styles.notBookmarked
 
 if (isBookmarked) {
-  bookmarkName = "bookmark";
+  bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} onPress={() => setIsBookmarked(!isBookmarked)}/>;
+  bookmarkStyle = styles.bookmarked
 }
 
   return (
@@ -21,8 +23,8 @@ if (isBookmarked) {
       <Text style={styles.titre}>{props.titre}</Text>
       <Image style={styles.picture} />
       <View style={styles.bookmarkContainer}>
-        <TouchableOpacity style={styles.bookmark}>
-          <FontAwesome name={bookmarkName} size={25} color={"#39D996"} onPress={() => setIsBookmarked(!isBookmarked)}/>
+        <TouchableOpacity style={bookmarkStyle}>
+          {bookmarkIcon}
         </TouchableOpacity>
       </View>
       <View style={styles.description}>
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     margin: -20
   },
-  bookmark: {
+  notBookmarked: {
     borderWidth: 1,
     borderRadius: 50,
     width: 40,
@@ -70,6 +72,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor: "#39D996",
     backgroundColor: "white",
+  },
+  bookmarked: {
+    borderWidth: 1,
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#39D996",
+    backgroundColor: "#39D996",
   },
   description: {
     width: "100%",
