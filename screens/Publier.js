@@ -30,6 +30,7 @@ export default function PublierScreen({ navigation }) {
   const [editeurList, setEditeurList] = useState([]);
   const [categorie, setCategorie] = useState("");
   const [etat, setEtat] = useState("");
+  const [localisation, setLocalisation] = useState("");
 
   useEffect(() => {
     
@@ -142,6 +143,15 @@ export default function PublierScreen({ navigation }) {
               onChangeText={(value) => setPrice(value)}
               value={price}
               placeholder="Prix de départ"
+            />
+          </View>
+
+          <Text style={styles.inputText}>Localisation</Text>
+          <View style={styles.input}>
+            <TextInput
+              onChangeText={(value) => setLocalisation(value)}
+              value={localisation}
+              placeholder="Localisation"
             />
           </View>
 
