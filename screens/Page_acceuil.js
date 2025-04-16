@@ -24,6 +24,7 @@ export default function PageAcceuilScreen({ navigation }) {
   const [selectedTri, setSelectedTri] = useState("");
   const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
+  const [allArticles, setAllArticles] = useState([]);
 
   const toggleCategorieDropdown = () => {
     setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
@@ -35,23 +36,6 @@ export default function PageAcceuilScreen({ navigation }) {
   };
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
-
-  useEffect(() => {
-    
-      fetch(`${BACKEND_ADDRESS}:3000/articles`)
-        .then((response) => response.json())
-        .then((data) => {
-          setArticles(data.data);
-          // console.log("articles =>", data);
-        })
-        .catch((error) => console.error(error));
-
-}, [])
-
-const article = articles.map((data, i) => {
-  return (
-    <Article key={i} navigation={navigation} {...data} />
-  )})
 
   useEffect(() => {
     // Fetch categories from the backend ---------------------------------
@@ -79,6 +63,8 @@ const article = articles.map((data, i) => {
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       // get all articles
       const articlesData = await articlesResponse.json();
+      
+      setAllArticles(articlesData.data);
 
       // create list of articles' _id to be updated
       let listId = articlesData.data.map((data) => {
@@ -123,6 +109,12 @@ const article = articles.map((data, i) => {
 
     //--------------------------------------------------------------------
   }, []);
+
+  const article = allArticles.map((data, i) => {
+    return (
+      <Article key={i} navigation={navigation} {...data} />
+    )})
+  
 
   function Dropdown({
     isVisible,
