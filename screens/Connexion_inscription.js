@@ -9,7 +9,7 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import Headers from "./Headers";
+import Headers from "./components/Headers";
 
 export default function ConnexionInscriptionScreen({ navigation }) {
   //const clientId = process.env.GOOGLE_CLIENT_ID;
