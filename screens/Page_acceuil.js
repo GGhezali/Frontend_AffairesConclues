@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
+  KeyboardAvoidingView
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Article from "./Article";
@@ -34,6 +35,23 @@ export default function PageAcceuilScreen({ navigation }) {
   };
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
+
+  useEffect(() => {
+    
+      fetch(`${BACKEND_ADDRESS}:3000/articles`)
+        .then((response) => response.json())
+        .then((data) => {
+          setArticles(data.data);
+          // console.log("articles =>", data);
+        })
+        .catch((error) => console.error(error));
+
+}, [])
+
+const article = articles.map((data, i) => {
+  return (
+    <Article key={i} navigation={navigation} {...data} />
+  )})
 
   useEffect(() => {
     // Fetch categories from the backend ---------------------------------
@@ -79,11 +97,11 @@ export default function PageAcceuilScreen({ navigation }) {
       listId = listId.filter((e) => {
         return e !== undefined;
       });
-      console.log("listId =>", listId);
+      // console.log("listId =>", listId);
 
       // For each articles' id selected fetch the backend to update its isDone property to true
       for (let id of listId) {
-        console.log(id);
+        // console.log(id);
 
         const updateIdResponse = await fetch(
           `${BACKEND_ADDRESS}:3000/articles/updateIsDone`,
@@ -96,7 +114,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
         const updateIdData = await updateIdResponse.json();
 
-        console.log(updateIdData);
+        // console.log(updateIdData);
       }
     })();
     //--------------------------------------------------------------------
@@ -145,7 +163,7 @@ export default function PageAcceuilScreen({ navigation }) {
       </SafeAreaView>
     );
   }
-
+  
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation et isReturn*/}
@@ -172,7 +190,10 @@ export default function PageAcceuilScreen({ navigation }) {
           />
         </View>
         <ScrollView style={styles.scrollview}>
-          <Article navigation={navigation} />
+          <View style={styles.articles}>
+
+            {article}
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -182,7 +203,7 @@ export default function PageAcceuilScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
@@ -195,6 +216,7 @@ const styles = StyleSheet.create({
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
+    marginTop: 10,
   },
   dropdown: {
     backgroundColor: "#ffffff",
@@ -204,8 +226,9 @@ const styles = StyleSheet.create({
     width: 160,
     height: 40,
     paddingHorizontal: 10,
-    borderWidth: 0.5,
+    borderWidth: 1,
     borderRadius: 50,
+    borderColor: "#dcdedf",
   },
   dropdownList: {
     backgroundColor: "#ffffff",
@@ -214,7 +237,8 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 10,
     borderRadius: 10,
-    borderWidth: 0.5,
+    borderWidth: 1,
+    borderColor: "#dcdedf",
     maxHeight: 150,
     zIndex: 1,
   },
@@ -231,6 +255,13 @@ const styles = StyleSheet.create({
   },
   scrollview: {
     flex: 1,
-    padding: 25,
+    padding: 10,
   },
+  articles: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  }
 });

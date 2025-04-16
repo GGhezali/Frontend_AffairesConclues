@@ -1,26 +1,35 @@
 import React from "react";
 import { Button, StyleSheet, View, Text, Image, TouchableOpacity, Platform, StatusBar  } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useEffect, useState } from "react";
 
-export default function Article({ navigation }) {
+export default function Article(props) {
+const [isBookmarked, setIsBookmarked] = useState(false);
+
+let bookmarkName = "bookmark-o";
+
+if (isBookmarked) {
+  bookmarkName = "bookmark";
+}
+
   return (
     <TouchableOpacity
       title="Annonce"
       style={styles.annonce}
-      onPress={() => navigation.navigate("Annonce")}
+      onPress={() => props.navigation.navigate("Annonce")}
     >
-      <Text style={styles.titre}>Titre de l'annonce</Text>
+      <Text style={styles.titre}>{props.titre}</Text>
       <Image style={styles.picture} />
       <View style={styles.bookmarkContainer}>
-        <View style={styles.bookmark}>
-          <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"}/>
-        </View>
+        <TouchableOpacity style={styles.bookmark}>
+          <FontAwesome name={bookmarkName} size={25} color={"#39D996"} onPress={() => setIsBookmarked(!isBookmarked)}/>
+        </TouchableOpacity>
       </View>
       <View style={styles.description}>
-        <Text>Prix €</Text>
+        <Text>{props.currentPrice} €</Text>
         <View>
-          <Text>Categorie</Text>
-          <Text>Lieu de vente</Text>
+          <Text>{props.categorie.name}</Text>
+          <Text>{props.localisation.adresse}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -28,7 +37,7 @@ export default function Article({ navigation }) {
 }
 const styles = StyleSheet.create({
   annonce: {
-    height: 300,
+    height: 280,
     width: 170,
     backgroundColor: "white",
     borderWidth: 1,
@@ -36,6 +45,7 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     padding: 10,
     alignItems: "center",
+    margin: 5
   },
   titre: {
     textAlign: "center",
