@@ -84,7 +84,7 @@ export default function MesEncheresScreen({ navigation }) {
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
-            <Enchere/>
+            <Enchere navigation={navigation} />
           </View>
         </ScrollView>
 
