@@ -1,26 +1,58 @@
 import React from "react";
-import { Button, StyleSheet, View, Text, Image, TouchableOpacity, Platform, StatusBar  } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Platform,
+  StatusBar,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 
 export default function Article(props) {
-const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
-let bookmarkIcon = <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} onPress={() => setIsBookmarked(!isBookmarked)}/>;
-let bookmarkStyle = styles.notBookmarked
+  let titre = ""
+  if (props.titre.length > 40) {
+    titre = props.titre.substring(0, 20) + "...";
+  } else {
+    titre = props.titre;
+  }
 
-if (isBookmarked) {
-  bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} onPress={() => setIsBookmarked(!isBookmarked)}/>;
-  bookmarkStyle = styles.bookmarked
-}
+  let bookmarkIcon = (
+    <FontAwesome
+      name={"bookmark-o"}
+      size={25}
+      color={"#39D996"}
+      onPress={() => setIsBookmarked(!isBookmarked)}
+    />
+  );
+  let bookmarkStyle = styles.notBookmarked;
+
+  if (isBookmarked) {
+    bookmarkIcon = (
+      <FontAwesome
+        name={"bookmark"}
+        size={20}
+        color={"white"}
+        onPress={() => setIsBookmarked(!isBookmarked)}
+      />
+    );
+    bookmarkStyle = styles.bookmarked;
+  }
 
   return (
     <TouchableOpacity
       title="Annonce"
       style={styles.annonce}
-      onPress={() => {props.navigation.navigate("Annonce", props)}}
+      onPress={() => {
+        props.navigation.navigate("Annonce", props);
+      }}
     >
-      <Text style={styles.titre}>{props.titre}</Text>
+      <Text style={styles.titre}>{titre}</Text>
       <Image style={styles.picture} />
       <View style={styles.bookmarkContainer}>
         <TouchableOpacity style={bookmarkStyle}>
@@ -28,11 +60,9 @@ if (isBookmarked) {
         </TouchableOpacity>
       </View>
       <View style={styles.description}>
-        <Text>{props.currentPrice} €</Text>
-        <View>
           <Text>{props.categorie.name}</Text>
-          <Text>{props.localisation.adresse}</Text>
-        </View>
+          <Text>{props.etat.condition}</Text>
+          <Text>{props.currentPrice} €</Text>
       </View>
     </TouchableOpacity>
   );
@@ -47,21 +77,28 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     padding: 10,
     alignItems: "center",
-    margin: 5
+    margin: 5,
   },
   titre: {
     textAlign: "center",
     marginBottom: 10,
+    fontSize: 14,
+    fontWeight: "bold",
+    height: "15%",
+    width: "90%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    textAlign: "left",
   },
   picture: {
     backgroundColor: "grey",
-    width: "100%",
-    height: "50%",
+    width: "90%",
+    height: "55%",
   },
   bookmarkContainer: {
     width: "100%",
     alignItems: "flex-end",
-    margin: -20
+    margin: -20,
   },
   notBookmarked: {
     borderWidth: 1,
@@ -84,10 +121,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#39D996",
   },
   description: {
-    width: "100%",
-    flexDirection: "row",
+    width: "90%",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    marginTop: 5,
+  },
+  information: {
+    width: "50%",
     justifyContent: "space-around",
-    alignItems: "center",
-    marginTop: 35,
+    alignItems: "flex-start",
   },
 });
