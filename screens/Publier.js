@@ -22,17 +22,17 @@ import { AutocompleteDropdownContextProvider, AutocompleteDropdown } from "react
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [auteur, setAuteur] = useState("");
-  const [editeur, setEditeur] = useState("");
+  const [title, setTitle] = useState(""); // TITLE A transmettre à la route publish //
+  const [description, setDescription] = useState(""); // DESCRIPTION A transmettre à la route publish //
+  const [price, setPrice] = useState(0); // PRIX A transmettre à la route publish //
+  const [auteur, setAuteur] = useState(""); // AUTEUR A transmettre à la route publish //
+  const [editeur, setEditeur] = useState(""); // EDITEUR A transmettre à la route publish //
   const [auteurList, setAuteurList] = useState([]);
   const [editeurList, setEditeurList] = useState([]);
-  const [categorie, setCategorie] = useState("");
-  const [etat, setEtat] = useState("");
+  const [categorie, setCategorie] = useState(""); // CATEGORIE A transmettre à la route publish //
+  const [etat, setEtat] = useState(""); // ETAT A transmettre à la route publish //
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"coordinates": [-0.526958, 43.762462], "title": "Paris 40500 Saint-Sever"}
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
@@ -71,14 +71,13 @@ export default function PublierScreen({ navigation }) {
       .then((data) => {
         let table = [];
         for (let obj of data.features) {
-          //console.log(obj.properties.label);
           table.push({
             title: obj.properties.label,
             context: obj.properties.context,
+            coordinates: obj.geometry.coordinates,
           });
         }
         setPlaces(table);
-        //console.log("coordinates", data.features[0].geometry.coordinates)
       });
   }, [input]);
 
@@ -109,10 +108,12 @@ export default function PublierScreen({ navigation }) {
       <KeyboardAvoidingView style={{width: "100%", height: "100%"}}> 
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
         <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+        
         <View style={styles.alignDropdowns}>
             <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
             <Dropdowns isState={true} handleEtat={handleEtat} />
-          </View>
+        </View>
+
         <ScrollView style={styles.container}>
         
           <Text style={styles.inputText}>Titre</Text>
