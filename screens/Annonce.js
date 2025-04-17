@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -12,10 +12,19 @@ import {
   ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
+import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function AnnonceScreen({ route }) {
   const props = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleVendeur = () => {
+      setModalVisible(true);
+  };
+  const handleCloseModal = () => {
+      setModalVisible(false);
+  };
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -89,9 +98,10 @@ export default function AnnonceScreen({ route }) {
             <Text style={styles.timer}>{props.timer}</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.buttonContact}>
+            <TouchableOpacity style={styles.buttonContact} onPress={() => toggleVendeur()}>
               <Text style={styles.buttonTextContact}>Contacter le vendeur</Text>
             </TouchableOpacity>
+            <Modals visible={modalVisible} onClose={handleCloseModal} />
             <TouchableOpacity style={styles.buttonBid}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
