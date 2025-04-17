@@ -73,17 +73,8 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.content}>
-          {ongletActif === "enCours" ? (
-            <View style={styles.ongoingBox}>
-              <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
-            </View>
-          ) : (
-            <View style={styles.endedBox}>
-              <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
-            </View>
-          )}
-        </View>
+        {/* Contenu vide à la place de Enchères en cours/terminées */}
+        <View style={styles.content} />
 
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
@@ -91,6 +82,7 @@ export default function MesEncheresScreen({ navigation }) {
           </View>
         </ScrollView>
 
+        {/* Barre noire descendue */}
         <View style={styles.separator} />
 
         <View style={styles.total}>
@@ -98,7 +90,7 @@ export default function MesEncheresScreen({ navigation }) {
           <Text style={styles.text}> Total : {total}</Text>
         </View>
 
-        {/* BOUTON CONTINUER MES ACHATS */}
+        {/* Bouton continuer mes achats */}
         <View style={{ marginTop: 20, marginBottom: 40 }}>
           <TouchableOpacity
             style={styles.greenButton}
@@ -161,16 +153,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
   },
-  ongoingBox: {
-    backgroundColor: "#D0F0C0",
-    padding: 20,
-    borderRadius: 10,
-  },
-  endedBox: {
-    backgroundColor: "#FADBD8",
-    padding: 20,
-    borderRadius: 10,
-  },
   scrollview: {
     flex: 1,
     width: "100%",
@@ -187,7 +169,8 @@ const styles = StyleSheet.create({
   separator: {
     height: 4,
     backgroundColor: "black",
-    marginVertical: 50,
+    marginTop: 80, // espacement supérieur
+    marginBottom: 30, // espacement inférieur
     borderRadius: 10,
     width: "90%",
   },
