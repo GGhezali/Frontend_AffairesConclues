@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     StyleSheet,
     View,
     TouchableOpacity,
     Text,
-    Platform,
-    StatusBar,
     Modal,
 } from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
-export default function Modals({ visible, onClose}) {
+export default function Modals({ visible, onClose, annonceurInfo }) {
 
     return (
         <Modal visible={visible} animationType="fade" transparent onRequestClose={onClose}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
+                    <View style={styles.button}>
+                        <AntDesign name={'close'} size={24} onPress={onClose} activeOpacity={0.8} />
+                    </View>
                     <Text>Contacter le vendeur</Text>
-                    <TouchableOpacity onPress={onClose} style={styles.button} activeOpacity={0.8}>
-                        <Text style={styles.textButton}>Close</Text>
-                    </TouchableOpacity>
+                    {annonceurInfo && (
+                        <View style={styles.contactInfo}>
+                            <Text style={styles.infoText}>Email: {annonceurInfo.email}</Text>
+                            <Text style={styles.infoText}>Téléphone: {annonceurInfo.phone}</Text>
+                        </View>
+                    )}
                 </View>
             </View>
         </Modal>
@@ -32,9 +37,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalView: {
+        width: '70%',
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 30,
+        padding: 20,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -46,17 +52,21 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     button: {
-        width: 150,
-        alignItems: 'center',
-        marginTop: 20,
-        paddingTop: 8,
-        backgroundColor: '#ec6e5b',
-        borderRadius: 10,
-      },
-      textButton: {
+        width: '100%',
+        alignItems: 'flex-end',
+    },
+    textButton: {
         color: '#ffffff',
         height: 24,
         fontWeight: '600',
         fontSize: 15,
-      },
+    },
+    contactInfo: {
+        marginBottom: 20,
+        alignItems: 'flex-start',
+    },
+    infoText: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
 });
