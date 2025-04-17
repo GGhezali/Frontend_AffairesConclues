@@ -15,22 +15,45 @@ export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
+  const [allArticles, setAllArticles] = useState([]);
 
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
 
   const handleEnCours = () => {
     setOngletActif("enCours");
+
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+      .then((response) => response.json())
+      .then((data) => setAllArticles(data.articles))
+      .catch((error) => console.error("Error fetching open articles:", error));
   };
 
   const handleTerminees = () => {
     setOngletActif("terminees");
+
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/:userID`)
+      .then((response) => response.json())
+      .then((data) => setAllArticles(data.articles))
+      .catch((error) =>
+        console.error("Error fetching closed articles:", error)
+      );
   };
 
   useEffect(() => {
     if (!user.token) {
       navigation.navigate("Connexion");
     }
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+      .then((response) => response.json())
+      .then((data) => setAllArticles(data.articles))
+      .catch((error) => console.error("Error fetching open articles:", error));
   }, []);
+  
+
+  const encheres = allArticles.map((data, i) => {
+    return <Enchere key={i} navigation={navigation} {...data} />;
+  });
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -43,7 +66,7 @@ export default function MesEncheresScreen({ navigation }) {
               styles.greenButton,
               ongletActif === "enCours" && styles.selectedButton,
             ]}
-            onPress={handleEnCours}
+            onPress={() => handleEnCours()}
           >
             <Text
               style={[
@@ -73,24 +96,14 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.content}>
-          {ongletActif === "enCours" ? (
-            <View style={styles.ongoingBox}>
-              <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
-            </View>
-          ) : (
-            <View style={styles.endedBox}>
-              <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
-            </View>
-          )}
-        </View>
+        {/* Contenu vide à la place de Enchères en cours/terminées */}
+        <View style={styles.content} />
 
         <ScrollView style={styles.scrollview}>
-          <View style={styles.encheres}>
-            <Enchere navigation={navigation} />
-          </View>
+          <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
+        {/* Barre noire descendue */}
         <View style={styles.separator} />
 
         <View style={styles.total}>
@@ -98,7 +111,7 @@ export default function MesEncheresScreen({ navigation }) {
           <Text style={styles.text}> Total : {total}</Text>
         </View>
 
-        {/* BOUTON CONTINUER MES ACHATS */}
+        {/* Bouton continuer mes achats */}
         <View style={{ marginTop: 20, marginBottom: 40 }}>
           <TouchableOpacity
             style={styles.greenButton}
@@ -161,16 +174,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
   },
-  ongoingBox: {
-    backgroundColor: "#D0F0C0",
-    padding: 20,
-    borderRadius: 10,
-  },
-  endedBox: {
-    backgroundColor: "#FADBD8",
-    padding: 20,
-    borderRadius: 10,
-  },
   scrollview: {
     flex: 1,
     width: "100%",
@@ -187,7 +190,8 @@ const styles = StyleSheet.create({
   separator: {
     height: 4,
     backgroundColor: "black",
-    marginVertical: 50,
+    marginTop: 80, // espacement supérieur
+    marginBottom: 30, // espacement inférieur
     borderRadius: 10,
     width: "90%",
   },

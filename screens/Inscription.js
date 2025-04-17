@@ -60,14 +60,7 @@ export default function InscriptionScreen({ navigation }) {
         title={"Inscription"}
       />
       <View style={styles.container}>
-        <View style={styles.topLeft}>
-          <Button
-            title="Home"
-            onPress={() =>
-              navigation.navigate("TabNavigator", { screen: "Acceuil" })
-            }
-          />
-        </View>
+       
         <Text style={styles.emailText}>Email</Text>
         <View style={styles.input}>
           <TextInput
@@ -81,7 +74,7 @@ export default function InscriptionScreen({ navigation }) {
           <TextInput
             onChangeText={(value) => setUsername(value)}
             value={username}
-            placeholder="John le républicain"
+            placeholder="JohnDoe"
           />
         </View>
         <Text style={styles.passwordText}>Password</Text>
@@ -108,6 +101,7 @@ export default function InscriptionScreen({ navigation }) {
               <Text style={styles.message}>• 8 caractères minimum</Text>
               <Text style={styles.message}>• 1 Majuscule requise</Text>
               <Text style={styles.message}>• 1 Caractère spécial requis</Text>
+              <Text style={styles.message}>• 1 Chiffres requis</Text>
             </View>
           )}
         </View>
@@ -186,7 +180,7 @@ height: 40,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
-    height: 55,
+    height: 70,
   },
   message: {
     fontSize: 14,
