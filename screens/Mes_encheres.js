@@ -1,65 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   SafeAreaView,
-  Platform,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
-
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 export default function MesEncheresScreen({ navigation }) {
-  //Onglet a selectinné 'enCours'
-
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
 
-  //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
-  // Fonction appelée quand on clique sur "Ventes en cours"
+
   const handleEnCours = () => {
     setOngletActif("enCours");
   };
 
-  // Fonction appelée quand on clique sur "Ventes terminées"
   const handleTerminees = () => {
     setOngletActif("terminees");
   };
 
-  //Rediriger si pas connecté
   useEffect(() => {
     if (!user.token) {
-      navigation.navigate("Connexion"); // ou "Connexion/Inscription" selon ton nom de screen
+      navigation.navigate("Connexion");
     }
   }, []);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
-      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
-
       <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
+
       <View style={styles.container}>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={[
               styles.greenButton,
-              ongletActif === "enCours" && styles.activeButton,
+              ongletActif === "enCours" && styles.selectedButton,
             ]}
             onPress={handleEnCours}
           >
             <Text
               style={[
                 styles.greenButtonText,
-                ongletActif === "enCours" && styles.activeButtonText,
+                ongletActif === "enCours" && styles.selectedButtonText,
               ]}
             >
               Ventes en cours
@@ -69,14 +58,14 @@ export default function MesEncheresScreen({ navigation }) {
           <TouchableOpacity
             style={[
               styles.greenButton,
-              ongletActif === "terminees" && styles.activeButton,
+              ongletActif === "terminees" && styles.selectedButton,
             ]}
             onPress={handleTerminees}
           >
             <Text
               style={[
                 styles.greenButtonText,
-                ongletActif === "terminees" && styles.activeButtonText,
+                ongletActif === "terminees" && styles.selectedButtonText,
               ]}
             >
               Ventes terminées
@@ -86,45 +75,40 @@ export default function MesEncheresScreen({ navigation }) {
 
         <View style={styles.content}>
           {ongletActif === "enCours" ? (
-            <View
-              style={{
-                backgroundColor: "#D0F0C0",
-                padding: 20,
-                borderRadius: 10,
-              }}
-            >
-              <Text style={{ fontSize: 16, }}>Enchères en cours</Text>
+            <View style={styles.ongoingBox}>
+              <Text style={{ fontSize: 16 }}>Enchères en cours</Text>
             </View>
           ) : (
-            <View
-              style={{
-                backgroundColor: "#FADBD8",
-                padding: 20,
-                borderRadius: 10,
-              }}
-            >
+            <View style={styles.endedBox}>
               <Text style={{ fontSize: 16 }}>Enchères terminées</Text>
             </View>
           )}
         </View>
+
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
             <Enchere navigation={navigation} />
           </View>
         </ScrollView>
+
         <View style={styles.separator} />
+
         <View style={styles.total}>
           <Text style={styles.text}>Nombre d'articles : {nbArticles},</Text>
           <Text style={styles.text}> Total : {total}</Text>
         </View>
-        <TouchableOpacity
-          title="Continuer mes achats"
-          onPress={() =>
-            navigation.navigate("TabNavigator", { screen: "Acceuil" })
-          }
-        >
-          <Text style={styles.greenButtonText}>Continuer mes achats</Text>
-        </TouchableOpacity>
+
+        {/* BOUTON CONTINUER MES ACHATS */}
+        <View style={{ marginTop: 20, marginBottom: 40 }}>
+          <TouchableOpacity
+            style={styles.greenButton}
+            onPress={() =>
+              navigation.navigate("TabNavigator", { screen: "Acceuil" })
+            }
+          >
+            <Text style={styles.greenButtonText}>Continuer mes achats</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -133,7 +117,6 @@ export default function MesEncheresScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
@@ -161,9 +144,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  selectedButton: {
+    backgroundColor: "#145A32",
+    transform: [{ scale: 0.98 }],
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 4,
+  },
+  selectedButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
   content: {
     marginTop: 20,
     width: "100%",
+  },
+  ongoingBox: {
+    backgroundColor: "#D0F0C0",
+    padding: 20,
+    borderRadius: 10,
+  },
+  endedBox: {
+    backgroundColor: "#FADBD8",
+    padding: 20,
+    borderRadius: 10,
   },
   scrollview: {
     flex: 1,
@@ -179,11 +185,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   separator: {
-    height: 4, // épaisseur de la ligne
-    backgroundColor: "black", // couleur vive (bleu iOS)
+    height: 4,
+    backgroundColor: "black",
     marginVertical: 50,
-    borderRadius: 10, // espace autour de la ligne
-    width: "90%", // occupe toute la largeur
+    borderRadius: 10,
+    width: "90%",
   },
   total: {
     display: "flex",
