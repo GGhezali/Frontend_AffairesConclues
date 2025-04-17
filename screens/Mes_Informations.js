@@ -7,13 +7,16 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
 
 export default function MesInformationsScreen({ navigation }) {
+
+
+  
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -64,6 +67,9 @@ export default function MesInformationsScreen({ navigation }) {
               <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
             </View>
           </View>
+          <TouchableOpacity style={styles.greenButton}>
+            <Text style={styles.greenButtonText}>Enregistrer</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -79,6 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5fcee",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 16,
@@ -121,5 +128,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 40,
     aspectRatio: 1,
+  },
+  greenButton: {
+    backgroundColor: "#1C7C54",
+    borderRadius: 30,
+    width: "80%",
+    height: 40,
+    marginTop: 40,
+  },
+
+  greenButtonText: {
+    justifyContent: "center",
+    textAlign: "center",
+    fontStyle: "bold",
+    fontSize: 20,
+    color: "white",
+    marginTop: 7,
   },
 });
