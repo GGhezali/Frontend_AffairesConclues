@@ -15,7 +15,9 @@ export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
-
+  const [openArticles, setOpenArticles] = useState([]);
+  const [closedArticles, setClosedArticles] = useState([]);
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
 
   const handleEnCours = () => {
@@ -30,6 +32,10 @@ export default function MesEncheresScreen({ navigation }) {
     if (!user.token) {
       navigation.navigate("Connexion");
     }
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+      .then((response) => response.json())
+      .then((data) => setOpenArticles(data.articles))
+      .catch((error) => console.error("Error fetching open articles:", error));
   }, []);
 
   return (
