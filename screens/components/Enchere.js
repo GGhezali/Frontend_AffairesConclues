@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
-console.log(user)
-console.log(props.acheteur.token)
+
+const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
 
   let titre = ""
   if (props.titre.length > 20) {
@@ -44,7 +44,7 @@ else {
         </View>
         <View style={styles.priceContent}>
           <Text>{props.startPrice} €</Text>
-          <Text>{props.currentPrice} € - {props.acheteur.username}</Text>
+          <Text>{props.currentPrice} € - {lastAcheteur}</Text>
         </View>
       </View>
     </TouchableOpacity>
