@@ -19,7 +19,7 @@ export default function AnnonceScreen({ route }) {
   const props = route.params;
   console.log(props.acheteur)
   const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
-  
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleVendeur = () => {
@@ -104,7 +104,7 @@ export default function AnnonceScreen({ route }) {
             <TouchableOpacity style={styles.buttonContact} onPress={() => toggleVendeur()}>
               <Text style={styles.buttonTextContact}>Contacter le vendeur</Text>
             </TouchableOpacity>
-            <Modals visible={modalVisible} onClose={handleCloseModal} />
+            <Modals visible={modalVisible} onClose={handleCloseModal} annonceurInfo={props.annonceur} />
             <TouchableOpacity style={styles.buttonBid}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
