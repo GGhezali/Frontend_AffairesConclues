@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
-import Article from "./components/Article";
+import Enchere from "./components/Enchere";
 
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -55,7 +55,7 @@ export default function MesEncheresScreen({ navigation }) {
         </View>
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>
-            <Article navigation={navigation} />
+            <Enchere navigation={navigation} />
           </View>
         </ScrollView>
         <View style={styles.separator} />
