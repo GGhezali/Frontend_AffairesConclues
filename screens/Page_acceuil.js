@@ -19,6 +19,7 @@ import Dropdown from "./components/Dropdowns";
 export default function PageAcceuilScreen({ navigation }) {
   const [articles, setArticles] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState([]);
   const [categorie, setCategorie] = useState("");
   const [tri, setTri] = useState("");
 
@@ -33,6 +34,7 @@ export default function PageAcceuilScreen({ navigation }) {
       const articlesData = await articlesResponse.json();
       
       setAllArticles(articlesData.data);
+      setFilteredArticles(articlesData.data);
 
       // create list of articles' _id to be updated
       let listId = articlesData.data.map((data) => {
@@ -65,6 +67,13 @@ export default function PageAcceuilScreen({ navigation }) {
 
         const updateIdData = await updateIdResponse.json();
 
+      }
+
+      if (categorie) {
+        const filter = allArticles.filter((article) => article.categorie === categorie);
+        setFilteredArticles(filter);
+      } else {
+        setFilteredArticles(allArticles);
       }
     })();
 
