@@ -32,7 +32,7 @@ export default function PublierScreen({ navigation }) {
   const [categorie, setCategorie] = useState(""); // CATEGORIE A transmettre à la route publish //
   const [etat, setEtat] = useState(""); // ETAT A transmettre à la route publish //
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"coordinates": [-0.526958, 43.762462], "title": "Paris 40500 Saint-Sever"}
+  const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"context": "75, Paris, Île-de-France", "coordinates": [2.309977, 48.825993], "title": "8 Rue Maurice Bouchor 75014 Paris"}
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
@@ -81,10 +81,6 @@ export default function PublierScreen({ navigation }) {
       });
   }, [input]);
 
-  console.log("output", output);
-
-  // console.log("auteurList =>", auteurList);
-  // console.log("editeurList =>", editeurList);
 
   const handlePublish = () => {
     if (user.token) {
