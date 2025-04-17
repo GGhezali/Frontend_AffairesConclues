@@ -45,7 +45,7 @@ export default function MesInformationsScreen({ navigation }) {
             <Text style={styles.title}>Password</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Password" />
+                <TextInput style={styles.placeholder} placeholder="********" />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
@@ -54,7 +54,7 @@ export default function MesInformationsScreen({ navigation }) {
               <View style={styles.input}>
                 <TextInput
                   style={styles.placeholder}
-                  placeholder="Données bancaires"
+                  placeholder="**** **** **** **** ***"
                 />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
