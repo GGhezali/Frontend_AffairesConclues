@@ -102,7 +102,7 @@ export default function MesEncheresScreen({ navigation }) {
 
     
     const encheres = allArticles.map((data, i) => {
-    return <Enchere key={i} navigation={navigation} {...data} />;
+    return <Enchere key={i} navigation={navigation} {...data} ongletActif={ongletActif} />;
   });
 
   return (

@@ -13,7 +13,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 
 export default function Article(props) {
-  console.log(props)
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   let titre = ""
