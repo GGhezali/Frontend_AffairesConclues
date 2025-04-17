@@ -60,7 +60,6 @@ export default function InscriptionScreen({ navigation }) {
         title={"Inscription"}
       />
       <View style={styles.container}>
-       
         <Text style={styles.emailText}>Email</Text>
         <View style={styles.input}>
           <TextInput
@@ -78,33 +77,34 @@ export default function InscriptionScreen({ navigation }) {
           />
         </View>
         <Text style={styles.passwordText}>Password</Text>
-        <View style={styles.input}>
-          <TextInput
-            secureTextEntry={true}
-            onChangeText={(value) => setPassword(value)}
-            value={password}
-            placeholder="********"
-          />
+        <View style={styles.centerIcon}>
+          <View style={styles.input}>
+            <TextInput
+              secureTextEntry={true}
+              onChangeText={(value) => setPassword(value)}
+              value={password}
+              placeholder="********"
+            />
 
-          <View style={styles.row}>
-            <TouchableOpacity onPress={handleIconPress}>
-              <Ionicons
-                name="information-circle-outline"
-                size={28}
-                color="#007AFF"
-              />
-            </TouchableOpacity>
-          </View>
-
-          {message && (
-            <View style={styles.messageBox}>
-              <Text style={styles.message}>• 8 caractères minimum</Text>
-              <Text style={styles.message}>• 1 Majuscule requise</Text>
-              <Text style={styles.message}>• 1 Caractère spécial requis</Text>
-              <Text style={styles.message}>• 1 Chiffres requis</Text>
+            <View style={styles.row}>
+              <TouchableOpacity onPress={handleIconPress}>
+                <Ionicons
+                  name="information-circle-outline"
+                  size={28}
+                  color="#007AFF"
+                />
+              </TouchableOpacity>
             </View>
-          )}
+          </View>
         </View>
+        {message && (
+          <View style={styles.messageBox}>
+            <Text style={styles.message}>• 8 caractères minimum</Text>
+            <Text style={styles.message}>• 1 Majuscule requise</Text>
+            <Text style={styles.message}>• 1 Caractère spécial requis</Text>
+            <Text style={styles.message}>• 1 Chiffres requis</Text>
+          </View>
+        )}
 
         <TouchableOpacity style={styles.greenButton} onPress={handleSignup}>
           <Text style={styles.greenButtonText}>Créer mon compte</Text>
@@ -129,29 +129,35 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
   },
-  topLeft: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-  },
   input: {
     borderWidth: 1,
     borderColor: "#888",
-    backgroundColor: "#fff",
-    padding: 12,
+    backgroundColor: "white",
+    padding: 10,
     borderRadius: 8,
-    marginBottom: 15,
-    fontSize: 16,
     borderColor: "#dcdedf",
     width: "80%",
-    height:40
+    height: 60,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
   },
+  centerIcon: {
+    width: "100%",
+    height: 80,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+
   greenButton: {
     backgroundColor: "#1C7C54",
     borderRadius: 30,
     width: "80%",
     height: 40,
-    marginTop: 60
+    marginTop: 60,
   },
 
   greenButtonText: {
@@ -168,15 +174,13 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
-height: 40,
-    marginTop: -25,
-    marginRight: 10,
+    height: 40,
+    aspectRatio: 1,
   },
 
   messageBox: {
-    backgroundColor: "#f8f8f8",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
