@@ -23,22 +23,54 @@ export default function MesEncheresScreen({ navigation }) {
   const handleEnCours = () => {
     setOngletActif("enCours");
 
-    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.token,
+      })
+    })
       .then((response) => response.json())
-      .then((data) => setAllArticles(data.articles))
-      .catch((error) => console.error("Error fetching open articles:", error));
-  };
+      .then((data) => {
+        //console.log("articles =>", data);
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+                setAllArticles(data.articles);
+                console.log("articles =>", data.articles);
+          }) 
+          .catch((error) => console.error("Error fetching open articles:", error));
+  });
+}
 
   const handleTerminees = () => {
     setOngletActif("terminees");
 
-    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/:userID`)
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
       .then((response) => response.json())
-      .then((data) => setAllArticles(data.articles))
-      .catch((error) =>
-        console.error("Error fetching closed articles:", error)
-      );
-  };
+      .then((data) => {
+        //console.log("articles =>", data);
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${data.userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setAllArticles(data.articles);
+            console.log("articles =>", data.articles)
+          })
+          .catch((error) =>
+              console.error("Error fetching closed articles:", error)
+        );
+  });
+}
 
   useEffect(() => {
       /*
