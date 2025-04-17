@@ -7,13 +7,47 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
+  TouchableOpacity,
   ScrollView,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+
+
 
 export default function MesInformationsScreen({ navigation }) {
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  const user = useSelector((state) => state.user.value);
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [donneeBancaire, setDonneeBancaire] = useState("");
+  const [telephone, setTelephone] = useState("");
+
+    useEffect(() => {
+      fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: user.token,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => { 
+          //console.log(data.data)
+          setEmail(data.data.email)
+          setUsername(data.data.username)
+          setDonneeBancaire(data.data.donneeBancaire)
+          setTelephone(data.data.telephone)
+        })
+    }, []);
+
+    console.log("username =>", username);
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -26,44 +60,49 @@ export default function MesInformationsScreen({ navigation }) {
 
       <View style={styles.container}>
         <View style={styles.inputsContainer}>
-          <Text style={styles.title}>Email</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Email" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <ScrollView style={{ width: "100%" }}>
+            <Text style={styles.title}>Email</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Email" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Username</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Username" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Username</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Username" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Password</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Password" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Password</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Password" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Données bancaires</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput
-                style={styles.placeholder}
-                placeholder="Données bancaires"
-              />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Données bancaires</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput
+                  style={styles.placeholder}
+                  placeholder="Données bancaires"
+                />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Téléphone</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Téléphone" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Téléphone</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Téléphone" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
+            <TouchableOpacity style={styles.greenButton}>
+              <Text style={styles.greenButtonText}>Enregistrer</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>
@@ -79,6 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5fcee",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 16,
@@ -121,5 +161,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 40,
     aspectRatio: 1,
+  },
+  greenButton: {
+    backgroundColor: "#1C7C54",
+    borderRadius: 30,
+    width: "80%",
+    height: 40,
+    marginTop: 40,
+    marginLeft: 25,
+  },
+
+  greenButtonText: {
+    justifyContent: "center",
+    textAlign: "center",
+    fontStyle: "bold",
+    fontSize: 20,
+    color: "white",
+    marginTop: 7,
   },
 });

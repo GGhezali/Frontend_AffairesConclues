@@ -56,14 +56,7 @@ export default function ConnexionScreen({ navigation }) {
       <Headers navigation={navigation} isReturn={true} title={"Connexion"} />
       <View style={styles.container}>
 
-      <View style={styles.topLeft}>
-        <Button
-          title="Home"
-          onPress={() =>
-            navigation.navigate("TabNavigator", { screen: "Acceuil" })
-          }
-        />
-      </View>
+      
       <Text style={styles.emailText}>Email</Text>
       <View style={styles.input}>
         <TextInput

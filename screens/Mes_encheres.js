@@ -39,7 +39,7 @@ export default function MesEncheresScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
                 setAllArticles(data.articles);
-                console.log("articles =>", data.articles);
+                //console.log("articles =>", data.articles);
           }) 
           .catch((error) => console.error("Error fetching open articles:", error));
   });
@@ -64,7 +64,7 @@ export default function MesEncheresScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-            console.log("articles =>", data.articles)
+            //console.log("articles =>", data.articles)
           })
           .catch((error) =>
               console.error("Error fetching closed articles:", error)
@@ -94,7 +94,7 @@ export default function MesEncheresScreen({ navigation }) {
               .then((response) => response.json())
               .then((data) => {
                 setAllArticles(data.articles)
-                console.log("articles =>", data.articles)
+                //console.log("articles =>", data.articles)
               })
               .catch((error) => console.error("Error fetching open articles:", error));
       });
