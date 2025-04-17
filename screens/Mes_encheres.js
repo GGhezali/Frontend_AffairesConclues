@@ -12,7 +12,6 @@ import Enchere from "./components/Enchere";
 import { useSelector } from "react-redux";
 
 export default function MesEncheresScreen({ navigation }) {
-  const [allArticles, setAllArticles] = useState([]);
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
@@ -38,6 +37,7 @@ export default function MesEncheresScreen({ navigation }) {
       .then((data) => setOpenArticles(data.articles))
       .catch((error) => console.error("Error fetching open articles:", error));
   }, []);
+  
 
   return (
     <SafeAreaView style={styles.safeareaview}>
