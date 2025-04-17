@@ -17,6 +17,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function AnnonceScreen({ route }) {
   const props = route.params;
+  console.log(props.acheteur)
+  const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
+  
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleVendeur = () => {
@@ -90,7 +93,7 @@ export default function AnnonceScreen({ route }) {
               <Text style={styles.priceInfoLeft}>Prix actuel :</Text>
               <Text style={styles.priceInfo}>{props.currentPrice} €</Text>
               <Text style={styles.priceInfoRight}>
-                {props.acheteur.username}
+                {lastAcheteur}
               </Text>
             </View>
           </View>
