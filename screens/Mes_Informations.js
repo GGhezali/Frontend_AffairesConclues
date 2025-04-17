@@ -13,8 +13,41 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+
+
 
 export default function MesInformationsScreen({ navigation }) {
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  const user = useSelector((state) => state.user.value);
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [donneeBancaire, setDonneeBancaire] = useState("");
+  const [telephone, setTelephone] = useState("");
+
+    useEffect(() => {
+      fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: user.token,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => { 
+          //console.log(data.data)
+          setEmail(data.data.email)
+          setUsername(data.data.username)
+          setDonneeBancaire(data.data.donneeBancaire)
+          setTelephone(data.data.telephone)
+        })
+    }, []);
+
+    console.log("username =>", username);
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
