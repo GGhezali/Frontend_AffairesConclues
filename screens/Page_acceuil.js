@@ -31,7 +31,6 @@ export default function PageAcceuilScreen({ navigation }) {
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       // get all articles
       const articlesData = await articlesResponse.json();
-      
       setAllArticles(articlesData.data);
 
       // create list of articles' _id to be updated
@@ -99,9 +98,7 @@ export default function PageAcceuilScreen({ navigation }) {
           setAllArticles(data.data);
         });
     };
-  
-    const article = allArticles.map((data, i) => {
-      console.log(data)
+    const article = allArticles.sort((a, b) => b.timer - a.timer).map((data, i) => {
       return (
         <Article key={i} navigation={navigation} {...data} />
       )})
