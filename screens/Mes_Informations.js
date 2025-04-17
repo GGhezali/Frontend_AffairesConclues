@@ -1,5 +1,14 @@
 import React from "react";
-import { StyleSheet, View, Text, TextInput, SafeAreaView, Platform, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+  ScrollView,
+} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
@@ -14,38 +23,42 @@ export default function MesInformationsScreen({ navigation }) {
         isReturn={true}
         title={"Mes informations"}
       />
+
       <View style={styles.container}>
         <View style={styles.inputsContainer}>
+          <Text style={styles.title}>Email</Text>
           <View style={styles.head}>
-            <Text style={styles.title}>Email</Text>
             <View style={styles.input}>
               <TextInput style={styles.placeholder} placeholder="Email" />
               <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
             </View>
           </View>
+          <Text style={styles.title}>Username</Text>
           <View style={styles.head}>
-            <Text style={styles.title}>Username</Text>
             <View style={styles.input}>
               <TextInput style={styles.placeholder} placeholder="Username" />
               <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
             </View>
           </View>
+          <Text style={styles.title}>Password</Text>
           <View style={styles.head}>
-            <Text style={styles.title}>Password</Text>
             <View style={styles.input}>
               <TextInput style={styles.placeholder} placeholder="Password" />
               <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
             </View>
           </View>
+          <Text style={styles.title}>Données bancaires</Text>
           <View style={styles.head}>
-            <Text style={styles.title}>Données bancaires</Text>
             <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Données bancaires" />
+              <TextInput
+                style={styles.placeholder}
+                placeholder="Données bancaires"
+              />
               <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
             </View>
           </View>
+          <Text style={styles.title}>Téléphone</Text>
           <View style={styles.head}>
-            <Text style={styles.title}>Téléphone</Text>
             <View style={styles.input}>
               <TextInput style={styles.placeholder} placeholder="Téléphone" />
               <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
@@ -69,13 +82,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    marginTop: 20,
   },
   head: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
-    marginTop: 50,
+    marginTop: 10,
   },
   inputsContainer: {
     backgroundColor: "#fff",
@@ -83,20 +97,29 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 30,
+    height: "90%",
+    padding: 20,
   },
   input: {
-    width: "80%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  placeholder: {
-    width: "80%",
-    borderRadius: 5,
-    borderWidth: 0.5,
-    marginTop: 30,
-    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: "#888",
+    backgroundColor: "white",
     padding: 10,
+    borderRadius: 8,
+    borderColor: "#dcdedf",
+    width: "90%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 40,
+    aspectRatio: 1,
   },
 });

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -9,7 +10,6 @@ import {
 } from "react-native";
 import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
-import { useSelector } from "react-redux";
 
 export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
@@ -41,19 +41,49 @@ export default function MesEncheresScreen({ navigation }) {
   };
 
   useEffect(() => {
+    {
+      /*}
     if (!user.token) {
       navigation.navigate("Connexion");
     }
-    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+      */
+    }
+    console.log(user.token);
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
       .then((response) => response.json())
-      .then((data) => setAllArticles(data.articles))
-      .catch((error) => console.error("Error fetching open articles:", error));
+      .then((data) => {
+        console.log("articles =>", data);
+
+        /*
+        {
+              fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
+              .then((response) => response.json())
+              .then((data) => {
+                setAllArticles(data.articles)
+                console.log("articles =>", data.articles)
+              })
+              .catch((error) => console.error("Error fetching open articles:", error));
+        }
+            */
+      });
   }, []);
   
 
-  const encheres = allArticles.map((data, i) => {
+  {
+    /*
+    const encheres = allArticles.map((data, i) => {
     return <Enchere key={i} navigation={navigation} {...data} />;
   });
+   */
+  }
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -100,7 +130,7 @@ export default function MesEncheresScreen({ navigation }) {
         <View style={styles.content} />
 
         <ScrollView style={styles.scrollview}>
-          <View style={styles.encheres}>{encheres}</View>
+          <View style={styles.encheres}>{/* {encheres} */}</View>
         </ScrollView>
 
         {/* Barre noire descendue */}
