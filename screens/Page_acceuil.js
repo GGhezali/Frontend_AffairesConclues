@@ -19,9 +19,8 @@ import Dropdown from "./components/Dropdowns";
 export default function PageAcceuilScreen({ navigation }) {
   const [articles, setArticles] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
-  const [filteredArticles, setFilteredArticles] = useState([]);
-  const [categorie, setCategorie] = useState("");
-  const [tri, setTri] = useState("");
+  const [categorie, setCategorie] = useState(null);
+  const [tri, setTri] = useState(null);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
@@ -34,7 +33,6 @@ export default function PageAcceuilScreen({ navigation }) {
       const articlesData = await articlesResponse.json();
       
       setAllArticles(articlesData.data);
-      setFilteredArticles(articlesData.data);
 
       // create list of articles' _id to be updated
       let listId = articlesData.data.map((data) => {
@@ -68,13 +66,6 @@ export default function PageAcceuilScreen({ navigation }) {
         const updateIdData = await updateIdResponse.json();
 
       }
-
-      if (categorie) {
-        const filter = allArticles.filter((article) => article.categorie === categorie);
-        setFilteredArticles(filter);
-      } else {
-        setFilteredArticles(allArticles);
-      }
     })();
 
   }, []);
@@ -86,11 +77,32 @@ export default function PageAcceuilScreen({ navigation }) {
 
     const handleCategorie = (categorie) => {
       setCategorie(categorie);
-      console.log("categorie ==", categorie);
+      fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ categorie, tri }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setAllArticles(data.data);
+        });
     };
+
     const handleTri = (tri) => {
-      setArticles(tri);
-      console.log("tri ==", tri);
+      setTri(tri);
+      fetch(`${BACKEND_ADDRESS}:3000/articles/searchByTri`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ categorie, tri }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setAllArticles(data.data);
+        });
     };
   
   
@@ -176,5 +188,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 10,
+    marginBottom: 50,
   }
 });

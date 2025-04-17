@@ -15,22 +15,45 @@ export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
+  const [allArticles, setAllArticles] = useState([]);
 
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
 
   const handleEnCours = () => {
     setOngletActif("enCours");
+
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+      .then((response) => response.json())
+      .then((data) => setAllArticles(data.articles))
+      .catch((error) => console.error("Error fetching open articles:", error));
   };
 
   const handleTerminees = () => {
     setOngletActif("terminees");
+
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/:userID`)
+      .then((response) => response.json())
+      .then((data) => setAllArticles(data.articles))
+      .catch((error) =>
+        console.error("Error fetching closed articles:", error)
+      );
   };
 
   useEffect(() => {
     if (!user.token) {
       navigation.navigate("Connexion");
     }
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/:userID`)
+      .then((response) => response.json())
+      .then((data) => setAllArticles(data.articles))
+      .catch((error) => console.error("Error fetching open articles:", error));
   }, []);
+  
+
+  const encheres = allArticles.map((data, i) => {
+    return <Enchere key={i} navigation={navigation} {...data} />;
+  });
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -43,7 +66,7 @@ export default function MesEncheresScreen({ navigation }) {
               styles.greenButton,
               ongletActif === "enCours" && styles.selectedButton,
             ]}
-            onPress={handleEnCours}
+            onPress={() => handleEnCours()}
           >
             <Text
               style={[
@@ -77,9 +100,7 @@ export default function MesEncheresScreen({ navigation }) {
         <View style={styles.content} />
 
         <ScrollView style={styles.scrollview}>
-          <View style={styles.encheres}>
-            <Enchere navigation={navigation} />
-          </View>
+          <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
         {/* Barre noire descendue */}
