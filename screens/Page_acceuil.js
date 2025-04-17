@@ -17,7 +17,7 @@ import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [articles, setArticles] = useState([]);
+  
   const [allArticles, setAllArticles] = useState([]);
   const [categorie, setCategorie] = useState(null);
   const [tri, setTri] = useState(null);
@@ -70,11 +70,6 @@ export default function PageAcceuilScreen({ navigation }) {
 
   }, []);
 
-  const article = allArticles.map((data, i) => {
-    return (
-      <Article key={i} navigation={navigation} {...data} />
-    )})
-
     const handleCategorie = (categorie) => {
       setCategorie(categorie);
       fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`,
@@ -105,7 +100,12 @@ export default function PageAcceuilScreen({ navigation }) {
         });
     };
   
-  
+    const article = allArticles.map((data, i) => {
+      console.log(data)
+      return (
+        <Article key={i} navigation={navigation} {...data} />
+      )})
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation et isReturn*/}
