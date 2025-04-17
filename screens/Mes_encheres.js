@@ -41,14 +41,11 @@ export default function MesEncheresScreen({ navigation }) {
   };
 
   useEffect(() => {
-    {
-      /*}
+      /*
     if (!user.token) {
       navigation.navigate("Connexion");
     }
       */
-    }
-    console.log(user.token);
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
       headers: {
@@ -60,10 +57,7 @@ export default function MesEncheresScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("articles =>", data);
-
-        /*
-        {
+        //console.log("articles =>", data);
               fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
               .then((response) => response.json())
               .then((data) => {
@@ -71,19 +65,13 @@ export default function MesEncheresScreen({ navigation }) {
                 console.log("articles =>", data.articles)
               })
               .catch((error) => console.error("Error fetching open articles:", error));
-        }
-            */
       });
   }, []);
-  
 
-  {
-    /*
+    
     const encheres = allArticles.map((data, i) => {
     return <Enchere key={i} navigation={navigation} {...data} />;
   });
-   */
-  }
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -130,7 +118,7 @@ export default function MesEncheresScreen({ navigation }) {
         <View style={styles.content} />
 
         <ScrollView style={styles.scrollview}>
-          <View style={styles.encheres}>{/* {encheres} */}</View>
+          <View style={styles.encheres}> {encheres} </View>
         </ScrollView>
 
         {/* Barre noire descendue */}
