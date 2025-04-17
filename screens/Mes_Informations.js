@@ -8,15 +8,13 @@ import {
   Platform,
   StatusBar,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
 
 export default function MesInformationsScreen({ navigation }) {
-
-
-  
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -29,47 +27,49 @@ export default function MesInformationsScreen({ navigation }) {
 
       <View style={styles.container}>
         <View style={styles.inputsContainer}>
-          <Text style={styles.title}>Email</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Email" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+          <ScrollView style={{ width: "100%" }}>
+            <Text style={styles.title}>Email</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Email" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Username</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Username" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Username</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Username" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Password</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Password" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Password</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Password" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Données bancaires</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput
-                style={styles.placeholder}
-                placeholder="Données bancaires"
-              />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Données bancaires</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput
+                  style={styles.placeholder}
+                  placeholder="Données bancaires"
+                />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <Text style={styles.title}>Téléphone</Text>
-          <View style={styles.head}>
-            <View style={styles.input}>
-              <TextInput style={styles.placeholder} placeholder="Téléphone" />
-              <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+            <Text style={styles.title}>Téléphone</Text>
+            <View style={styles.head}>
+              <View style={styles.input}>
+                <TextInput style={styles.placeholder} placeholder="Téléphone" />
+                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+              </View>
             </View>
-          </View>
-          <TouchableOpacity style={styles.greenButton}>
-            <Text style={styles.greenButtonText}>Enregistrer</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.greenButton}>
+              <Text style={styles.greenButtonText}>Enregistrer</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 40,
     marginTop: 40,
+    marginLeft: 25,
   },
 
   greenButtonText: {
