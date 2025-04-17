@@ -17,20 +17,23 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Dropdowns from "./components/Dropdowns";
 import DatalistInput from "@avul/react-native-datalist-input";
+import { AutocompleteDropdownContextProvider, AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [auteur, setAuteur] = useState("");
-  const [editeur, setEditeur] = useState("");
+  const [title, setTitle] = useState(""); // TITLE A transmettre à la route publish //
+  const [description, setDescription] = useState(""); // DESCRIPTION A transmettre à la route publish //
+  const [price, setPrice] = useState(0); // PRIX A transmettre à la route publish //
+  const [auteur, setAuteur] = useState(""); // AUTEUR A transmettre à la route publish //
+  const [editeur, setEditeur] = useState(""); // EDITEUR A transmettre à la route publish //
   const [auteurList, setAuteurList] = useState([]);
   const [editeurList, setEditeurList] = useState([]);
-  const [categorie, setCategorie] = useState("");
-  const [etat, setEtat] = useState("");
-  const [localisation, setLocalisation] = useState("");
+  const [categorie, setCategorie] = useState(""); // CATEGORIE A transmettre à la route publish //
+  const [etat, setEtat] = useState(""); // ETAT A transmettre à la route publish //
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"context": "75, Paris, Île-de-France", "coordinates": [2.309977, 48.825993], "title": "8 Rue Maurice Bouchor 75014 Paris"}
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     
@@ -62,8 +65,22 @@ export default function PublierScreen({ navigation }) {
     })();
   }, []);
 
-  // console.log("auteurList =>", auteurList);
-  // console.log("editeurList =>", editeurList);
+  useEffect(() => {
+    fetch(`https://api-adresse.data.gouv.fr/search/?q=${input}`)
+      .then((response) => response.json())
+      .then((data) => {
+        let table = [];
+        for (let obj of data.features) {
+          table.push({
+            title: obj.properties.label,
+            context: obj.properties.context,
+            coordinates: obj.geometry.coordinates,
+          });
+        }
+        setPlaces(table);
+      });
+  }, [input]);
+
 
   const handlePublish = () => {
     if (user.token) {
@@ -87,10 +104,12 @@ export default function PublierScreen({ navigation }) {
       <KeyboardAvoidingView style={{width: "100%", height: "100%"}}> 
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
         <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+        
         <View style={styles.alignDropdowns}>
             <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
             <Dropdowns isState={true} handleEtat={handleEtat} />
-          </View>
+        </View>
+
         <ScrollView style={styles.container}>
         
           <Text style={styles.inputText}>Titre</Text>
@@ -147,13 +166,16 @@ export default function PublierScreen({ navigation }) {
           </View>
 
           <Text style={styles.inputText}>Localisation</Text>
-          <View style={styles.input}>
-            <TextInput
-              onChangeText={(value) => setLocalisation(value)}
-              value={localisation}
-              placeholder="Localisation"
-            />
-          </View>
+          <AutocompleteDropdownContextProvider>
+          <AutocompleteDropdown
+            clearOnFocus={false}
+            closeOnBlur={true}
+            closeOnSubmit={true}
+            onChangeText={(value) => setInput(value)}
+            onSelectItem={(value) => setOutput(value)}
+            dataSet={places}
+          />
+          </AutocompleteDropdownContextProvider>
 
           <View style={styles.alignButtons}>
             <View style={styles.button1}>
