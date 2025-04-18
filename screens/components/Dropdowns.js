@@ -66,6 +66,7 @@ export default function Dropdowns(props) {
     (async () => {
       const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
       const categoriesData = await categoriesResponse.json();
+      //console.log("categoriesData", categoriesData);
       setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
 
       //--------------------------------------------------------------------------------------------------------
@@ -74,6 +75,7 @@ export default function Dropdowns(props) {
 
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();
+      //console.log("stateData", stateData);
       setState(stateData.etats);
 
       //--------------------------------------------------------------------------------------------------------
@@ -82,31 +84,28 @@ export default function Dropdowns(props) {
     
       const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const auteursData = await auteursResponse.json();
-      console.log("auteurData", auteursData);
+      //console.log("auteurData", auteursData);
       const sortedAuteurList = auteursData.auteurs.sort((a, b) =>
         a.name.localeCompare(b.name)
       );
-      let auteursList = sortedAuteurList.map((data) => {
-        return data.name;
-      });
-      setAuteur(auteursList);
+      
+      setAuteur(sortedAuteurList);
 
-      console.log("auteur", auteur);
+      //console.log("sortedAuteurList", sortedAuteurList);
       // --------------------------------------------------------------
 
       // Fetch editeurs from the backend ---------------------------------
       const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editeursData = await editeursResponse.json();
+      //console.log("editeurData", editeursData);
 
       const sortedEditeurList = editeursData.editeurs.sort((a, b) =>
         a.name.localeCompare(b.name)
       );
-      let editeursList = sortedEditeurList.map((data) => {
-        return data.name;
-      });
-      setEditeur(editeursList);
 
-      console.log("editeur", editeur);
+      //console.log("sortedEditeurList", sortedEditeurList);
+
+      setEditeur(sortedEditeurList);
 
       // --------------------------------------------------------------
     })();

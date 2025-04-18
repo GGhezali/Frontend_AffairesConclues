@@ -121,9 +121,9 @@ export default function PublierScreen({ navigation }) {
           Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
-          title: title,
+          titre: title,
           description: description,
-          price: price,
+          prix: price,
           auteur: auteur,
           editeur: editeur,
           categorie: categorie,
@@ -170,9 +170,7 @@ export default function PublierScreen({ navigation }) {
     // console.log("categorie ==", categorie);
   };
 
-
-  console.log(value);
-
+  console.log("photos", article.photos);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
