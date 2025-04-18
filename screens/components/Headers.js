@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useSelector } from "react-redux";
 
 export default function Headers({
   navigation,
@@ -19,6 +20,15 @@ export default function Headers({
   isNavigation,
   title,
 }) {
+
+  const user = useSelector((state) => state.user.value);
+
+  let connectIcon = "user-circle"
+
+  if (user.token) {
+    connectIcon = "check-circle"
+  }
+
   if (isReturn) {
     return (
       <LinearGradient
@@ -54,7 +64,7 @@ export default function Headers({
         </View>
         <TouchableOpacity style={styles.connection}>
           <FontAwesome
-            name={"user-circle"}
+            name={connectIcon}
             size={30}
             color={"#1B512D"}
             onPress={() => navigation.navigate("ConnexionInscription")}
