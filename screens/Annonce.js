@@ -14,7 +14,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function AnnonceScreen({ route }) {
   const [props, setProps] = useState(route.params);
-  console.log(props.acheteur)
+  //console.log(props.acheteur)
   const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
 
   const [contactModalVisible, setContactModalVisible] = useState(false);
