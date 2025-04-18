@@ -89,7 +89,6 @@ export default function PublierScreen({ navigation }) {
 
   const handlePublish = () => {
     if (user.token) {
-
       fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
         method: "POST",
         headers: {
@@ -112,7 +111,8 @@ export default function PublierScreen({ navigation }) {
         .then((data) => {
           if (data.result) {
             console.log("Article published successfully");
-          })
+          }
+        })
         .catch((error) => {
           console.error("Error publishing article:", error);
           alert(error);
