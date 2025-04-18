@@ -9,7 +9,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@avul/react-native-datalist-input": "^1.1.1",
     "@react-navigation/bottom-tabs": "6",
     "@react-navigation/native": "6",
     "@react-navigation/native-stack": "6",
@@ -25,6 +24,7 @@
     "react": "18.3.1",
     "react-native": "0.76.9",
     "react-native-autocomplete-dropdown": "^4.4.0",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-get-random-values": "^1.11.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-maps": "1.18.0",
