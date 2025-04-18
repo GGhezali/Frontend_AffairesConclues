@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
   Text,
   SafeAreaView,
-  Platform,
-  StatusBar,
   ScrollView,
 } from "react-native";
 import Headers from "./components/Headers";
@@ -20,13 +17,20 @@ export default function AnnonceScreen({ route }) {
   console.log(props.acheteur)
   const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [contactModalVisible, setContactModalVisible] = useState(false);
+  const [miseModalVisible, setMiseModalVisible] = useState(false);
 
   const toggleVendeur = () => {
-      setModalVisible(true);
+      setContactModalVisible(true);
   };
-  const handleCloseModal = () => {
-      setModalVisible(false);
+  const toggleCloseVendeur = () => {
+      setContactModalVisible(false);
+  };
+  const toggleMise = () => {
+    setMiseModalVisible(true);
+  };
+  const toggleCloseMise = () => {
+    setMiseModalVisible(false);
   };
 
   return (
@@ -104,10 +108,11 @@ export default function AnnonceScreen({ route }) {
             <TouchableOpacity style={styles.buttonContact} onPress={() => toggleVendeur()}>
               <Text style={styles.buttonTextContact}>Contacter le vendeur</Text>
             </TouchableOpacity>
-            <Modals visible={modalVisible} onClose={handleCloseModal} annonceurInfo={props.annonceur} />
-            <TouchableOpacity style={styles.buttonBid}>
+            <Modals contactVendeur={true} visibleContact={contactModalVisible} onCloseContact={toggleCloseVendeur} annonceurInfo={props.annonceur} />
+            <TouchableOpacity style={styles.buttonBid} onPress={() => toggleMise()}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
+            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} />
           </View>
         </View>
       </ScrollView>
