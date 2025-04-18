@@ -31,11 +31,12 @@ export default function AnnonceScreen({ route }) {
   };
   const toggleCloseMise = () => {
     setMiseModalVisible(false);
+    setProps(route.params)
   };
 
   useEffect(() => {
     setProps(route.params);
-  },[props]);
+  },[route]);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
