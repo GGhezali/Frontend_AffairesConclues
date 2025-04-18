@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     StyleSheet,
     View,
@@ -8,8 +8,45 @@ import {
     TouchableOpacity,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { useSelector } from "react-redux";
 
-export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, contactVendeur, mise }) {
+export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, contactVendeur, mise }) {
+    const [miseValue, setMiseValue] = useState('');
+    const user = useSelector((state) => state.user.value);
+    console.log(user);
+    const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
+    const addMise = () => {
+        fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                token: user.token,
+            })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                fetch(`${BACKEND_ADDRESS}:3000/articles/updateCurrentPrice`,
+                    {
+                        method: 'PUT',
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            newPrice: miseValue,
+                            newBuyer: data.userId,
+                            id: articleId,
+                        })
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            })
+    }
+
     if (contactVendeur) {
         return (
             <Modal visible={visibleContact} animationType="fade" transparent onRequestClose={onCloseContact}>
@@ -44,13 +81,13 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                     <View style={styles.modalView}>
                         <Text style={styles.infoText}>Faire une enchère</Text>
                         <View style={styles.contactInfo}>
-                            <TextInput placeholder="Entrez votre mise" style={styles.miseInput} />
+                            <TextInput placeholder="Entrez votre mise" style={styles.miseInput} onChangeText={(number) => setMiseValue(number)} value={miseValue} />
                         </View>
                         <View style={styles.button}>
                             <TouchableOpacity style={styles.cancelBtn} onPress={onCloseMise} activeOpacity={0.8}>
                                 <Text>Annuler</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.confirmBtn} activeOpacity={0.8}>
+                            <TouchableOpacity onPress={() => addMise()} style={styles.confirmBtn} activeOpacity={0.8}>
                                 <Text style={styles.confirmText}>Confirmer</Text>
                             </TouchableOpacity>
                         </View>
