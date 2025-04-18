@@ -13,9 +13,9 @@ import Enchere from "./components/Enchere";
 
 export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
-  const [nbArticles, setNbArticles] = useState(2);
-  const [total, setTotal] = useState(18);
   const [allArticles, setAllArticles] = useState([]);
+  const [nbArticles, setNbArticles] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
@@ -55,14 +55,11 @@ export default function MesEncheresScreen({ navigation }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        token: user.token,
-      }),
+      body: JSON.stringify({ token: user.token }),
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log("articles =>", data);
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${data.userId}`)
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/${type}/${data.userId}`)
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
@@ -120,13 +117,14 @@ export default function MesEncheresScreen({ navigation }) {
       <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
 
       <View style={styles.container}>
+        {/* Onglets de navigation */}
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={[
               styles.greenButton,
               ongletActif === "enCours" && styles.selectedButton,
             ]}
-            onPress={() => handleEnCours()}
+            onPress={handleEnCours}
           >
             <Text
               style={[
@@ -156,22 +154,24 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Contenu vide à la place de Enchères en cours/terminées */}
+        {/* Espace haut */}
         <View style={styles.content} />
 
+        {/* Liste des enchères */}
         <ScrollView style={styles.scrollview}>
-          <View style={styles.encheres}> {encheres} </View>
+          <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
-        {/* Barre noire descendue */}
+        {/* Barre de séparation */}
         <View style={styles.separator} />
 
+        {/* Résumé : nombre d’articles et total */}
         <View style={styles.total}>
-          <Text style={styles.text}>Nombre d'articles : {nbArticles},</Text>
-          <Text style={styles.text}> Total : {total}</Text>
+          <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
+          <Text style={styles.text}>Total : {total} €</Text>
         </View>
 
-        {/* Bouton continuer mes achats */}
+        {/* Bouton "Continuer mes achats" */}
         <View style={{ marginTop: 20, marginBottom: 40 }}>
           <TouchableOpacity
             style={styles.greenButton}
@@ -250,8 +250,8 @@ const styles = StyleSheet.create({
   separator: {
     height: 4,
     backgroundColor: "black",
-    marginTop: 20, // espacement supérieur
-    marginBottom: 30, // espacement inférieur
+    marginTop: 20,
+    marginBottom: 30,
     borderRadius: 10,
     width: "90%",
   },
@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "90%",
   },
   text: {
     fontSize: 15,
