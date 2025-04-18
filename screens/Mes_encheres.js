@@ -30,7 +30,7 @@ export default function MesEncheresScreen({ navigation }) {
       },
       body: JSON.stringify({
         token: user.token,
-      })
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -38,12 +38,14 @@ export default function MesEncheresScreen({ navigation }) {
         fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
           .then((response) => response.json())
           .then((data) => {
-                setAllArticles(data.articles);
-                //console.log("articles =>", data.articles);
-          }) 
-          .catch((error) => console.error("Error fetching open articles:", error));
-  });
-}
+            setAllArticles(data.articles);
+            //console.log("articles =>", data.articles);
+          })
+          .catch((error) =>
+            console.error("Error fetching open articles:", error)
+          );
+      });
+  };
 
   const handleTerminees = () => {
     setOngletActif("terminees");
@@ -67,13 +69,13 @@ export default function MesEncheresScreen({ navigation }) {
             //console.log("articles =>", data.articles)
           })
           .catch((error) =>
-              console.error("Error fetching closed articles:", error)
-        );
-  });
-}
+            console.error("Error fetching closed articles:", error)
+          );
+      });
+  };
 
   useEffect(() => {
-      /*
+    /*
     if (!user.token) {
       navigation.navigate("Connexion");
     }
@@ -90,19 +92,27 @@ export default function MesEncheresScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         //console.log("articles =>", data);
-              fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
-              .then((response) => response.json())
-              .then((data) => {
-                setAllArticles(data.articles)
-                //console.log("articles =>", data.articles)
-              })
-              .catch((error) => console.error("Error fetching open articles:", error));
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setAllArticles(data.articles);
+            //console.log("articles =>", data.articles)
+          })
+          .catch((error) =>
+            console.error("Error fetching open articles:", error)
+          );
       });
   }, []);
 
-    
-    const encheres = allArticles.map((data, i) => {
-    return <Enchere key={i} navigation={navigation} {...data} ongletActif={ongletActif} />;
+  const encheres = allArticles.map((data, i) => {
+    return (
+      <Enchere
+        key={i}
+        navigation={navigation}
+        {...data}
+        ongletActif={ongletActif}
+      />
+    );
   });
 
   return (

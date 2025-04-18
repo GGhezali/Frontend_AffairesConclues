@@ -16,41 +16,62 @@ import Headers from "./components/Headers";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
-
-
 export default function MesInformationsScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
+  console.log(user.email)
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [donneeBancaire, setDonneeBancaire] = useState("");
   const [telephone, setTelephone] = useState("");
 
-    useEffect(() => {
-      fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: user.token,
-        }),
+  useEffect(() => {
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //console.log(data.data)
+        setEmail(data.data.email);
+        setUsername(data.data.username);
+        setDonneeBancaire(data.data.donneeBancaire);
+        setTelephone(data.data.telephone);
+      });
+  }, []);
+
+  const handleUpdate = () => {
+    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${user.email}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        username: username,
+        telephone: telephone,
+        donneeBancaire: donneeBancaire,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.new) {
+          alert("Vos informations ont été mises à jour avec succès.");
+        } else {
+          alert(data.error);
+        }
       })
-        .then((response) => response.json())
-        .then((data) => { 
-          //console.log(data.data)
-          setEmail(data.data.email)
-          setUsername(data.data.username)
-          setDonneeBancaire(data.data.donneeBancaire)
-          setTelephone(data.data.telephone)
-        })
-    }, []);
+      .catch((error) => {
+        alert("Une erreur est survenue lors de la mise à jour.");
+      });
+  };
 
-    
-
-
-
-    console.log("username =>", username);
+  console.log("username =>", username);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -103,7 +124,10 @@ export default function MesInformationsScreen({ navigation }) {
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
-            <TouchableOpacity style={styles.greenButton}>
+            <TouchableOpacity
+              style={styles.greenButton}
+              onPress={() => handleUpdate()}
+            >
               <Text style={styles.greenButtonText}>Enregistrer</Text>
             </TouchableOpacity>
           </ScrollView>
