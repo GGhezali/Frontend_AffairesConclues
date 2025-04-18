@@ -34,24 +34,28 @@ export default function Dropdowns(props) {
     setTriDropdownVisible(false); // Close other dropdown
     setStateDropdownVisible(false); // Close other dropdown
     setAuteurDropdownVisible(false); // Close other dropdown
+    setEditeurDropdownVisible(false); // Close other dropdown
   };
   const toggleTriDropdown = () => {
     setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
     setStateDropdownVisible(false); // Close other dropdown
-    setAuteurDropdownVisible(false); // Close other dropdown  
+    setAuteurDropdownVisible(false); // Close other dropdown 
+    setEditeurDropdownVisible(false); // Close other dropdown 
   };
   const toggleStateDropdown = () => {
     setStateDropdownVisible(!isStateDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
     setTriDropdownVisible(false); // Close other dropdown
     setAuteurDropdownVisible(false); // Close other dropdown
+    setEditeurDropdownVisible(false); // Close other dropdown
   };
   const toggleAuteurDropdown = () => {
     setAuteurDropdownVisible(!isAuteurDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
     setTriDropdownVisible(false); // Close other dropdown
     setStateDropdownVisible(false); // Close other dropdown
+    setEditeurDropdownVisible(false); // Close other dropdown
   };
   const toggleEditeurDropdown = () => {
     setEditeurDropdownVisible(!isEditeurDropdownVisible); // Open dropdown
