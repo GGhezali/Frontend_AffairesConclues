@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 
 export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, price, contactVendeur, mise }) {
     const [miseValue, setMiseValue] = useState('');
+    const [messageEnchere, setMessageEnchere] = useState('');
+    const [colorMessage, setColorMessage] = useState('red');
     const user = useSelector((state) => state.user.value);
     const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
@@ -38,20 +40,25 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                 )
                     .then((response) => response.json())
                     .then((data) => {
-                        if (data) {
-                            console.log("Mise ajoutée avec succès !");
-
-                            onCloseMise 
+                        setMessageEnchere(data.message);
+                        if (data.message === "Prix mis à jour avec succès") {
+                            setColorMessage('green')
+                            setTimeout(() => {
+                                setMessageEnchere('');
+                            }, 2000); 
                         } else {
-                            
+                            setColorMessage('red'); 
                         }
-                        console.log(data);
                     })
                     .catch((error) => {
                         console.error(error);
                     });
-            })
-            
+            })      
+    }
+
+    const closeMise = () => {
+        setMiseValue('');
+        onCloseMise = true
     }
 
     if (contactVendeur) {
@@ -89,6 +96,7 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                         <Text style={styles.infoText}>Faire une enchère</Text>
                         <View style={styles.contactInfo}>
                             <TextInput placeholder="Entrez votre mise (min 0,50€ en plus)" style={styles.miseInput} onChangeText={(number) => setMiseValue(number)} value={miseValue} />
+                            {messageEnchere !== '' && <Text style={{ color: colorMessage, fontSize: 14, marginLeft: 7 }}>{messageEnchere}</Text>}
                         </View>
                         <View style={styles.button}>
                             <TouchableOpacity style={styles.cancelBtn} onPress={onCloseMise} activeOpacity={0.8}>
