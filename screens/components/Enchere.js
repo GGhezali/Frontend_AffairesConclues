@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
-const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
+const lastAcheteur = props.acheteur[props.acheteur.length - 1];
 
   let titre = ""
   if (props.titre.length > 20) {
@@ -17,18 +17,22 @@ const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
   }
 
 let iconName = "clock-rotate-left"
+let venteState = "Vente en cours"
 
-if (props.ongletActif === "terminees" && props.isDone === true && props.acheteur.token === user.token) {
+if (props.ongletActif === "terminees" && props.isDone === true && lastAcheteur.token === user.token) {
+  console.log(props.ongletActif)
   iconName = "check"
+  venteState = "Vente terminée"
 }
-else {
+if (props.ongletActif === "terminees" && props.isDone === true && lastAcheteur.token !== user.token) {
   iconName = "xmark"
+  venteState = "Vente terminée"
 }
 
   return (
     <TouchableOpacity
       style={styles.enchere}
-      onPress={() => props.navigation.navigate("Annonce")}
+      onPress={() => props.navigation.navigate("Annonce", props)}
     >
       <View style={styles.leftContent}>
         <Image alt="picture" style={styles.picture} />
@@ -37,14 +41,14 @@ else {
       <View style={styles.rightContent}>
         <View style={styles.sellContent}>
           <View style={styles.sellState}>
-            <Text>Vente en cours</Text>
+            <Text>{venteState}</Text>
             <Text>{props.timer}</Text>
           </View>
           <FontAwesome6 name={iconName} size={20} color={"#39D996"} />
         </View>
         <View style={styles.priceContent}>
           <Text>{props.startPrice} €</Text>
-          <Text>{props.currentPrice} € - {lastAcheteur}</Text>
+          <Text>{props.currentPrice} € - {lastAcheteur.username}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
   },
   leftContent: {
     height: "100%",
+    width: "40%",
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
@@ -84,6 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     height: "100%",
+    width: "60%",
   },
   sellContent: {
     flexDirection: "row",

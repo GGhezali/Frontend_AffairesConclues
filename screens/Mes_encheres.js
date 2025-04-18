@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   separator: {
     height: 4,
     backgroundColor: "black",
-    marginTop: 80, // espacement supérieur
+    marginTop: 20, // espacement supérieur
     marginBottom: 30, // espacement inférieur
     borderRadius: 10,
     width: "90%",
