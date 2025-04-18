@@ -22,6 +22,7 @@ export default function MesInformationsScreen({ navigation }) {
   console.log(user.email)
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [donneeBancaire, setDonneeBancaire] = useState("");
   const [telephone, setTelephone] = useState("");
 
@@ -89,21 +90,21 @@ export default function MesInformationsScreen({ navigation }) {
             <Text style={styles.title}>Email</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Email" />
+                <TextInput style={styles.placeholder} placeholder="Email" value={email} onChangeText={(value)=> setEmail(value)}/>
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
             <Text style={styles.title}>Username</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Username" />
+                <TextInput style={styles.placeholder} placeholder="Username" value={username} onChangeText={(value)=> setUsername(value)}/>
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
             <Text style={styles.title}>Password</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="********" />
+                <TextInput style={styles.placeholder} placeholder="********" value={password} onChangeText={(value)=> setPassword(value)}/>
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
@@ -113,14 +114,14 @@ export default function MesInformationsScreen({ navigation }) {
                 <TextInput
                   style={styles.placeholder}
                   placeholder="**** **** **** **** ***"
-                />
+                  value={donneeBancaire} onChangeText={(value)=> setDonneeBancaire(value)} />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
             <Text style={styles.title}>Téléphone</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Téléphone" />
+                <TextInput style={styles.placeholder} placeholder="Téléphone" value={telephone} onChangeText={(value)=> setTelephone(value)}/>
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>

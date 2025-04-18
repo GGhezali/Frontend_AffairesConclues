@@ -101,6 +101,23 @@ export default function MesEncheresScreen({ navigation }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (allArticles && allArticles.length > 0) {
+      setNbArticles(allArticles.length);
+
+      let totalPrix = 0;
+      for (let i = 0; i < allArticles.length; i++) {
+        totalPrix += Number(allArticles[i].currentPrice);
+      }
+
+      setTotal(totalPrix.toFixed(2));
+    } else {
+      // Si la liste est vide ou undefined
+      setNbArticles(0);
+      setTotal("0.00");
+    }
+  }, [allArticles]);
+
   const encheres = allArticles.map((data, i) => {
     return (
       <Enchere
