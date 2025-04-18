@@ -30,6 +30,10 @@ export default function AnnonceScreen({ route }) {
       setContactModalVisible(false);
   };
   const toggleMise = () => {
+    if (props.isDone) {
+      alert("Cette annonce est terminée, vous ne pouvez plus enchérir !")
+      return;
+    }
     setMiseModalVisible(true);
   };
   const toggleCloseMise = () => {
