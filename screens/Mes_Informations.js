@@ -25,6 +25,7 @@ export default function MesInformationsScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [donneeBancaire, setDonneeBancaire] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [id, setId] = useState("");
 
   useEffect(() => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
@@ -38,7 +39,7 @@ export default function MesInformationsScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data.data)
+        setId(data.data._id);
         setEmail(data.data.email);
         setUsername(data.data.username);
         setDonneeBancaire(data.data.donneeBancaire);
@@ -47,8 +48,8 @@ export default function MesInformationsScreen({ navigation }) {
   }, []);
 
   const handleUpdate = () => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${user.email}`, {
-      method: "PUT",
+    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${user.id}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -61,13 +62,15 @@ export default function MesInformationsScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.new) {
-          alert("Vos informations ont été mises à jour avec succès.");
+        if (data.result) {
+          alert(data.message);
         } else {
           alert(data.error);
         }
       })
       .catch((error) => {
+        console.log(error);
+        
         alert("Une erreur est survenue lors de la mise à jour.");
       });
   };
