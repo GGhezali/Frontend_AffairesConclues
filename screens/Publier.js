@@ -17,11 +17,15 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Dropdowns from "./components/Dropdowns";
 import DatalistInput from "@avul/react-native-datalist-input";
-import { AutocompleteDropdownContextProvider, AutocompleteDropdown } from "react-native-autocomplete-dropdown";
+import {
+  AutocompleteDropdownContextProvider,
+  AutocompleteDropdown,
+} from "react-native-autocomplete-dropdown";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
+  const article = useSelector((state) => state.article.value); // article.photos = [image_url] A transmettre à la route publish //
   const [title, setTitle] = useState(""); // TITLE A transmettre à la route publish //
   const [description, setDescription] = useState(""); // DESCRIPTION A transmettre à la route publish //
   const [price, setPrice] = useState(0); // PRIX A transmettre à la route publish //
@@ -36,32 +40,34 @@ export default function PublierScreen({ navigation }) {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    
     // Fetch auteurs from the backend ---------------------------------
     (async () => {
-      const auteursResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/auteurs`
-      );
+      const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const auteursData = await auteursResponse.json();
 
-      const sortedAuteurList = auteursData.auteurs.sort((a, b) => a.name.localeCompare(b.name))
-      const auteursList = sortedAuteurList.map((data) => {return data.name})
+      const sortedAuteurList = auteursData.auteurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      const auteursList = sortedAuteurList.map((data) => {
+        return data.name;
+      });
       setAuteurList(auteursList);
-      
-     // --------------------------------------------------------------
 
-    // Fetch editeurs from the backend ---------------------------------  
-     const editeursResponse = await fetch(
-      `${BACKEND_ADDRESS}:3000/editeurs`
-    );
-    const editeursData = await editeursResponse.json();
+      // --------------------------------------------------------------
 
-    const sortedEditeurList = editeursData.editeurs.sort((a, b) => a.name.localeCompare(b.name))
-    const editeursList = sortedEditeurList.map((data) => {return data.name})
-    setEditeurList(editeursList);
+      // Fetch editeurs from the backend ---------------------------------
+      const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
+      const editeursData = await editeursResponse.json();
 
-   // --------------------------------------------------------------
+      const sortedEditeurList = editeursData.editeurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      const editeursList = sortedEditeurList.map((data) => {
+        return data.name;
+      });
+      setEditeurList(editeursList);
 
+      // --------------------------------------------------------------
     })();
   }, []);
 
@@ -81,9 +87,39 @@ export default function PublierScreen({ navigation }) {
       });
   }, [input]);
 
-
   const handlePublish = () => {
     if (user.token) {
+
+      fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          price: price,
+          auteur: auteur,
+          editeur: editeur,
+          categorie: categorie,
+          etat: etat,
+          localisation: output,
+          photoUrl: article.photos,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            console.log("Article published successfully");
+          })
+        .catch((error) => {
+          console.error("Error publishing article:", error);
+          alert(error);
+        });
+      alert("Votre annonce a été publiée avec succès.");
+      // console.log("Article published successfully");
+
       navigation.navigate("Annonce");
     } else {
       navigation.navigate("Connexion");
@@ -101,17 +137,16 @@ export default function PublierScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safeareaview}>
-      <KeyboardAvoidingView style={{width: "100%", height: "100%"}}> 
+      <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
         <Headers navigation={navigation} isReturn={true} title={"Publier"} />
-        
+
         <View style={styles.alignDropdowns}>
-            <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
-            <Dropdowns isState={true} handleEtat={handleEtat} />
+          <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
+          <Dropdowns isState={true} handleEtat={handleEtat} />
         </View>
 
         <ScrollView style={styles.container}>
-        
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
             <TextInput
@@ -120,7 +155,6 @@ export default function PublierScreen({ navigation }) {
               placeholder="Titre"
             />
           </View>
-          
 
           <Text style={styles.inputText}>Description</Text>
           <View style={styles.input}>
@@ -167,14 +201,14 @@ export default function PublierScreen({ navigation }) {
 
           <Text style={styles.inputText}>Localisation</Text>
           <AutocompleteDropdownContextProvider>
-          <AutocompleteDropdown
-            clearOnFocus={false}
-            closeOnBlur={true}
-            closeOnSubmit={true}
-            onChangeText={(value) => setInput(value)}
-            onSelectItem={(value) => setOutput(value)}
-            dataSet={places}
-          />
+            <AutocompleteDropdown
+              clearOnFocus={false}
+              closeOnBlur={true}
+              closeOnSubmit={true}
+              onChangeText={(value) => setInput(value)}
+              onSelectItem={(value) => setOutput(value)}
+              dataSet={places}
+            />
           </AutocompleteDropdownContextProvider>
 
           <View style={styles.alignButtons}>
@@ -246,7 +280,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-
   },
   alignDropdowns: {
     display: "flex",

@@ -20,8 +20,87 @@ export default function MesEncheresScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
 
-  // Met à jour automatiquement le nombre d'articles et le total en €
-  // à chaque fois que les articles changent
+  const handleEnCours = () => {
+    setOngletActif("enCours");
+
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //console.log("articles =>", data);
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setAllArticles(data.articles);
+            //console.log("articles =>", data.articles);
+          })
+          .catch((error) =>
+            console.error("Error fetching open articles:", error)
+          );
+      });
+  };
+
+  const handleTerminees = () => {
+    setOngletActif("terminees");
+
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: user.token }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/${type}/${data.userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setAllArticles(data.articles);
+            //console.log("articles =>", data.articles)
+          })
+          .catch((error) =>
+            console.error("Error fetching closed articles:", error)
+          );
+      });
+  };
+
+  useEffect(() => {
+    /*
+    if (!user.token) {
+      navigation.navigate("Connexion");
+    }
+      */
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        //console.log("articles =>", data);
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setAllArticles(data.articles);
+            //console.log("articles =>", data.articles)
+          })
+          .catch((error) =>
+            console.error("Error fetching open articles:", error)
+          );
+      });
+  }, []);
+
   useEffect(() => {
     if (allArticles && allArticles.length > 0) {
       setNbArticles(allArticles.length);
@@ -39,52 +118,16 @@ export default function MesEncheresScreen({ navigation }) {
     }
   }, [allArticles]);
 
-  // Fonction pour récupérer les articles (en cours ou terminées)
-  const fetchArticles = (type) => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: user.token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/${type}/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => setAllArticles(data.articles))
-          .catch((error) => console.error("Error fetching articles:", error));
-      });
-  };
-
-  //  Redirige vers la connexion si pas connecté, sinon charge les ventes en cours
-  useEffect(() => {
-    if (!user.token) {
-      navigation.navigate("Connexion");
-    } else {
-      fetchArticles("open");
-    }
-  }, []);
-
-  const handleEnCours = () => {
-    setOngletActif("enCours");
-    fetchArticles("open");
-  };
-
-  const handleTerminees = () => {
-    setOngletActif("terminees");
-    fetchArticles("closed");
-  };
-
-  // On crée un tableau de composants Enchere à afficher
-  const encheres = allArticles.map((data, i) => (
-    <Enchere
-      key={i}
-      navigation={navigation}
-      {...data}
-      ongletActif={ongletActif}
-    />
-  ));
+  const encheres = allArticles.map((data, i) => {
+    return (
+      <Enchere
+        key={i}
+        navigation={navigation}
+        {...data}
+        ongletActif={ongletActif}
+      />
+    );
+  });
 
   return (
     <SafeAreaView style={styles.safeareaview}>
