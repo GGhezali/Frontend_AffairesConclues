@@ -20,15 +20,26 @@ export default function MesEncheresScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
 
+  // Met à jour automatiquement le nombre d'articles et le total en €
+  // à chaque fois que les articles changent
   useEffect(() => {
-    setNbArticles(allArticles.length);
-    let totalPrix = 0;
-    for (let i = 0; i < allArticles.length; i++) {
-      totalPrix += Number(allArticles[i].prix);
+    if (allArticles && allArticles.length > 0) {
+      setNbArticles(allArticles.length);
+
+      let totalPrix = 0;
+      for (let i = 0; i < allArticles.length; i++) {
+        totalPrix += Number(allArticles[i].currentPrice);
+      }
+
+      setTotal(totalPrix.toFixed(2));
+    } else {
+      // Si la liste est vide ou undefined
+      setNbArticles(0);
+      setTotal("0.00");
     }
-    setTotal(totalPrix.toFixed(2));
   }, [allArticles]);
 
+  // Fonction pour récupérer les articles (en cours ou terminées)
   const fetchArticles = (type) => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
@@ -46,6 +57,7 @@ export default function MesEncheresScreen({ navigation }) {
       });
   };
 
+  //  Redirige vers la connexion si pas connecté, sinon charge les ventes en cours
   useEffect(() => {
     if (!user.token) {
       navigation.navigate("Connexion");
@@ -64,6 +76,7 @@ export default function MesEncheresScreen({ navigation }) {
     fetchArticles("closed");
   };
 
+  // On crée un tableau de composants Enchere à afficher
   const encheres = allArticles.map((data, i) => (
     <Enchere
       key={i}
@@ -78,6 +91,7 @@ export default function MesEncheresScreen({ navigation }) {
       <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
 
       <View style={styles.container}>
+        {/* Onglets de navigation */}
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={[
@@ -114,19 +128,24 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
+        {/* Espace haut */}
         <View style={styles.content} />
 
+        {/* Liste des enchères */}
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
+        {/* Barre de séparation */}
         <View style={styles.separator} />
 
+        {/* Résumé : nombre d’articles et total */}
         <View style={styles.total}>
           <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
           <Text style={styles.text}>Total : {total} €</Text>
         </View>
 
+        {/* Bouton "Continuer mes achats" */}
         <View style={{ marginTop: 20, marginBottom: 40 }}>
           <TouchableOpacity
             style={styles.greenButton}
