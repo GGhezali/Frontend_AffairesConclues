@@ -13,12 +13,16 @@ import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function AnnonceScreen({ route }) {
-  const [props, setProps] = useState(route.params);
-  //console.log(props.acheteur)
+  const props = route.params;
   const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
-
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  
   const [contactModalVisible, setContactModalVisible] = useState(false);
   const [miseModalVisible, setMiseModalVisible] = useState(false);
+  const [price, setPrice] = useState(props.currentPrice);
+  const [buyer, setBuyer] = useState(props.acheteur[props.acheteur.length - 1].username);
+  const [allArticles, setAllArticles] = useState([]);
+  
 
   const toggleVendeur = () => {
       setContactModalVisible(true);
@@ -27,6 +31,10 @@ export default function AnnonceScreen({ route }) {
       setContactModalVisible(false);
   };
   const toggleMise = () => {
+    if (props.isDone) {
+      alert("Cette annonce est terminée, vous ne pouvez plus enchérir !")
+      return;
+    }
     setMiseModalVisible(true);
   };
   const toggleCloseMise = () => {
@@ -34,8 +42,16 @@ export default function AnnonceScreen({ route }) {
   };
 
   useEffect(() => {
-    setProps(route.params);
-  },[props]);
+      //------- fetch articles from the backend---------------------------
+      fetch(`${BACKEND_ADDRESS}:3000/articles/`)
+      .then((response) => response.json())
+      .then((articlesData) => {
+        const articles = articlesData.data.find(article => article._id === props._id)
+        console.log("acheteur ==>", articles.acheteur)
+        setPrice(articles.currentPrice);
+        setBuyer(articles.acheteur[articles.acheteur.length - 1].username);
+        ;})
+  },[!miseModalVisible]);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -99,9 +115,9 @@ export default function AnnonceScreen({ route }) {
             </View>
             <View style={styles.priceContainer}>
               <Text style={styles.priceInfoLeft}>Prix actuel :</Text>
-              <Text style={styles.priceInfo}>{props.currentPrice} €</Text>
+              <Text style={styles.priceInfo}>{price} €</Text>
               <Text style={styles.priceInfoRight}>
-                {lastAcheteur}
+                {buyer}
               </Text>
             </View>
           </View>
@@ -116,7 +132,7 @@ export default function AnnonceScreen({ route }) {
             <TouchableOpacity style={styles.buttonBid} onPress={() => toggleMise()}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
-            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} articleId={props._id} />
+            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} articleId={props._id} price={props.currentPrice} />
           </View>
         </View>
       </ScrollView>
