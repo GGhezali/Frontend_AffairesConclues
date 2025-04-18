@@ -46,7 +46,12 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                             setTimeout(() => {
                                 setMessageEnchere('');
                             }, 2000); 
-                        } else {
+                        } 
+                        if (data.message === "Veuillez vous connecter pour enchérir") {
+                            setMessageEnchere('');
+                            alert("Veuillez vous connecter pour enchérir !")
+                        }
+                        else {
                             setColorMessage('red'); 
                         }
                     })

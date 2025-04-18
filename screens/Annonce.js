@@ -20,7 +20,7 @@ export default function AnnonceScreen({ route }) {
   const [contactModalVisible, setContactModalVisible] = useState(false);
   const [miseModalVisible, setMiseModalVisible] = useState(false);
   const [price, setPrice] = useState(props.currentPrice);
-  const [buyer, setBuyer] = useState(props.acheteur[props.acheteur.length - 1].username);
+  const [buyer, setBuyer] = useState(props.acheteur[props.acheteur.length - 1].username || null);
   const [allArticles, setAllArticles] = useState([]);
   
 

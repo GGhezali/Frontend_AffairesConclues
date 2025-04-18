@@ -16,8 +16,8 @@ export default function Article(props) {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   let titre = ""
-  if (props.titre.length > 40) {
-    titre = props.titre.substring(0, 20) + "...";
+  if (props.titre && props.titre.length > 40) {
+    titre = props.titre.substring(0, 40) + "...";
   } else {
     titre = props.titre;
   }
