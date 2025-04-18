@@ -109,9 +109,13 @@ export default function PageAcceuilScreen({ navigation }) {
         });
     };
     const article = allArticles.sort((a, b) => b.timer - a.timer).map((data, i) => {
-      return (
-        <Article key={i} navigation={navigation} {...data} />
-      )})
+      if (!data.isDone) {
+        
+        return (
+          <Article key={i} navigation={navigation} {...data} />
+        )
+      }
+    })
 
   return (
     <SafeAreaView style={styles.safeareaview}>

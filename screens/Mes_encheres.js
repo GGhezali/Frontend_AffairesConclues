@@ -59,7 +59,7 @@ export default function MesEncheresScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/${type}/${data.userId}`)
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${data.userId}`)
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
@@ -72,11 +72,11 @@ export default function MesEncheresScreen({ navigation }) {
   };
 
   useEffect(() => {
-    /*
+    
     if (!user.token) {
       navigation.navigate("Connexion");
     }
-      */
+      
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
       headers: {
@@ -88,12 +88,12 @@ export default function MesEncheresScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log("articles =>", data);
+        // console.log("articles =>", data);
         fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-            //console.log("articles =>", data.articles)
+            console.log("articles =>", data.articles)
           })
           .catch((error) =>
             console.error("Error fetching open articles:", error)
