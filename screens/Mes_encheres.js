@@ -13,125 +13,65 @@ import Enchere from "./components/Enchere";
 
 export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
-  const [nbArticles, setNbArticles] = useState(2);
-  const [total, setTotal] = useState(18);
   const [allArticles, setAllArticles] = useState([]);
+  const [nbArticles, setNbArticles] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
 
-  const handleEnCours = () => {
-    setOngletActif("enCours");
+  useEffect(() => {
+    setNbArticles(allArticles.length);
+    let totalPrix = 0;
+    for (let i = 0; i < allArticles.length; i++) {
+      totalPrix += Number(allArticles[i].prix);
+    }
+    setTotal(totalPrix.toFixed(2));
+  }, [allArticles]);
 
+  const fetchArticles = (type) => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        token: user.token,
-      }),
+      body: JSON.stringify({ token: user.token }),
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log("articles =>", data);
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
+        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/${type}/${data.userId}`)
           .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles);
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
-      });
-  };
-
-  const handleTerminees = () => {
-    setOngletActif("terminees");
-
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //console.log("articles =>", data);
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles)
-          })
-          .catch((error) =>
-            console.error("Error fetching closed articles:", error)
-          );
+          .then((data) => setAllArticles(data.articles))
+          .catch((error) => console.error("Error fetching articles:", error));
       });
   };
 
   useEffect(() => {
     if (!user.token) {
       navigation.navigate("Connexion");
+    } else {
+      fetchArticles("open");
     }
-
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //console.log("articles =>", data);
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles)
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles)
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
-      });
   }, []);
 
-  const encheres = allArticles.map((data, i) => {
-    return (
-      <Enchere
-        key={i}
-        navigation={navigation}
-        {...data}
-        ongletActif={ongletActif}
-      />
-    );
+  const handleEnCours = () => {
+    setOngletActif("enCours");
+    fetchArticles("open");
+  };
 
-  const encheres = allArticles.map((data, i) => {
-    return (
-      <Enchere
-        key={i}
-        navigation={navigation}
-        {...data}
-        ongletActif={ongletActif}
-      />
-    );
-  });
+  const handleTerminees = () => {
+    setOngletActif("terminees");
+    fetchArticles("closed");
+  };
+
+  const encheres = allArticles.map((data, i) => (
+    <Enchere
+      key={i}
+      navigation={navigation}
+      {...data}
+      ongletActif={ongletActif}
+    />
+  ));
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -144,7 +84,7 @@ export default function MesEncheresScreen({ navigation }) {
               styles.greenButton,
               ongletActif === "enCours" && styles.selectedButton,
             ]}
-            onPress={() => handleEnCours()}
+            onPress={handleEnCours}
           >
             <Text
               style={[
@@ -174,22 +114,19 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Contenu vide à la place de Enchères en cours/terminées */}
         <View style={styles.content} />
 
         <ScrollView style={styles.scrollview}>
           <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
-        {/* Barre noire descendue */}
         <View style={styles.separator} />
 
         <View style={styles.total}>
-          <Text style={styles.text}>Nombre d'articles : {nbArticles},</Text>
-          <Text style={styles.text}> Total : {total}</Text>
+          <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
+          <Text style={styles.text}>Total : {total} €</Text>
         </View>
 
-        {/* Bouton continuer mes achats */}
         <View style={{ marginTop: 20, marginBottom: 40 }}>
           <TouchableOpacity
             style={styles.greenButton}
@@ -268,8 +205,8 @@ const styles = StyleSheet.create({
   separator: {
     height: 4,
     backgroundColor: "black",
-    marginTop: 20, // espacement supérieur
-    marginBottom: 30, // espacement inférieur
+    marginTop: 20,
+    marginBottom: 30,
     borderRadius: 10,
     width: "90%",
   },
@@ -277,6 +214,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "90%",
   },
   text: {
     fontSize: 15,
