@@ -48,7 +48,7 @@ export default function MesInformationsScreen({ navigation }) {
   }, []);
 
   const handleUpdate = () => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${user.id}`, {
+    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,6 +56,7 @@ export default function MesInformationsScreen({ navigation }) {
       body: JSON.stringify({
         email: email,
         username: username,
+        password: password,
         telephone: telephone,
         donneeBancaire: donneeBancaire,
       }),
