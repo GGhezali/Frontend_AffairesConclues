@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -13,7 +13,7 @@ import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function AnnonceScreen({ route }) {
-  const props = route.params;
+  const [props, setProps] = useState(route.params);
   console.log(props.acheteur)
   const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
 
@@ -32,6 +32,10 @@ export default function AnnonceScreen({ route }) {
   const toggleCloseMise = () => {
     setMiseModalVisible(false);
   };
+
+  useEffect(() => {
+    setProps(route.params);
+  },[props]);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -112,7 +116,7 @@ export default function AnnonceScreen({ route }) {
             <TouchableOpacity style={styles.buttonBid} onPress={() => toggleMise()}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
-            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} />
+            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} articleId={props._id} />
           </View>
         </View>
       </ScrollView>
