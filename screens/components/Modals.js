@@ -2,32 +2,63 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    TouchableOpacity,
     Text,
     Modal,
+    TextInput,
+    TouchableOpacity,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-export default function Modals({ visible, onClose, annonceurInfo }) {
-
-    return (
-        <Modal visible={visible} animationType="fade" transparent onRequestClose={onClose}>
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <View style={styles.button}>
-                        <AntDesign name={'close'} size={24} onPress={onClose} activeOpacity={0.8} />
-                    </View>
-                    <Text>Contacter le vendeur</Text>
-                    {annonceurInfo && (
-                        <View style={styles.contactInfo}>
-                            <Text style={styles.infoText}>Email: {annonceurInfo.email}</Text>
-                            <Text style={styles.infoText}>Téléphone: {annonceurInfo.phone}</Text>
+export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, contactVendeur, mise }) {
+    if (contactVendeur) {
+        return (
+            <Modal visible={visibleContact} animationType="fade" transparent onRequestClose={onCloseContact}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <View style={styles.close}>
+                            <AntDesign name={'close'} size={24} onPress={onCloseContact} activeOpacity={0.8} />
                         </View>
-                    )}
+                        <Text style={styles.infoText}>Contacter le vendeur</Text>
+                        {annonceurInfo && (
+                            <View style={styles.contactInfo}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.infoName}>Email: </Text>
+                                    <Text style={styles.infoText}>{annonceurInfo.email}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.infoName}>Téléphone: </Text>
+                                    <Text style={styles.infoText}>{annonceurInfo.phone}</Text>
+                                </View>
+                            </View>
+                        )}
+                    </View>
                 </View>
-            </View>
-        </Modal>
-    );
+            </Modal>
+        );
+    }
+
+    if (mise) {
+        return (
+            <Modal visible={visibleMise} animationType="fade" transparent onRequestClose={onCloseMise}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.infoText}>Faire une enchère</Text>
+                        <View style={styles.contactInfo}>
+                            <TextInput placeholder="Entrez votre mise" style={styles.miseInput} />
+                        </View>
+                        <View style={styles.button}>
+                            <TouchableOpacity style={styles.cancelBtn} onPress={onCloseMise} activeOpacity={0.8}>
+                                <Text>Annuler</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.confirmBtn} activeOpacity={0.8}>
+                                <Text style={styles.confirmText}>Confirmer</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -35,10 +66,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
     },
     modalView: {
-        width: '70%',
-        backgroundColor: 'white',
+        width: '75%',
+        backgroundColor: '#F5FCEE',
         borderRadius: 20,
         padding: 20,
         alignItems: 'center',
@@ -51,22 +83,56 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    button: {
+    close: {
         width: '100%',
         alignItems: 'flex-end',
     },
-    textButton: {
-        color: '#ffffff',
-        height: 24,
-        fontWeight: '600',
-        fontSize: 15,
+    button: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
     contactInfo: {
+        width: '100%',
+        marginTop: 20,
         marginBottom: 20,
         alignItems: 'flex-start',
+    },
+    infoName: {
+        fontSize: 16,
+        fontWeight: 500,
+        textDecorationLine: "underline",
     },
     infoText: {
         fontSize: 16,
         marginBottom: 5,
+    },
+    miseInput: {
+        width: '100%',
+        height: 40,
+        backgroundColor: '#ffffff',
+        borderColor: '#dcdedf',
+        borderWidth: 1,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+    },
+    confirmBtn: {
+        width: '40%',
+        height: 40,
+        backgroundColor: '#1c7c54',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    confirmText: {
+        color: '#ffffff',
+        fontWeight: 500,
+    },
+    cancelBtn: {
+        width: '40%',
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
