@@ -114,6 +114,8 @@ export default function PublierScreen({ navigation }) {
 
   const handlePublish = () => {
     if (user.token) {
+      console.log("photos", article.photos);
+
       fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
         method: "POST",
         headers: {
@@ -170,7 +172,7 @@ export default function PublierScreen({ navigation }) {
     // console.log("categorie ==", categorie);
   };
 
-  console.log("photos", article.photos);
+  
 
   return (
     <SafeAreaView style={styles.safeareaview}>
