@@ -112,7 +112,7 @@ export default function PublierScreen({ navigation }) {
         .then((data) => {
           if (data.result) {
             console.log("Article published successfully");
-          })
+          }})
         .catch((error) => {
           console.error("Error publishing article:", error);
           alert(error);
