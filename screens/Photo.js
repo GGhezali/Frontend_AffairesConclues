@@ -20,8 +20,6 @@ export default function PhotoScreen({ navigation }) {
   const cameraRef = useRef(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const [goBackStatus, setGoBackStatus] = useState("off");
-  const [gallerieStatus, setGallerieStatus] = useState("off");
 
   useEffect(() => {
     (async () => {
@@ -61,12 +59,10 @@ export default function PhotoScreen({ navigation }) {
   };
 
   const handleGoBack = () => {
-    setGoBackStatus((current) => (current === "off" ? "on" : "off"));
     navigation.navigate("Publier");
   };
 
   const handleGallerie = () => {
-    setGallerieStatus((current) => (current === "off" ? "on" : "off"));
     navigation.navigate("Gallerie");
   };
 
@@ -84,8 +80,8 @@ export default function PhotoScreen({ navigation }) {
           >
             <FontAwesome
               name="arrow-left"
-              size={25}
-              color={goBackStatus === "on" ? "#e8be4b" : "white"}
+              size={35}
+              color={"white"}
             />
           </TouchableOpacity>
 
@@ -95,8 +91,8 @@ export default function PhotoScreen({ navigation }) {
           >
             <FontAwesome
               name="image"
-              size={25}
-              color={gallerieStatus === "on" ? "#e8be4b" : "white"}
+              size={35}
+              color={"white"}
             />
           </TouchableOpacity>
         </View>
