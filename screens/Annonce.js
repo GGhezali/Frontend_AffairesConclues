@@ -20,6 +20,7 @@ export default function AnnonceScreen({ route }) {
   const [contactModalVisible, setContactModalVisible] = useState(false);
   const [miseModalVisible, setMiseModalVisible] = useState(false);
   const [price, setPrice] = useState(props.currentPrice);
+  const [buyer, setBuyer] = useState(props.acheteur[props.acheteur.length - 1].username);
   const [allArticles, setAllArticles] = useState([]);
   
 
@@ -45,7 +46,10 @@ export default function AnnonceScreen({ route }) {
       fetch(`${BACKEND_ADDRESS}:3000/articles/`)
       .then((response) => response.json())
       .then((articlesData) => {
-        setPrice(articlesData.data.find(article => article._id === props._id).currentPrice);
+        const articles = articlesData.data.find(article => article._id === props._id)
+        console.log("acheteur ==>", articles.acheteur)
+        setPrice(articles.currentPrice);
+        setBuyer(articles.acheteur[articles.acheteur.length - 1].username);
         ;})
   },[!miseModalVisible]);
 
@@ -113,7 +117,7 @@ export default function AnnonceScreen({ route }) {
               <Text style={styles.priceInfoLeft}>Prix actuel :</Text>
               <Text style={styles.priceInfo}>{price} €</Text>
               <Text style={styles.priceInfoRight}>
-                {lastAcheteur}
+                {buyer}
               </Text>
             </View>
           </View>
