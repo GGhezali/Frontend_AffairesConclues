@@ -46,6 +46,9 @@ export default function MesInformationsScreen({ navigation }) {
         })
     }, []);
 
+    
+
+
 
     console.log("username =>", username);
 
