@@ -10,7 +10,8 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  RefreshControl
 } from "react-native";
 import Article from "./components/Article";
 import Headers from "./components/Headers";
@@ -21,6 +22,14 @@ export default function PageAcceuilScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
   const [categorie, setCategorie] = useState(null);
   const [tri, setTri] = useState(null);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   //const BACKEND_ADDRESS = "http://192.168.100.65";
@@ -31,6 +40,7 @@ export default function PageAcceuilScreen({ navigation }) {
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       // get all articles
       const articlesData = await articlesResponse.json();
+      // set all articles in the state
       setAllArticles(articlesData.data);
 
       // create list of articles' _id to be updated
@@ -67,7 +77,7 @@ export default function PageAcceuilScreen({ navigation }) {
       }
     })();
 
-  }, []);
+  }, [refreshing]);
 
     const handleCategorie = (categorie) => {
       setCategorie(categorie);
@@ -112,7 +122,8 @@ export default function PageAcceuilScreen({ navigation }) {
           <Dropdown isCategorie={true} handleCategorie={handleCategorie} />
           <Dropdown isTri={true} handleTri={handleTri} />
         </View>
-        <ScrollView style={styles.scrollview}>
+        <ScrollView style={styles.scrollview}  refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }>
           <View style={styles.articles}>
             {article}
           </View>

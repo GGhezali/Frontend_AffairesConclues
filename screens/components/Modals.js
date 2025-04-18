@@ -10,10 +10,9 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useSelector } from "react-redux";
 
-export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, contactVendeur, mise }) {
+export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, price, contactVendeur, mise }) {
     const [miseValue, setMiseValue] = useState('');
     const user = useSelector((state) => state.user.value);
-    console.log(user);
     const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
     const addMise = () => {
@@ -39,12 +38,18 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                 )
                     .then((response) => response.json())
                     .then((data) => {
+                        if (data) {
+                            console.log("Mise ajoutée avec succès !");
+
+                            onCloseMise 
+                        }
                         console.log(data);
                     })
                     .catch((error) => {
                         console.error(error);
                     });
             })
+            
     }
 
     if (contactVendeur) {
@@ -81,13 +86,13 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                     <View style={styles.modalView}>
                         <Text style={styles.infoText}>Faire une enchère</Text>
                         <View style={styles.contactInfo}>
-                            <TextInput placeholder="Entrez votre mise" style={styles.miseInput} onChangeText={(number) => setMiseValue(number)} value={miseValue} />
+                            <TextInput placeholder="Entrez votre mise (min 0,50€ en plus)" style={styles.miseInput} onChangeText={(number) => setMiseValue(number)} value={miseValue} />
                         </View>
                         <View style={styles.button}>
                             <TouchableOpacity style={styles.cancelBtn} onPress={onCloseMise} activeOpacity={0.8}>
                                 <Text>Annuler</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => addMise()} style={styles.confirmBtn} activeOpacity={0.8}>
+                            <TouchableOpacity onPress={() => {addMise(); setMiseValue('')}} style={styles.confirmBtn} activeOpacity={0.8}>
                                 <Text style={styles.confirmText}>Confirmer</Text>
                             </TouchableOpacity>
                         </View>
@@ -153,6 +158,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: 10,
+        fontSize: 13,
     },
     confirmBtn: {
         width: '40%',
