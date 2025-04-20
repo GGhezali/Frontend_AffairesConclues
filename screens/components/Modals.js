@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, price, contactVendeur, mise }) {
     const [miseValue, setMiseValue] = useState('');
     const [messageEnchere, setMessageEnchere] = useState('');
-    const [colorMessage, setColorMessage] = useState('red');
+    const [colorMessage, setColorMessage] = useState('');
     const user = useSelector((state) => state.user.value);
     const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
@@ -42,11 +42,17 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                     .then((data) => {
                         setMessageEnchere(data.message);
                         if (data.message === "Prix mis à jour avec succès") {
+                            console.log("ok")
                             setColorMessage('green')
                             setTimeout(() => {
                                 setMessageEnchere('');
-                            }, 2000); 
-                        } else {
+                            }, 3000); 
+                        } 
+                        if (data.message === "Veuillez vous connecter pour enchérir") {
+                            setMessageEnchere('');
+                            alert("Veuillez vous connecter pour enchérir !")
+                        }
+                        if (data.message !== "Prix mis à jour avec succès")  {
                             setColorMessage('red'); 
                         }
                     })

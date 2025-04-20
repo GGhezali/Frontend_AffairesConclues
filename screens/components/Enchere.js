@@ -7,27 +7,38 @@ import { useSelector } from "react-redux";
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
-const lastAcheteur = props.acheteur[props.acheteur.length - 1];
+  const lastAcheteur = props.acheteur[props.acheteur.length - 1];
 
-  let titre = ""
-  if (props.titre.length > 20) {
-    titre = props.titre.substring(0, 20) + "...";
+  let titre = "";
+  if (props.titre.length > 25) {
+    titre = props.titre.substring(0, 25) + "...";
   } else {
     titre = props.titre;
   }
 
-let iconName = "clock-rotate-left"
-let venteState = "Vente en cours"
+  let iconName = "clock-rotate-left";
+  let iconeColor = "grey";
+  let etatVente = "Enchère en cours";
 
-if (props.ongletActif === "terminees" && props.isDone === true && lastAcheteur.token === user.token) {
-  console.log(props.ongletActif)
-  iconName = "check"
-  venteState = "Vente terminée"
-}
-if (props.ongletActif === "terminees" && props.isDone === true && lastAcheteur.token !== user.token) {
-  iconName = "xmark"
-  venteState = "Vente terminée"
-}
+  if (
+    props.ongletActif === "terminees" &&
+    props.isDone === true &&
+    lastAcheteur.token === user.token
+  ) {
+    console.log(props.ongletActif);
+    iconName = "check";
+    iconeColor = "#39D996";
+    etatVente = "Enchère gagnée";
+  }
+  if (
+    props.ongletActif === "terminees" &&
+    props.isDone === true &&
+    lastAcheteur.token !== user.token
+  ) {
+    iconName = "xmark";
+    iconeColor = "red";
+    etatVente = "Enchère perdue";
+  }
 
   return (
     <TouchableOpacity
@@ -35,20 +46,22 @@ if (props.ongletActif === "terminees" && props.isDone === true && lastAcheteur.t
       onPress={() => props.navigation.navigate("Annonce", props)}
     >
       <View style={styles.leftContent}>
-        <Image alt="picture" style={styles.picture} />
         <Text style={styles.titre}>{titre}</Text>
+        <Image alt="picture" style={styles.picture} />
       </View>
       <View style={styles.rightContent}>
-        <View style={styles.sellContent}>
-          <View style={styles.sellState}>
-            <Text>{venteState}</Text>
-            <Text>{props.timer}</Text>
+          <View style={styles.icon}>
+            <Text>{etatVente} </Text>
+            <FontAwesome6 name={iconName} size={20} color={iconeColor} />
           </View>
-          <FontAwesome6 name={iconName} size={20} color={"#39D996"} />
+        <View style={styles.sellContent}>
+            <Text>{props.timer}</Text>
         </View>
         <View style={styles.priceContent}>
-          <Text>{props.startPrice} €</Text>
-          <Text>{props.currentPrice} € - {lastAcheteur.username}</Text>
+          <Text>Prix de départ - {props.startPrice} €</Text>
+          <Text>
+            Prix en cours - {props.currentPrice} € - {lastAcheteur.username}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -57,7 +70,7 @@ if (props.ongletActif === "terminees" && props.isDone === true && lastAcheteur.t
 
 const styles = StyleSheet.create({
   enchere: {
-    height: 200,
+    height: 210,
     width: "100%",
     backgroundColor: "white",
     borderWidth: 1,
@@ -84,6 +97,8 @@ const styles = StyleSheet.create({
   },
   titre: {
     textAlign: "left",
+    fontWeight: "600",
+    height: 40,
   },
   rightContent: {
     flexDirection: "column",
@@ -91,8 +106,16 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "60%",
   },
+  icon: {
+    height: 20,
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "flex-end",
+  },
   sellContent: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom: 50,
   },
+
 });

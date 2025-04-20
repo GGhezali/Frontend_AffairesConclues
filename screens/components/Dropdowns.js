@@ -11,45 +11,107 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 
 export default function Dropdowns(props) {
-  const { isCategorie, isTri, isState } = props;
+  const { isCategorie, isTri, isState, isAuteur, isEditeur } = props;
 
   const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
   const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
+  const [isAuteurDropdownVisible, setAuteurDropdownVisible] = useState(false);
+  const [isEditeurDropdownVisible, setEditeurDropdownVisible] = useState(false);
   const [selectedCategorie, setSelectedCategorie] = useState("");
   const [selectedTri, setSelectedTri] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const [selectedAuteur, setSelectedAuteur] = useState("");
+  const [selectedEditeur, setSelectedEditeur] = useState("");
   const [categories, setCategories] = useState([]);
   const [state, setState] = useState([]);
+  const [auteur, setAuteur] = useState([]); 
+  const [editeur, setEditeur] = useState([]); 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const toggleCategorieDropdown = () => {
     setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
     setTriDropdownVisible(false); // Close other dropdown
     setStateDropdownVisible(false); // Close other dropdown
+    setAuteurDropdownVisible(false); // Close other dropdown
+    setEditeurDropdownVisible(false); // Close other dropdown
   };
   const toggleTriDropdown = () => {
     setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
     setStateDropdownVisible(false); // Close other dropdown
+    setAuteurDropdownVisible(false); // Close other dropdown 
+    setEditeurDropdownVisible(false); // Close other dropdown 
   };
   const toggleStateDropdown = () => {
     setStateDropdownVisible(!isStateDropdownVisible); // Open dropdown
     setCategorieDropdownVisible(false); // Close other dropdown
     setTriDropdownVisible(false); // Close other dropdown
+    setAuteurDropdownVisible(false); // Close other dropdown
+    setEditeurDropdownVisible(false); // Close other dropdown
+  };
+  const toggleAuteurDropdown = () => {
+    setAuteurDropdownVisible(!isAuteurDropdownVisible); // Open dropdown
+    setCategorieDropdownVisible(false); // Close other dropdown
+    setTriDropdownVisible(false); // Close other dropdown
+    setStateDropdownVisible(false); // Close other dropdown
+    setEditeurDropdownVisible(false); // Close other dropdown
+  };
+  const toggleEditeurDropdown = () => {
+    setEditeurDropdownVisible(!isEditeurDropdownVisible); // Open dropdown
+    setCategorieDropdownVisible(false); // Close other dropdown
+    setTriDropdownVisible(false); // Close other dropdown
+    setStateDropdownVisible(false); // Close other dropdown
+    setAuteurDropdownVisible(false); // Close other dropdown  
   };
 
   useEffect(() => {
-    // Fetch categories from the backend
+    // Fetch categories from the backend-----------------------------------------------------------------------
     (async () => {
       const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
       const categoriesData = await categoriesResponse.json();
+      //console.log("categoriesData", categoriesData);
       setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
+
+      //--------------------------------------------------------------------------------------------------------
+
+      // Fetch states from the backend--------------------------------------------------------------------------
 
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();
+      //console.log("stateData", stateData);
       setState(stateData.etats);
 
+      //--------------------------------------------------------------------------------------------------------
+
+      // Fetch auteurs from the backend ---------------------------------
+    
+      const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
+      const auteursData = await auteursResponse.json();
+      //console.log("auteurData", auteursData);
+      const sortedAuteurList = auteursData.auteurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      
+      setAuteur(sortedAuteurList);
+
+      //console.log("sortedAuteurList", sortedAuteurList);
+      // --------------------------------------------------------------
+
+      // Fetch editeurs from the backend ---------------------------------
+      const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
+      const editeursData = await editeursResponse.json();
+      //console.log("editeurData", editeursData);
+
+      const sortedEditeurList = editeursData.editeurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+
+      //console.log("sortedEditeurList", sortedEditeurList);
+
+      setEditeur(sortedEditeurList);
+
+      // --------------------------------------------------------------
     })();
   }, []);
 
@@ -64,6 +126,14 @@ export default function Dropdowns(props) {
   const selectEtat = (item) => {
     setSelectedState(item.value);
     props.handleEtat(item.value);
+  };
+  const selectAuteur = (item) => {
+    setSelectedAuteur(item.value);
+    props.handleAuteur(item.value);
+  };
+  const selectEditeur = (item) => {
+    setSelectedEditeur(item.value);
+    props.handleEditeur(item.value);
   };
 
   function Dropdown({
@@ -145,6 +215,32 @@ export default function Dropdowns(props) {
       />
     );
   }
+  if (isAuteur) {
+    return (
+      <Dropdown
+        style={styles.auteurContainer}
+        isVisible={isAuteurDropdownVisible}
+        toggleVisibility={toggleAuteurDropdown}
+        data={auteur.map((auteur) => ({ value: auteur.name }))}
+        onSelect={(item) => selectAuteur(item)}
+        placeholder="Auteur"
+        selectedValue={selectedAuteur}
+      />
+    );
+  }
+  if (isEditeur) {
+    return (
+      <Dropdown
+        style={styles.editeurContainer}
+        isVisible={isEditeurDropdownVisible}
+        toggleVisibility={toggleEditeurDropdown}
+        data={editeur.map((editeur) => ({ value: editeur.name }))}
+        onSelect={(item) => selectEditeur(item)}
+        placeholder="Editeur"
+        selectedValue={selectedEditeur}
+      />
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -189,6 +285,14 @@ const styles = StyleSheet.create({
     width: 160,
   },
   stateContainer: {
+    position: "relative",
+    width: 160,
+  },
+  auteurContainer: {
+    position: "relative",
+    width: 160,
+  },
+  editeurContainer: {
     position: "relative",
     width: 160,
   },

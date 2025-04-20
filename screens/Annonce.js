@@ -14,13 +14,12 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function AnnonceScreen({ route }) {
   const props = route.params;
-  const lastAcheteur = props.acheteur[props.acheteur.length - 1].username;
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   
   const [contactModalVisible, setContactModalVisible] = useState(false);
   const [miseModalVisible, setMiseModalVisible] = useState(false);
   const [price, setPrice] = useState(props.currentPrice);
-  const [buyer, setBuyer] = useState(props.acheteur[props.acheteur.length - 1].username);
+  const [buyer, setBuyer] = useState(null);
   const [allArticles, setAllArticles] = useState([]);
   
 
@@ -49,7 +48,9 @@ export default function AnnonceScreen({ route }) {
         const articles = articlesData.data.find(article => article._id === props._id)
         console.log("acheteur ==>", articles.acheteur)
         setPrice(articles.currentPrice);
-        setBuyer(articles.acheteur[articles.acheteur.length - 1].username);
+        if (articles.acheteur.length > 0) {
+          setBuyer(articles.acheteur[articles.acheteur.length - 1].username);
+        }
         ;})
   },[!miseModalVisible]);
 
