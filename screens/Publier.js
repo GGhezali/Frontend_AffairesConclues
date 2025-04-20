@@ -114,13 +114,11 @@ export default function PublierScreen({ navigation }) {
 
   const handlePublish = () => {
     if (user.token) {
-      console.log("photos", article.photos);
 
       fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
           titre: title,
@@ -147,9 +145,8 @@ export default function PublierScreen({ navigation }) {
           alert(error);
         });
       alert("Votre annonce a été publiée avec succès.");
-      // console.log("Article published successfully");
-
       navigation.navigate("Annonce");
+      
     } else {
       navigation.navigate("Connexion");
     }
