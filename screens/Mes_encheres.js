@@ -12,6 +12,7 @@ import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
 
 export default function MesEncheresScreen({ navigation }) {
+  const [userId, setUserId] = useState(null);
   const [ongletActif, setOngletActif] = useState("enCours");
   const [allArticles, setAllArticles] = useState([]);
   const [nbArticles, setNbArticles] = useState(0);
@@ -23,60 +24,32 @@ export default function MesEncheresScreen({ navigation }) {
   const handleEnCours = () => {
     setOngletActif("enCours");
 
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        //console.log("articles =>", data);
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles);
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
-      });
+        setAllArticles(data.articles);
+      })
+      .catch((error) => console.error("Error fetching open articles:", error));
   };
 
   const handleTerminees = () => {
     setOngletActif("terminees");
 
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: user.token }),
-    })
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles)
-          })
-          .catch((error) =>
-            console.error("Error fetching closed articles:", error)
-          );
-      });
+        setAllArticles(data.articles);
+      })
+      .catch((error) =>
+        console.error("Error fetching closed articles:", error)
+      );
   };
 
   useEffect(() => {
-    
     if (!user.token) {
       navigation.navigate("Connexion");
     }
-      
+
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
       headers: {
@@ -88,12 +61,13 @@ export default function MesEncheresScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("articles =>", data);
+        setUserId(data.userId);
+
         fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-            console.log("articles =>", data.articles)
+            console.log("articles =>", data.articles);
           })
           .catch((error) =>
             console.error("Error fetching open articles:", error)

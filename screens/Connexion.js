@@ -17,11 +17,11 @@ import { login } from "../reducers/user";
 export default function ConnexionScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [err, setErr] = useState("");
   const dispatch = useDispatch();
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSumbit = () => {
+    console.log('clicked');
     if (!email || !password) {
       return;
     }
@@ -42,10 +42,6 @@ export default function ConnexionScreen({ navigation }) {
           alert(data.error);
         }
       });
-      if (password.length < 8) return setErr('Min. 8 caractères');
-      if (!/[A-Z]/.test(password)) return setErr('Majuscule requise');
-      if (!/\d/.test(password)) return setErr('Chiffre requis');
-      setErr('');
       
   };
 
