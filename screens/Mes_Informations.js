@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Headers from "./components/Headers";
 import { useSelector } from "react-redux";
@@ -19,13 +19,17 @@ import { useState, useEffect } from "react";
 export default function MesInformationsScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
-  console.log(user.email)
+  console.log(user.email);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [donneeBancaire, setDonneeBancaire] = useState("");
   const [telephone, setTelephone] = useState("");
   const [id, setId] = useState("");
+  const [icon, setIcon] = useState('eye-with-line');
+  const [secure, setSecure] = useState(true);
+
+
 
   useEffect(() => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
@@ -48,8 +52,8 @@ export default function MesInformationsScreen({ navigation }) {
   }, []);
 
   const handleUpdate = () => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${id}`, {
-      method: "POST",
+    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${user.token}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -71,12 +75,23 @@ export default function MesInformationsScreen({ navigation }) {
       })
       .catch((error) => {
         console.log(error);
-        
+
         alert("Une erreur est survenue lors de la mise à jour.");
       });
   };
 
-  console.log("username =>", username);
+
+
+  const visiblePassword = () => {
+    console.log("visiblePassword");
+    if (icon === 'eye-with-line') {
+      setIcon('eye');
+      setSecure(false);
+    } else {
+      setIcon('eye-with-line');
+      setSecure(true);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -94,22 +109,43 @@ export default function MesInformationsScreen({ navigation }) {
             <Text style={styles.title}>Email</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Email" value={email} onChangeText={(value)=> setEmail(value)}/>
+                <TextInput
+                  style={styles.placeholder}
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={(value) => setEmail(value)}
+                />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
             <Text style={styles.title}>Username</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Username" value={username} onChangeText={(value)=> setUsername(value)}/>
+                <TextInput
+                  style={styles.placeholder}
+                  placeholder="Username"
+                  value={username}
+                  onChangeText={(value) => setUsername(value)}
+                />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
             <Text style={styles.title}>Password</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="********" value={password} onChangeText={(value)=> setPassword(value)}/>
-                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+                <TextInput
+                  secureTextEntry={secure}
+                  style={styles.placeholder}
+                  placeholder="********"
+                  value={password}
+                  onChangeText={(value) => setPassword(value)}
+                />
+                <Entypo
+                  name={icon}
+                  size={16}
+                  color={"#39d996"}
+                  onPress={() => visiblePassword()}
+                />
               </View>
             </View>
             <Text style={styles.title}>Données bancaires</Text>
@@ -118,14 +154,21 @@ export default function MesInformationsScreen({ navigation }) {
                 <TextInput
                   style={styles.placeholder}
                   placeholder="**** **** **** **** ***"
-                  value={donneeBancaire} onChangeText={(value)=> setDonneeBancaire(value)} />
+                  value={donneeBancaire}
+                  onChangeText={(value) => setDonneeBancaire(value)}
+                />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
             <Text style={styles.title}>Téléphone</Text>
             <View style={styles.head}>
               <View style={styles.input}>
-                <TextInput style={styles.placeholder} placeholder="Téléphone" value={telephone} onChangeText={(value)=> setTelephone(value)}/>
+                <TextInput
+                  style={styles.placeholder}
+                  placeholder="Téléphone"
+                  value={telephone}
+                  onChangeText={(value) => setTelephone(value)}
+                />
                 <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
               </View>
             </View>
