@@ -175,7 +175,7 @@ export default function PublierScreen({ navigation }) {
     <SafeAreaView style={styles.safeareaview}>
       <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
-        <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+        <Headers navigation={navigation} isNavigation={true} title={"Publier"} />
 
         <View style={styles.alignDropdowns}>
           <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
