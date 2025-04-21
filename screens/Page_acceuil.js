@@ -25,6 +25,8 @@ export default function PageAcceuilScreen({ navigation }) {
   const [tri, setTri] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchText, setSearchText] = useState("");
+  const isFocused = useIsFocused();
+  
   
 
   const handleSearch = (text) => {
@@ -90,11 +92,7 @@ export default function PageAcceuilScreen({ navigation }) {
             body: JSON.stringify({ id }),
           }
         );
-
         const updateIdData = await updateIdResponse.json();
-
-        console.log("updateIdData =>", updateIdData);
-
       }
     })();
 

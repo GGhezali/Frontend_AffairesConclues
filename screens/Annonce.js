@@ -12,6 +12,8 @@ import Headers from "./components/Headers";
 import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ImageSlider from 'react-native-image-slider';
+import { useIsFocused } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 export default function AnnonceScreen({ route }) {
   const props = route.params;
@@ -21,7 +23,10 @@ export default function AnnonceScreen({ route }) {
   const [miseModalVisible, setMiseModalVisible] = useState(false);
   const [price, setPrice] = useState(props.currentPrice);
   const [buyer, setBuyer] = useState(null);
-  const [allArticles, setAllArticles] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const isFocused = useIsFocused();
+  
+  const user = useSelector((state) => state.user.value);
   
   let photo = props.photoUrl;
   if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
@@ -59,6 +64,41 @@ export default function AnnonceScreen({ route }) {
         ;})
   },[!miseModalVisible]);
 
+  useEffect(() => {
+        (async () => {
+          // Fetch useurId from the backend -------------------------------
+          const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: user.token,
+          }),
+        });
+        const userIdData = await userIdResponse.json();
+        setUserId(userIdData.userId);
+        // -------------------------------------------------------------- 
+              
+        })();
+      }, [isFocused]);
+  
+  const handleBookmark = async () => {
+    console.log("handleBookmark ok")
+    if (user.token) {
+    const response = await fetch(`${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        articleId: props._id,
+      }),
+    })
+    const data = await response.json();
+  }
+  }
+
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -86,12 +126,11 @@ export default function AnnonceScreen({ route }) {
                   onPress={() => route.params.navigation.navigate("Carte", props.localisation)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.icon}>
+              <TouchableOpacity style={styles.icon} onPress={() => handleBookmark()}>
                 <FontAwesome
                   name={"bookmark-o"}
                   size={25}
-                  color={"#39D996"}
-                  onPress={() => {}}
+                  color={"#39D996"}                 
                 />
               </TouchableOpacity>
             </View>

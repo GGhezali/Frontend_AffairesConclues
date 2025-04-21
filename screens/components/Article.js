@@ -12,10 +12,13 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
+
 
 export default function Article(props) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [userId, setUserId] = useState(null);
+  const isFocused = useIsFocused();
 
   const user = useSelector((state) => state.user.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -49,7 +52,7 @@ export default function Article(props) {
       // -------------------------------------------------------------- 
             
       })();
-    }, []);
+    }, [isFocused]);
 
 const handleBookmark = async () => {
   if (user.token) {
