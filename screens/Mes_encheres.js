@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Image,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Headers from "./components/Headers";
@@ -19,7 +20,7 @@ export default function MesEncheresScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
   const [nbArticles, setNbArticles] = useState(0);
   const [total, setTotal] = useState(0);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
@@ -71,7 +72,6 @@ export default function MesEncheresScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-            console.log("articles =>", data.articles);
           })
           .catch((error) =>
             console.error("Error fetching open articles:", error)
@@ -90,22 +90,39 @@ export default function MesEncheresScreen({ navigation }) {
 
       setTotal(totalPrix.toFixed(2));
     } else {
-      // Si la liste est vide ou undefined
       setNbArticles(0);
       setTotal("0.00");
     }
   }, [allArticles]);
 
-  const encheres = allArticles.map((data, i) => {
-    return (
+  // Placeholder ou enchères
+  let encheres;
+
+  if (!allArticles || allArticles.length === 0) {
+    encheres = (
+      <View style={styles.placeholderContainer}>
+        <Image
+          source={{
+            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png",
+          }}
+          style={styles.placeholderImage}
+        />
+        <Text style={styles.placeholderText}>
+          Aucune enchère {ongletActif === "enCours" ? "en cours" : "terminée"}{" "}
+          📦
+        </Text>
+      </View>
+    );
+  } else {
+    encheres = allArticles.map((data, i) => (
       <Enchere
         key={i}
         navigation={navigation}
         {...data}
         ongletActif={ongletActif}
       />
-    );
-  });
+    ));
+  }
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -119,7 +136,6 @@ export default function MesEncheresScreen({ navigation }) {
       <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
 
       <View style={styles.container}>
-        {/* Onglets de navigation */}
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={[
@@ -156,10 +172,8 @@ export default function MesEncheresScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Espace haut */}
         <View style={styles.content} />
 
-        {/* Liste des enchères */}
         <ScrollView
           style={styles.scrollview}
           refreshControl={
@@ -169,16 +183,13 @@ export default function MesEncheresScreen({ navigation }) {
           <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
-        {/* Barre de séparation */}
         <View style={styles.separator} />
 
-        {/* Résumé : nombre d’articles et total */}
         <View style={styles.total}>
           <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
           <Text style={styles.text}>Total : {total} €</Text>
         </View>
 
-        {/* Bouton "Continuer mes achats" */}
         <View style={{ marginTop: 20, marginBottom: 40 }}>
           <TouchableOpacity
             style={styles.greenButton}
@@ -263,7 +274,6 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   total: {
-    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "90%",
@@ -271,5 +281,25 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     fontWeight: "bold",
+  },
+
+  placeholderContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 60,
+    marginBottom: 60,
+  },
+  placeholderImage: {
+    width: 120,
+    height: 120,
+    marginBottom: 20,
+    opacity: 0.8,
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });
