@@ -8,7 +8,7 @@ export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
   let lastAcheteur = "";
-    if (props.acheteur.length > 0) {
+    if (props.acheteur && props.acheteur.length > 0) {
       lastAcheteur = props.acheteur[props.acheteur.length - 1];
     }
 
