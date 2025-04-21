@@ -22,6 +22,7 @@ import {
 } from "react-native-autocomplete-dropdown";
 
 export default function PublierScreen({ navigation }) {
+
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
   const article = useSelector((state) => state.article.value); // article.photos = [image_url] A transmettre à la route publish //
@@ -136,7 +137,6 @@ export default function PublierScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            console.log("result is true =>", data.data);
             console.log("Article published successfully");
           }
         })
@@ -145,8 +145,8 @@ export default function PublierScreen({ navigation }) {
           alert(error);
         });
       alert("Votre annonce a été publiée avec succès.");
-      navigation.navigate("Annonce");
-      
+      navigation.navigate("MesPublications");
+
     } else {
       navigation.navigate("Connexion");
     }
@@ -175,7 +175,7 @@ export default function PublierScreen({ navigation }) {
     <SafeAreaView style={styles.safeareaview}>
       <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
-        <Headers navigation={navigation} isReturn={true} title={"Publier"} />
+        <Headers navigation={navigation} isNavigation={true} title={"Publier"} />
 
         <View style={styles.alignDropdowns}>
           <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />

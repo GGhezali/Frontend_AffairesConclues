@@ -46,7 +46,7 @@ export default function AnnonceScreen({ route }) {
       .then((response) => response.json())
       .then((articlesData) => {
         const articles = articlesData.data.find(article => article._id === props._id)
-        console.log("acheteur ==>", articles.acheteur)
+        
         setPrice(articles.currentPrice);
         if (articles.acheteur.length > 0) {
           setBuyer(articles.acheteur[articles.acheteur.length - 1].username);

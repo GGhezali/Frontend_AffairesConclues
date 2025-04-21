@@ -12,10 +12,12 @@ import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
 
 export default function MesEncheresScreen({ navigation }) {
+  const [userId, setUserId] = useState(null);
   const [ongletActif, setOngletActif] = useState("enCours");
   const [allArticles, setAllArticles] = useState([]);
   const [nbArticles, setNbArticles] = useState(0);
   const [total, setTotal] = useState(0);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
@@ -23,60 +25,32 @@ export default function MesEncheresScreen({ navigation }) {
   const handleEnCours = () => {
     setOngletActif("enCours");
 
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        //console.log("articles =>", data);
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles);
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
-      });
+        setAllArticles(data.articles);
+      })
+      .catch((error) => console.error("Error fetching open articles:", error));
   };
 
   const handleTerminees = () => {
     setOngletActif("terminees");
 
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: user.token }),
-    })
+    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-            //console.log("articles =>", data.articles)
-          })
-          .catch((error) =>
-            console.error("Error fetching closed articles:", error)
-          );
-      });
+        setAllArticles(data.articles);
+      })
+      .catch((error) =>
+        console.error("Error fetching closed articles:", error)
+      );
   };
 
   useEffect(() => {
-    
     if (!user.token) {
       navigation.navigate("Connexion");
     }
-      
+
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
       headers: {
@@ -88,18 +62,19 @@ export default function MesEncheresScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("articles =>", data);
+        setUserId(data.userId);
+
         fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-            console.log("articles =>", data.articles)
+            console.log("articles =>", data.articles);
           })
           .catch((error) =>
             console.error("Error fetching open articles:", error)
           );
       });
-  }, []);
+  }, [refreshing]);
 
   useEffect(() => {
     if (allArticles && allArticles.length > 0) {
@@ -128,6 +103,13 @@ export default function MesEncheresScreen({ navigation }) {
       />
     );
   });
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -175,7 +157,12 @@ export default function MesEncheresScreen({ navigation }) {
         <View style={styles.content} />
 
         {/* Liste des enchères */}
-        <ScrollView style={styles.scrollview}>
+        <ScrollView
+          style={styles.scrollview}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
