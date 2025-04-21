@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
   RefreshControl
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import Article from "./components/Article";
 import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
@@ -23,6 +24,7 @@ export default function PageAcceuilScreen({ navigation }) {
   const [categorie, setCategorie] = useState(null);
   const [tri, setTri] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
+  const isFocused = useIsFocused();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -74,10 +76,12 @@ export default function PageAcceuilScreen({ navigation }) {
 
         const updateIdData = await updateIdResponse.json();
 
+        console.log("updateIdData =>", updateIdData);
+
       }
     })();
 
-  }, [refreshing]);
+  }, [refreshing, isFocused]);
 
     const handleCategorie = (categorie) => {
       setCategorie(categorie);

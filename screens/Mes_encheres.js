@@ -7,7 +7,9 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
 
@@ -21,6 +23,7 @@ export default function MesEncheresScreen({ navigation }) {
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
+  const isFocused = useIsFocused();
 
   const handleEnCours = () => {
     setOngletActif("enCours");
@@ -74,7 +77,7 @@ export default function MesEncheresScreen({ navigation }) {
             console.error("Error fetching open articles:", error)
           );
       });
-  }, [refreshing]);
+  }, [refreshing, isFocused]);
 
   useEffect(() => {
     if (allArticles && allArticles.length > 0) {
