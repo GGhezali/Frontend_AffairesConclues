@@ -9,12 +9,14 @@ import {
   StatusBar,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";
 
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
@@ -22,9 +24,50 @@ export default function MesEncheresScreen({ navigation }) {
   const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
+  const [userId, setUserId] = useState(null);
+  const isFocused = useIsFocused();
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [allArticles, setAllArticles] = useState([]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
+  useEffect(() => {
+    (async () => {
+      // Fetch useurId from the backend -------------------------------
+      const userIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: user.token,
+          }),
+        }
+      );
+      const userIdData = await userIdResponse.json();
+      setUserId(userIdData.userId);
+      // --------------------------------------------------------------
+      const articlesIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`);
+      const articlesIdData = await articlesIdResponse.json();
+      for (let article of articlesIdData) {
+        const articleResponse = await fetch(`${BACKEND_ADDRESS}:3000//findArticleById/${article._id}`);
+        const articleData = await articleResponse.json();
+        setAllArticles([...allArticles, articleData]);
+      }
+    })();
+  }, [refreshing, isFocused]);
+
   // Fonction appelée quand on clique sur "Ventes en cours"
   const handleEnCours = () => {
     setOngletActif("enCours");
@@ -48,14 +91,11 @@ export default function MesEncheresScreen({ navigation }) {
 
       <Headers navigation={navigation} isReturn={true} title={"Mes Favoris"} />
       <View style={styles.container}>
-        
-
-        <View style={styles.content}>
-          
-        </View>
-        <ScrollView style={styles.scrollview}>
+        <View style={styles.content}></View>
+        <ScrollView style={styles.scrollview} refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
           <View style={styles.encheres}>
-            <Enchere navigation={navigation} />
+            {/* <Enchere navigation={navigation}/> */}
           </View>
         </ScrollView>
         <View style={styles.separator} />
