@@ -25,7 +25,7 @@ export default function MesInformationsScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [donneeBancaire, setDonneeBancaire] = useState("");
   const [telephone, setTelephone] = useState("");
-  const [id, setId] = useState("");
+  const [userId, setUserId] = useState("");
   const [icon, setIcon] = useState('eye-with-line');
   const [secure, setSecure] = useState(true);
 
@@ -43,7 +43,7 @@ export default function MesInformationsScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setId(data.data._id);
+        setUserId(data.data._id);
         setEmail(data.data.email);
         setUsername(data.data.username);
         setDonneeBancaire(data.data.donneeBancaire);
@@ -52,7 +52,7 @@ export default function MesInformationsScreen({ navigation }) {
   }, []);
 
   const handleUpdate = () => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${user.token}`, {
+    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
