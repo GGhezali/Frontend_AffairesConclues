@@ -22,14 +22,16 @@ import Article from "./components/Article";
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
 
-  const [ongletActif, setOngletActif] = useState("enCours");
   const [nbArticles, setNbArticles] = useState(2);
   const [total, setTotal] = useState(18);
   const [userId, setUserId] = useState(null);
-  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [allArticles, setAllArticles] = useState([]);
+  const [refreshControl, setRefreshControl] = useState(false);
 
+  const isFocused = useIsFocused();
+  const origin = "MesFavorisScreen";
+  
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -63,39 +65,29 @@ export default function MesEncheresScreen({ navigation }) {
         `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userId}`
       );
       const articlesIdData = await articlesIdResponse.json();
-      // console.log("articlesIdData", articlesIdData.bookmarks);
       let articleInfo = []
       for (let article of articlesIdData.bookmarks) {
-        // console.log("article", article);
         const articleResponse = await fetch(
           `${BACKEND_ADDRESS}:3000/articles/findArticleById/${article}`
         );
         const articleData = await articleResponse.json();
-        // console.log("articleData", articleData.data);
         articleInfo.push(articleData.data);
-        console.log("articleInfo", articleInfo);
       }
       setAllArticles(articleInfo);
     })();
-  }, [refreshing, isFocused]);
+  }, [refreshing, isFocused, refreshControl]);
+
+  const refresherFromBookmark = () => {
+    setRefreshControl(!refreshControl)
+  }
 
   const article = allArticles
     .sort((a, b) => b.timer - a.timer)
     .map((data, i) => {
       if (!data.isDone) {
-        return <Article key={i} navigation={navigation} {...data} />;
+        return <Article key={i} refresherFromBookmark={refresherFromBookmark} origin={origin} navigation={navigation} {...data} />;
       }
     });
-
-  // Fonction appelée quand on clique sur "Ventes en cours"
-  const handleEnCours = () => {
-    setOngletActif("enCours");
-  };
-
-  // Fonction appelée quand on clique sur "Ventes terminées"
-  const handleTerminees = () => {
-    setOngletActif("terminees");
-  };
 
   //Rediriger si pas connecté
   useEffect(() => {
@@ -103,6 +95,8 @@ export default function MesEncheresScreen({ navigation }) {
       navigation.navigate("Connexion"); // ou "Connexion/Inscription" selon ton nom de screen
     }
   }, []);
+
+
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -119,10 +113,6 @@ export default function MesEncheresScreen({ navigation }) {
         >
           <View style={styles.encheres}>{article}</View>
         </ScrollView>
-        <View style={styles.separator} />
-        <View style={styles.total}>
-          <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
-        </View>
         <TouchableOpacity
           title="Continuer mes achats"
           onPress={() =>

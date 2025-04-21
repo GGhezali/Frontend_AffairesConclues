@@ -16,20 +16,22 @@ import { useIsFocused } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 export default function AnnonceScreen({ route }) {
-  const props = route.params;
+  const routeParams = route.params;
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   
   const [contactModalVisible, setContactModalVisible] = useState(false);
   const [miseModalVisible, setMiseModalVisible] = useState(false);
-  const [price, setPrice] = useState(props.currentPrice);
+  const [price, setPrice] = useState(routeParams.currentPrice);
   const [buyer, setBuyer] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
   const isFocused = useIsFocused();
   
   const user = useSelector((state) => state.user.value);
   
-  let photo = props.photoUrl;
-  if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
+  let photo = routeParams.photoUrl;
+  if (routeParams.photoUrl.length === 0 || routeParams.photoUrl === undefined) {
     photo = ["https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"]
   }
 
@@ -40,7 +42,7 @@ export default function AnnonceScreen({ route }) {
       setContactModalVisible(false);
   };
   const toggleMise = () => {
-    if (props.isDone) {
+    if (routeParams.isDone) {
       alert("Cette annonce est terminée, vous ne pouvez plus enchérir !")
       return;
     }
@@ -55,7 +57,7 @@ export default function AnnonceScreen({ route }) {
       fetch(`${BACKEND_ADDRESS}:3000/articles/`)
       .then((response) => response.json())
       .then((articlesData) => {
-        const articles = articlesData.data.find(article => article._id === props._id)
+        const articles = articlesData.data.find(article => article._id === routeParams._id)
         
         setPrice(articles.currentPrice);
         if (articles.acheteur.length > 0) {
@@ -79,12 +81,11 @@ export default function AnnonceScreen({ route }) {
         const userIdData = await userIdResponse.json();
         setUserId(userIdData.userId);
         // -------------------------------------------------------------- 
-              
+        setIsBookmarked(routeParams.articleBookmark);    
         })();
       }, [isFocused]);
   
   const handleBookmark = async () => {
-    console.log("handleBookmark ok")
     if (user.token) {
     const response = await fetch(`${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`, {
       method: "PUT",
@@ -92,16 +93,26 @@ export default function AnnonceScreen({ route }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        articleId: props._id,
+        articleId: routeParams._id,
       }),
     })
     const data = await response.json();
   }
   }
 
+let bookmarkIcon = (
+    <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
+  );
+let bookmarkStyle = styles.notBookmarked;
+
+  if (isBookmarked) {
+    bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;
+    bookmarkStyle = styles.bookmarked;
+  }
+
   return (
     <SafeAreaView style={styles.safeareaview}>
-      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+      {/* Ajout d'un header qui envoie vers le component "Header" les routeParams navigation, isReturn et title */}
       <Headers
         navigation={route.params.navigation}
         isReturn={true}
@@ -109,7 +120,7 @@ export default function AnnonceScreen({ route }) {
       />
       <ScrollView style={styles.scrollview}>
         <View style={styles.container}>
-          <Text style={styles.title}>{props.titre}</Text>
+          <Text style={styles.title}>{routeParams.titre}</Text>
           <View style={styles.pictureContainer}>
           <ImageSlider images={photo} customSlide={({ index, item, style, width }) => (
             // It's important to put style here because it's got offset inside
@@ -123,44 +134,40 @@ export default function AnnonceScreen({ route }) {
                   name={"map"}
                   size={25}
                   color={"#39D996"}
-                  onPress={() => route.params.navigation.navigate("Carte", props.localisation)}
+                  onPress={() => route.params.navigation.navigate("Carte", routeParams.localisation)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.icon} onPress={() => handleBookmark()}>
-                <FontAwesome
-                  name={"bookmark-o"}
-                  size={25}
-                  color={"#39D996"}                 
-                />
+              <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
+               {bookmarkIcon}
               </TouchableOpacity>
             </View>
           </View>
           <View style={styles.informationContainer}>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Etat</Text>
-              <Text style={styles.description}> : {props.etat.condition}</Text>
+              <Text style={styles.description}> : {routeParams.etat.condition}</Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Categorie</Text>
-              <Text style={styles.description}> : {props.categorie.name}</Text>
+              <Text style={styles.description}> : {routeParams.categorie.name}</Text>
             </View>
             <View style={styles.textInfoDescription}>
               <Text style={styles.textParams}>Description</Text>
-              <Text style={styles.description}>{props.description}</Text>
+              <Text style={styles.description}>{routeParams.description}</Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Auteur</Text>
-              <Text style={styles.description}> : {props.auteur.name}</Text>
+              <Text style={styles.description}> : {routeParams.auteur.name}</Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Editeur</Text>
-              <Text style={styles.description}> : {props.editeur.name}</Text>
+              <Text style={styles.description}> : {routeParams.editeur.name}</Text>
             </View>
             <View style={styles.priceContainer}>
               <Text style={styles.priceInfoLeft}>Prix de départ :</Text>
-              <Text style={styles.priceInfo}>{props.startPrice} €</Text>
+              <Text style={styles.priceInfo}>{routeParams.startPrice} €</Text>
               <Text style={styles.priceInfoRight}>
-                {props.annonceur.username}
+                {routeParams.annonceur.username}
               </Text>
             </View>
             <View style={styles.priceContainer}>
@@ -172,17 +179,17 @@ export default function AnnonceScreen({ route }) {
             </View>
           </View>
           <View style={styles.timerContainer}>
-            <Text style={styles.timer}>{props.timer}</Text>
+            <Text style={styles.timer}>{routeParams.timer}</Text>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.buttonContact} onPress={() => toggleVendeur()}>
               <Text style={styles.buttonTextContact}>Contacter le vendeur</Text>
             </TouchableOpacity>
-            <Modals contactVendeur={true} visibleContact={contactModalVisible} onCloseContact={toggleCloseVendeur} annonceurInfo={props.annonceur} />
+            <Modals contactVendeur={true} visibleContact={contactModalVisible} onCloseContact={toggleCloseVendeur} annonceurInfo={routeParams.annonceur} />
             <TouchableOpacity style={styles.buttonBid} onPress={() => toggleMise()}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
-            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} articleId={props._id} price={props.currentPrice} />
+            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} articleId={routeParams._id} price={routeParams.currentPrice} />
           </View>
         </View>
       </ScrollView>
@@ -332,5 +339,25 @@ const styles = StyleSheet.create({
   },
   buttonTextBid: {
     color: "white",
+  },
+  notBookmarked: {
+    borderWidth: 1,
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#39D996",
+    backgroundColor: "white",
+  },
+  bookmarked: {
+    borderWidth: 1,
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#39D996",
+    backgroundColor: "#39D996",
   },
 });

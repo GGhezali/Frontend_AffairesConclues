@@ -14,16 +14,16 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 
-
 export default function Article(props) {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [bookmarkedColor, setBookmarkedColor] = useState(false);
+  const [articleBookmark, setArticleBookmark] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
 
   const user = useSelector((state) => state.user.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
-  let titre = ""
+  let titre = "";
   if (props.titre && props.titre.length > 40) {
     titre = props.titre.substring(0, 40) + "...";
   } else {
@@ -32,65 +32,77 @@ export default function Article(props) {
 
   let photo = props.photoUrl[0];
   if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
-    photo = "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"
+    photo =
+      "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg";
   }
 
   useEffect(() => {
-      (async () => {
-        // Fetch useurId from the backend -------------------------------
-        const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: user.token,
-        }),
-      });
+    (async () => {
+      // Fetch useurId from the backend -------------------------------
+      const userIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: user.token,
+          }),
+        }
+      );
       const userIdData = await userIdResponse.json();
       setUserId(userIdData.userId);
-      // -------------------------------------------------------------- 
-            
-      })();
-    }, [isFocused]);
-
-const handleBookmark = async () => {
-  if (user.token) {
-  const response = await fetch(`${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      articleId: props._id,
-    }),
-  })
-  const data = await response.json();
-}
-}
-
-//Gerer la couleur du bouton bookmark
-//au chargement de la page, les bookmark dejà présent doivent etre afficher en vert
+      // --------------------------------------------------------------
+      //Fetch les articlesID des bookmarks de l'utilisateur
+      const articlesIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
+      );
+      const articlesIdData = await articlesIdResponse.json();
+      //check if the article is bookmarked
+      const isBookmarked = articlesIdData.bookmarks.some(
+        (article) => article === props._id
+      );
+      setArticleBookmark(isBookmarked);
+      if (isBookmarked) {
+        setBookmarkedColor(true);
+      } else {
+        setBookmarkedColor(false);
+      }
+    })();
+  }, [isFocused]);
 
   let bookmarkIcon = (
-    <FontAwesome
-      name={"bookmark-o"}
-      size={25}
-      color={"#39D996"}
-    />
+    <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
   );
   let bookmarkStyle = styles.notBookmarked;
 
-  if (isBookmarked) {
-    bookmarkIcon = (
-      <FontAwesome
-        name={"bookmark"}
-        size={20}
-        color={"white"}
-      />
-    );
+  if (bookmarkedColor) {
+    bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;
     bookmarkStyle = styles.bookmarked;
   }
+
+  const handleBookmark = async () => {
+    if (user.token) {
+      setBookmarkedColor(!bookmarkedColor);
+      if (props.origin === "MesFavorisScreen") {
+        props.refresherFromBookmark();
+      }
+      const response = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            articleId: props._id,
+          }),
+        }
+      );
+      const data = await response.json();
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -101,16 +113,19 @@ const handleBookmark = async () => {
       }}
     >
       <Text style={styles.titre}>{titre}</Text>
-      <Image style={styles.picture} source={{uri: photo}} />
+      <Image style={styles.picture} source={{ uri: photo }} />
       <View style={styles.bookmarkContainer}>
-        <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
+        <TouchableOpacity
+          style={bookmarkStyle}
+          onPress={() => handleBookmark()}
+        >
           {bookmarkIcon}
         </TouchableOpacity>
       </View>
       <View style={styles.description}>
-          <Text>{props.categorie.name}</Text>
-          <Text>{props.etat.condition}</Text>
-          <Text>{props.currentPrice} €</Text>
+        <Text>{props.categorie.name}</Text>
+        <Text>{props.etat.condition}</Text>
+        <Text>{props.currentPrice} €</Text>
       </View>
     </TouchableOpacity>
   );

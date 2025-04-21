@@ -27,7 +27,7 @@ export default function PageAcceuilScreen({ navigation }) {
   const [searchText, setSearchText] = useState("");
   const isFocused = useIsFocused();
   
-  
+  const origin = "PageAcceuilScreen";
  
 
   const onRefresh = React.useCallback(() => {
@@ -131,7 +131,7 @@ export default function PageAcceuilScreen({ navigation }) {
     if (!data.isDone) {
 
       return (
-        <Article key={i} navigation={navigation} {...data} />
+        <Article key={i} navigation={navigation} origin={origin} {...data} />
       )
     }
   })
