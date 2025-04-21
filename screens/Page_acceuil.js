@@ -25,8 +25,6 @@ export default function PageAcceuilScreen({ navigation }) {
   const [tri, setTri] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchText, setSearchText] = useState("");
-  
- 
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
