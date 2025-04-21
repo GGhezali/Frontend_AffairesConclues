@@ -152,7 +152,7 @@ export default function Dropdowns(props) {
     style,
   }) {
     return (
-      <SafeAreaView style={[{ zIndex: isVisible ? 9999 : 0 }, style]}>
+      <SafeAreaView>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
           <Text>{selectedValue || placeholder}</Text>
           <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
@@ -277,12 +277,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dcdedf",
     maxHeight: 150,
-    zIndex: Platform.OS === "ios" ? 9999 : 1000, // Augmente le zIndex pour iOS
-    elevation: 5, // Pour Android
-    shadowColor: "#000", // Ajoute une ombre pour iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    zIndex: 1000,
   },
   dropdownItem: {
     paddingVertical: 10,
