@@ -1,137 +1,85 @@
-import React, { useState } from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   SafeAreaView,
-  Platform,
-  StatusBar,
-  TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Image,
 } from "react-native";
-import Headers from "./components/Headers";
-import Enchere from "./components/Enchere";
-
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import Headers from "./components/Headers";
 import Article from "./components/Article";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-export default function MesEncheresScreen({ navigation }) {
-  //Onglet a selectinné 'enCours'
-
-  const [ongletActif, setOngletActif] = useState("enCours");
-  const [nbArticles, setNbArticles] = useState(2);
-  const [total, setTotal] = useState(18);
-  const [userId, setUserId] = useState(null);
-  const isFocused = useIsFocused();
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [allArticles, setAllArticles] = useState([]);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
-  //Accéder au token dans Redux
-  const user = useSelector((state) => state.user.value);
+export default function MesFavorisScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  const user = useSelector((state) => state.user.value);
+
+  // ✅ 1. Initialisation d'un tableau vide pour éviter l'erreur .length sur undefined
+  const [mesFavoris, setMesFavoris] = useState([]);
+
+  const [refreshing, setRefreshing] = useState(false);
+  const isFocused = useIsFocused();
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchFavoris();
+    setTimeout(() => setRefreshing(false), 1000);
+  };
+
+  const fetchFavoris = async () => {
+    try {
+      const response = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${user.token}`
+      );
+      const data = await response.json();
+      console.log("Favoris récupérés :", data); // Log pour vérif des données reçues
+      setMesFavoris(data.bookmarks); // Stocke les favoris dans le state
+    } catch (error) {
+      console.error("Erreur fetch favoris :", error);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      // Fetch useurId from the backend -------------------------------
-      const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: user.token,
-          }),
-        }
-      );
-      const userIdData = await userIdResponse.json();
-      setUserId(userIdData.userId);
-      // --------------------------------------------------------------
-      const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userId}`
-      );
-      const articlesIdData = await articlesIdResponse.json();
-      // console.log("articlesIdData", articlesIdData.bookmarks);
-      let articleInfo = []
-      for (let article of articlesIdData.bookmarks) {
-        // console.log("article", article);
-        const articleResponse = await fetch(
-          `${BACKEND_ADDRESS}:3000/articles/findArticleById/${article}`
-        );
-        const articleData = await articleResponse.json();
-        // console.log("articleData", articleData.data);
-        articleInfo.push(articleData.data);
-        console.log("articleInfo", articleInfo);
-      }
-      setAllArticles(articleInfo);
-    })();
+    fetchFavoris();
   }, [refreshing, isFocused]);
 
-  const article = allArticles
-    .sort((a, b) => b.timer - a.timer)
-    .map((data, i) => {
-      if (!data.isDone) {
-        return <Article key={i} navigation={navigation} {...data} />;
-      }
-    });
+  let favorisContent;
 
-  // Fonction appelée quand on clique sur "Ventes en cours"
-  const handleEnCours = () => {
-    setOngletActif("enCours");
-  };
-
-  // Fonction appelée quand on clique sur "Ventes terminées"
-  const handleTerminees = () => {
-    setOngletActif("terminees");
-  };
-
-  //Rediriger si pas connecté
-  useEffect(() => {
-    if (!user.token) {
-      navigation.navigate("Connexion"); // ou "Connexion/Inscription" selon ton nom de screen
-    }
-  }, []);
+  // Condition sécurisée pour éviter l'erreur si mesFavoris est undefined
+  if (!mesFavoris || mesFavoris.length === 0) {
+    favorisContent = (
+      <View style={styles.placeholderContainer}>
+        <Image
+          source={{
+            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076549.png",
+          }}
+          style={styles.placeholderImage}
+        />
+        <Text style={styles.placeholderText}>
+          Tu n’as encore rien ajouté en favoris 💚
+        </Text>
+      </View>
+    );
+  } else {
+    favorisContent = mesFavoris.map((favori, i) => (
+      <Article key={i} navigation={navigation} {...favori} />
+    ));
+  }
 
   return (
     <SafeAreaView style={styles.safeareaview}>
-      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
-
-      <Headers navigation={navigation} isReturn={true} title={"Mes Favoris"} />
-      <View style={styles.container}>
-        <View style={styles.content}></View>
-        <ScrollView
-          style={styles.scrollview}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.encheres}>{article}</View>
-        </ScrollView>
-        <View style={styles.separator} />
-        <View style={styles.total}>
-          <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
-        </View>
-        <TouchableOpacity
-          title="Continuer mes achats"
-          onPress={() =>
-            navigation.navigate("TabNavigator", { screen: "Acceuil" })
-          }
-        >
-          <Text style={styles.greenButtonText}>Continuer mes achats</Text>
-        </TouchableOpacity>
-      </View>
+      <Headers navigation={navigation} isReturn={true} title="Mes Favoris" />
+      <ScrollView
+        style={styles.scrollview}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={styles.articles}>{favorisContent}</View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -139,65 +87,34 @@ export default function MesEncheresScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#F5FCEE",
-    alignItems: "center",
-    padding: 20,
-  },
-  buttonGroup: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  greenButton: {
-    backgroundColor: "#27AE60",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 10,
-    marginHorizontal: 8,
-    minWidth: 130,
-    alignItems: "center",
-  },
-  greenButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  content: {
-    marginTop: 20,
-    width: "100%",
   },
   scrollview: {
     flex: 1,
-    width: "100%",
+    backgroundColor: "#F5FCEE",
   },
-  encheres: {
+  articles: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-    width: "100%",
+    justifyContent: "space-between",
     padding: 10,
   },
-  separator: {
-    height: 4, // épaisseur de la ligne
-    backgroundColor: "black", // couleur vive (bleu iOS)
-    marginVertical: 50,
-    borderRadius: 10, // espace autour de la ligne
-    width: "90%", // occupe toute la largeur
+
+  placeholderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
   },
-  total: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+  placeholderImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+    opacity: 0.7,
   },
-  text: {
-    fontSize: 15,
-    fontWeight: "bold",
+  placeholderText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });

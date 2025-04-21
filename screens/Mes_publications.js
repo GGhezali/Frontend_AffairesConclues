@@ -1,12 +1,11 @@
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   SafeAreaView,
-  Platform,
   ScrollView,
   RefreshControl,
+  Image,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Headers from "./components/Headers";
@@ -31,7 +30,6 @@ export default function MesPublicationsScreen({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      // Fetch useurId from the backend -------------------------------
       const userIdResponse = await fetch(
         `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
         {
@@ -45,41 +43,48 @@ export default function MesPublicationsScreen({ navigation }) {
         }
       );
       const userIdData = await userIdResponse.json();
-      //setUserId(userIdData.userId);
-      // --------------------------------------------------------------
 
-      //------- fetch articles with vendorID from the backend---------------------------
       const articlesResponse = await fetch(
         `${BACKEND_ADDRESS}:3000/articles/findVendorArticles/${userIdData.userId}`
       );
-      // get all articles
       const articlesData = await articlesResponse.json();
-      // set all articles in the state
       setAllArticles(articlesData.articles);
     })();
   }, [refreshing, isFocused]);
 
-  const article = allArticles
-    .sort((a, b) => b.timer - a.timer)
-    .map((data, i) => {
-      return <Article key={i} navigation={navigation} {...data} />;
-    });
+  let article;
+
+  if (allArticles.length === 0) {
+    article = (
+      <View style={styles.placeholderContainer}>
+        <Image
+          source={{
+            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png",
+          }}
+          style={styles.placeholderImage}
+        />
+        <Text style={styles.placeholderText}>
+          Tu n’as encore rien publié 📚
+        </Text>
+      </View>
+    );
+  } else {
+    article = allArticles
+      .sort((a, b) => b.timer - a.timer)
+      .map((data, i) => {
+        return <Article key={i} navigation={navigation} {...data} />;
+      });
+  }
 
   return (
     <SafeAreaView style={styles.safeareaview}>
-      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
-
       <Headers
         navigation={navigation}
         isReturn={true}
         title={"Mes Publications"}
       />
       <View style={styles.container}>
-        {/*}
-        <View style={styles.dropdownInputs}>
-          <Dropdown isTri={true} handleTri={handleTri} />
-        </View>
-       */}
+        {/* <Dropdown isTri={true} handleTri={handleTri} /> */}
 
         <ScrollView
           style={styles.scrollview}
@@ -97,15 +102,11 @@ export default function MesPublicationsScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   container: {
     flex: 1,
     backgroundColor: "#F5FCEE",
     justifyContent: "space-around",
-  },
-  title: {
-    fontSize: 20,
   },
   scrollview: {
     flex: 1,
@@ -118,5 +119,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     marginBottom: 50,
+  },
+
+  placeholderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+  },
+  placeholderImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+    opacity: 0.7,
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });
