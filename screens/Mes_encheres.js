@@ -17,6 +17,7 @@ export default function MesEncheresScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
   const [nbArticles, setNbArticles] = useState(0);
   const [total, setTotal] = useState(0);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
@@ -73,7 +74,7 @@ export default function MesEncheresScreen({ navigation }) {
             console.error("Error fetching open articles:", error)
           );
       });
-  }, []);
+  }, [refreshing]);
 
   useEffect(() => {
     if (allArticles && allArticles.length > 0) {
@@ -102,6 +103,13 @@ export default function MesEncheresScreen({ navigation }) {
       />
     );
   });
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -149,7 +157,12 @@ export default function MesEncheresScreen({ navigation }) {
         <View style={styles.content} />
 
         {/* Liste des enchères */}
-        <ScrollView style={styles.scrollview}>
+        <ScrollView
+          style={styles.scrollview}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View style={styles.encheres}>{encheres}</View>
         </ScrollView>
 
