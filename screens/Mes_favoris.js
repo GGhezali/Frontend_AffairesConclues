@@ -59,7 +59,7 @@ export default function MesFavorisScreen({ navigation }) {
           style={styles.placeholderImage}
         />
         <Text style={styles.placeholderText}>
-          Tu n’as encore rien ajouté en favoris 💚
+          Tu n’as encore rien ajouté en favoris 🔖
         </Text>
       </View>
     );
