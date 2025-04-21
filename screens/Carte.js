@@ -21,7 +21,6 @@ export default function CarteScreen({ navigation, route }) {
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
       <Headers navigation={navigation} isReturn={true} title={"Carte"} />
       <View style={styles.input}>
-      <TextInput placeholder="Rechercher une adresse..."></TextInput>
       </View>
       <MapView
         initialRegion={{
