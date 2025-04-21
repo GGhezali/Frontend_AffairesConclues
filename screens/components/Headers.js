@@ -19,6 +19,7 @@ export default function Headers({
   isHome,
   isNavigation,
   title,
+  onSearch,
 }) {
 
   const user = useSelector((state) => state.user.value);
@@ -57,7 +58,7 @@ export default function Headers({
         style={styles.header}
       >
         <View style={styles.searchcontainer}>
-          <TextInput style={styles.input} placeholder="What's up ?" />
+          <TextInput style={styles.input} placeholder="What's up ?" onChangeText={(text) => onSearch(text)} />
           <TouchableOpacity style={styles.search} activeOpacity={1}>
             <AntDesign name={"search1"} size={20} />
           </TouchableOpacity>
