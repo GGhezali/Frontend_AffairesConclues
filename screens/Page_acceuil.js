@@ -19,12 +19,29 @@ import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
 
 export default function PageAcceuilScreen({ navigation }) {
-  
+
   const [allArticles, setAllArticles] = useState([]);
   const [categorie, setCategorie] = useState(null);
   const [tri, setTri] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
-  const isFocused = useIsFocused();
+  const [searchText, setSearchText] = useState("");
+  
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+
+    fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: text, author: text }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAllArticles(data.data); // Met à jour les articles affichés
+      })
+      .catch((error) => console.error("Erreur lors de la recherche :", error));
+  };
+ 
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -83,55 +100,55 @@ export default function PageAcceuilScreen({ navigation }) {
 
   }, [refreshing, isFocused]);
 
-    const handleCategorie = (categorie) => {
-      setCategorie(categorie);
-      fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ categorie, tri }),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setAllArticles(data.data);
-        });
-    };
-
-    const handleTri = (tri) => {
-      setTri(tri);
-      fetch(`${BACKEND_ADDRESS}:3000/articles/searchByTri`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ categorie, tri }),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setAllArticles(data.data);
-        });
-    };
-    const article = allArticles.sort((a, b) => b.timer - a.timer).map((data, i) => {
-      if (!data.isDone) {
-        
-        return (
-          <Article key={i} navigation={navigation} {...data} />
-        )
+  const handleCategorie = (categorie) => {
+    setCategorie(categorie);
+    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ categorie, tri }),
       }
-    })
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setAllArticles(data.data);
+      });
+  };
+
+  const handleTri = (tri) => {
+    setTri(tri);
+    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByTri`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ categorie, tri }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setAllArticles(data.data);
+      });
+  };
+  const article = allArticles.sort((a, b) => b.timer - a.timer).map((data, i) => {
+    if (!data.isDone) {
+
+      return (
+        <Article key={i} navigation={navigation} {...data} />
+      )
+    }
+  })
 
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation et isReturn*/}
-      <Headers navigation={navigation} isHome={true} style={styles.header} />
+      <Headers navigation={navigation} isHome={true} style={styles.header} onSearch={handleSearch} />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
           <Dropdown isCategorie={true} handleCategorie={handleCategorie} />
           <Dropdown isTri={true} handleTri={handleTri} />
         </View>
-        <ScrollView style={styles.scrollview}  refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> }>
+        <ScrollView style={styles.scrollview} refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
           <View style={styles.articles}>
             {article}
           </View>
