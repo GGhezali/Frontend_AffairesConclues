@@ -19,7 +19,13 @@ import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import Article from "./components/Article";
 
-export default function MesEncheresScreen({ navigation }) {
+
+
+export default function MesFavorisScreen({ navigation }) {
+
+  // ✅ 1. Initialisation d'un tableau vide pour éviter l'erreur .length sur undefined
+  const [mesFavoris, setMesFavoris] = useState([]);
+
   //Onglet a selectinné 'enCours'
 
   const [nbArticles, setNbArticles] = useState(2);
@@ -42,6 +48,46 @@ export default function MesEncheresScreen({ navigation }) {
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
+  // const fetchFavoris = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${BACKEND_ADDRESS}:3000/users/getBookmarks/${user.token}`
+  //     );
+  //     const data = await response.json();
+  //     console.log("Favoris récupérés :", data); // Log pour vérif des données reçues
+  //     setMesFavoris(data.bookmarks); // Stocke les favoris dans le state
+  //   } catch (error) {
+  //     console.error("Erreur fetch favoris :", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchFavoris();
+  // }, [refreshing, isFocused]);
+
+  // let favorisContent;
+
+    // // Condition sécurisée pour éviter l'erreur si mesFavoris est undefined
+    // if (!mesFavoris || mesFavoris.length === 0) {
+    //   favorisContent = (
+    //     <View style={styles.placeholderContainer}>
+    //       <Image
+    //         source={{
+    //           uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png",
+    //         }}
+    //         style={styles.placeholderImage}
+    //       />
+    //       <Text style={styles.placeholderText}>
+    //         Tu n’as encore rien ajouté en favoris 🔖
+    //       </Text>
+    //     </View>
+    //   );
+    // } else {
+    //   favorisContent = mesFavoris.map((favori, i) => (
+    //     <Article key={i} navigation={navigation} {...favori} />
+    //   ));
+    // }
 
   useEffect(() => {
     (async () => {
@@ -112,6 +158,7 @@ export default function MesEncheresScreen({ navigation }) {
           }
         >
           <View style={styles.encheres}>{article}</View>
+          {/* <View style={styles.articles}>{favorisContent}</View> */}
         </ScrollView>
         <TouchableOpacity
           title="Continuer mes achats"
@@ -123,7 +170,7 @@ export default function MesEncheresScreen({ navigation }) {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
+  );  
 }
 
 const styles = StyleSheet.create({
