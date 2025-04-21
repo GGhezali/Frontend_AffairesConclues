@@ -23,7 +23,7 @@ export default function Article(props) {
   }
 
   let photo = props.photoUrl[0];
-  if (props.photoUrl.length === 0) {
+  if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
     photo = "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"
   }
 
