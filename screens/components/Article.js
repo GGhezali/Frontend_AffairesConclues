@@ -22,6 +22,11 @@ export default function Article(props) {
     titre = props.titre;
   }
 
+  let photo = props.photoUrl[0];
+  if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
+    photo = "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"
+  }
+
   let bookmarkIcon = (
     <FontAwesome
       name={"bookmark-o"}
@@ -53,7 +58,7 @@ export default function Article(props) {
       }}
     >
       <Text style={styles.titre}>{titre}</Text>
-      <Image style={styles.picture} />
+      <Image style={styles.picture} source={{uri: photo}} />
       <View style={styles.bookmarkContainer}>
         <TouchableOpacity style={bookmarkStyle}>
           {bookmarkIcon}
@@ -91,9 +96,9 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   picture: {
-    backgroundColor: "grey",
     width: "90%",
     height: "55%",
+    resizeMode: "contain",
   },
   bookmarkContainer: {
     width: "100%",
