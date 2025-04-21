@@ -60,7 +60,7 @@ export default function MesInformationsScreen({ navigation }) {
       body: JSON.stringify({
         email: email,
         username: username,
-        password: password,
+       // password: password,
         telephone: telephone,
         donneeBancaire: donneeBancaire,
       }),
