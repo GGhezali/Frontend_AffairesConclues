@@ -17,6 +17,7 @@ import Enchere from "./components/Enchere";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import Article from "./components/Article";
 
 export default function MesEncheresScreen({ navigation }) {
   //Onglet a selectinné 'enCours'
@@ -58,15 +59,33 @@ export default function MesEncheresScreen({ navigation }) {
       const userIdData = await userIdResponse.json();
       setUserId(userIdData.userId);
       // --------------------------------------------------------------
-      const articlesIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`);
+      const articlesIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userId}`
+      );
       const articlesIdData = await articlesIdResponse.json();
-      for (let article of articlesIdData) {
-        const articleResponse = await fetch(`${BACKEND_ADDRESS}:3000//findArticleById/${article._id}`);
+      // console.log("articlesIdData", articlesIdData.bookmarks);
+      let articleInfo = []
+      for (let article of articlesIdData.bookmarks) {
+        // console.log("article", article);
+        const articleResponse = await fetch(
+          `${BACKEND_ADDRESS}:3000/articles/findArticleById/${article}`
+        );
         const articleData = await articleResponse.json();
-        setAllArticles([...allArticles, articleData]);
+        // console.log("articleData", articleData.data);
+        articleInfo.push(articleData.data);
+        console.log("articleInfo", articleInfo);
       }
+      setAllArticles(articleInfo);
     })();
   }, [refreshing, isFocused]);
+
+  const article = allArticles
+    .sort((a, b) => b.timer - a.timer)
+    .map((data, i) => {
+      if (!data.isDone) {
+        return <Article key={i} navigation={navigation} {...data} />;
+      }
+    });
 
   // Fonction appelée quand on clique sur "Ventes en cours"
   const handleEnCours = () => {
@@ -92,11 +111,13 @@ export default function MesEncheresScreen({ navigation }) {
       <Headers navigation={navigation} isReturn={true} title={"Mes Favoris"} />
       <View style={styles.container}>
         <View style={styles.content}></View>
-        <ScrollView style={styles.scrollview} refreshControl={
-                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-          <View style={styles.encheres}>
-            {/* <Enchere navigation={navigation}/> */}
-          </View>
+        <ScrollView
+          style={styles.scrollview}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={styles.encheres}>{article}</View>
         </ScrollView>
         <View style={styles.separator} />
         <View style={styles.total}>
