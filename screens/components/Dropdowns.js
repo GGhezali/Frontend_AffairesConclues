@@ -7,6 +7,7 @@ import {
   View,
   SafeAreaView,
   Platform,
+  StatusBar,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
@@ -152,7 +153,7 @@ export default function Dropdowns(props) {
     style,
   }) {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={[styles.dropdownContainer, style]}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
           <Text>{selectedValue || placeholder}</Text>
           <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
@@ -250,6 +251,10 @@ export default function Dropdowns(props) {
 }
 
 const styles = StyleSheet.create({
+  // dropdownContainer: {
+  //   zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
+  //   position: "relative", // Permet de positionner la liste correctement
+  // },
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -277,7 +282,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dcdedf",
     maxHeight: 150,
-    zIndex: 1000,
+    zIndex: 10,
+    // zIndex: Platform.OS === "ios" ? 9999 : 10,
+    // elevation: 5,
   },
   dropdownItem: {
     paddingVertical: 10,
