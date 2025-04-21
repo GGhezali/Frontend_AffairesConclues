@@ -118,7 +118,7 @@ export default function PageAcceuilScreen({ navigation }) {
     fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: text, author: text }),
+      body: JSON.stringify({ title: text, author: text, categorie }),
     })
       .then((response) => response.json())
       .then((data) => {
