@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import Headers from "./components/Headers";
 import Enchere from "./components/Enchere";

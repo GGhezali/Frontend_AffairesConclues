@@ -7,13 +7,22 @@ import { useSelector } from "react-redux";
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
-  const lastAcheteur = props.acheteur[props.acheteur.length - 1];
+  let lastAcheteur = "";
+    if (props.acheteur.length > 0) {
+      lastAcheteur = props.acheteur[props.acheteur.length - 1];
+    }
+
 
   let titre = "";
   if (props.titre.length > 25) {
     titre = props.titre.substring(0, 25) + "...";
   } else {
     titre = props.titre;
+  }
+
+  let photo = props.photoUrl[0];
+  if (props.photoUrl.length === 0) {
+    photo = "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"
   }
 
   let iconName = "clock-rotate-left";
@@ -47,7 +56,7 @@ export default function Enchere(props) {
     >
       <View style={styles.leftContent}>
         <Text style={styles.titre}>{titre}</Text>
-        <Image alt="picture" style={styles.picture} />
+          <Image style={styles.picture} source={{uri: photo}} />
       </View>
       <View style={styles.rightContent}>
           <View style={styles.icon}>
@@ -90,10 +99,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   picture: {
-    backgroundColor: "grey",
     width: 110,
     height: 130,
     borderRadius: 10,
+    resizeMode: "contain",
   },
   titre: {
     textAlign: "left",
