@@ -11,9 +11,14 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Article(props) {
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  const user = useSelector((state) => state.user.value);
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   let titre = ""
   if (props.titre && props.titre.length > 40) {
@@ -27,12 +32,48 @@ export default function Article(props) {
     photo = "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"
   }
 
+  useEffect(() => {
+      (async () => {
+        // Fetch useurId from the backend -------------------------------
+        const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: user.token,
+        }),
+      });
+      const userIdData = await userIdResponse.json();
+      setUserId(userIdData.userId);
+      // -------------------------------------------------------------- 
+            
+      })();
+    }, []);
+
+const handleBookmark = async () => {
+  if (user.token) {
+  const response = await fetch(`${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      articleId: props._id,
+    }),
+  })
+  const data = await response.json();
+}
+}
+
+//Gerer la couleur du bouton bookmark
+//au chargement de la page, les bookmark dejà présent doivent etre afficher en vert
+
   let bookmarkIcon = (
     <FontAwesome
       name={"bookmark-o"}
       size={25}
       color={"#39D996"}
-      onPress={() => setIsBookmarked(!isBookmarked)}
     />
   );
   let bookmarkStyle = styles.notBookmarked;
@@ -43,7 +84,6 @@ export default function Article(props) {
         name={"bookmark"}
         size={20}
         color={"white"}
-        onPress={() => setIsBookmarked(!isBookmarked)}
       />
     );
     bookmarkStyle = styles.bookmarked;
@@ -60,7 +100,7 @@ export default function Article(props) {
       <Text style={styles.titre}>{titre}</Text>
       <Image style={styles.picture} source={{uri: photo}} />
       <View style={styles.bookmarkContainer}>
-        <TouchableOpacity style={bookmarkStyle}>
+        <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
           {bookmarkIcon}
         </TouchableOpacity>
       </View>

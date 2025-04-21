@@ -11,6 +11,7 @@ import {
 import Headers from "./components/Headers";
 import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import ImageSlider from 'react-native-image-slider';
 
 export default function AnnonceScreen({ route }) {
   const props = route.params;
@@ -22,6 +23,10 @@ export default function AnnonceScreen({ route }) {
   const [buyer, setBuyer] = useState(null);
   const [allArticles, setAllArticles] = useState([]);
   
+  let photo = props.photoUrl;
+  if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
+    photo = ["https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"]
+  }
 
   const toggleVendeur = () => {
       setContactModalVisible(true);
@@ -66,7 +71,12 @@ export default function AnnonceScreen({ route }) {
         <View style={styles.container}>
           <Text style={styles.title}>{props.titre}</Text>
           <View style={styles.pictureContainer}>
-            <Image style={styles.picture} alt="Images" />
+          <ImageSlider images={photo} customSlide={({ index, item, style, width }) => (
+            // It's important to put style here because it's got offset inside
+            <View key={index} style={[style, styles.pictureSlider]}>
+              <Image source={{ uri: item }} style={styles.picture} />
+            </View>
+          )}/>
             <View style={styles.iconContainer}>
               <TouchableOpacity style={styles.icon}>
                 <FontAwesome
@@ -167,12 +177,15 @@ const styles = StyleSheet.create({
   pictureContainer: {
     width: "100%",
     height: 500,
-    backgroundColor: "grey",
     marginBottom: 20,
     alignItems: "center",
   },
+  pictureSlider: {
+    height: "100%",
+  },
   picture: {
     height: "88%",
+    resizeMode: "contain",
   },
   iconContainer: {
     flexDirection: "row",
