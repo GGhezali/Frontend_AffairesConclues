@@ -276,7 +276,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dcdedf",
     maxHeight: 150,
-    zIndex: 10,
+    zIndex: 10, // Assurez-vous que c'est suffisamment élevé
+    elevation: 5, // Ajoutez une légère élévation pour Android
   },
   dropdownItem: {
     paddingVertical: 10,
