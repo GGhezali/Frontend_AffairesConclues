@@ -28,21 +28,6 @@ export default function PageAcceuilScreen({ navigation }) {
   const isFocused = useIsFocused();
   
   
-
-  const handleSearch = (text) => {
-    setSearchText(text);
-
-    fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: text, author: text }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setAllArticles(data.data); // Met à jour les articles affichés
-      })
-      .catch((error) => console.error("Erreur lors de la recherche :", error));
-  };
  
 
   const onRefresh = React.useCallback(() => {
@@ -127,6 +112,21 @@ export default function PageAcceuilScreen({ navigation }) {
         setAllArticles(data.data);
       });
   };
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+    fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: text, author: text }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setAllArticles(data.data); // Met à jour les articles affichés
+      })
+      .catch((error) => console.error("Erreur lors de la recherche :", error));
+  };
+
   const article = allArticles.sort((a, b) => b.timer - a.timer).map((data, i) => {
     if (!data.isDone) {
 
