@@ -29,40 +29,45 @@ export default function Dropdowns(props) {
   const [editeur, setEditeur] = useState([]); 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
+  // Ouvre le dropdown "Catégorie" et ferme tous les autres
   const toggleCategorieDropdown = () => {
-    setCategorieDropdownVisible(!isCategorieDropdownVisible); // Open dropdown
-    setTriDropdownVisible(false); // Close other dropdown
-    setStateDropdownVisible(false); // Close other dropdown
-    setAuteurDropdownVisible(false); // Close other dropdown
-    setEditeurDropdownVisible(false); // Close other dropdown
+    setCategorieDropdownVisible(!isCategorieDropdownVisible);
+    setTriDropdownVisible(false);
+    setStateDropdownVisible(false);
+    setAuteurDropdownVisible(false);
+    setEditeurDropdownVisible(false);
   };
+  // Ouvre le dropdown "Trier par" et ferme tous les autres
   const toggleTriDropdown = () => {
-    setTriDropdownVisible(!isTriDropdownVisible); // Open dropdown
-    setCategorieDropdownVisible(false); // Close other dropdown
-    setStateDropdownVisible(false); // Close other dropdown
-    setAuteurDropdownVisible(false); // Close other dropdown 
-    setEditeurDropdownVisible(false); // Close other dropdown 
+    setTriDropdownVisible(!isTriDropdownVisible);
+    setCategorieDropdownVisible(false);
+    setStateDropdownVisible(false);
+    setAuteurDropdownVisible(false);
+    setEditeurDropdownVisible(false);
   };
+  // Ouvre le dropdown "Etat" et ferme tous les autres
   const toggleStateDropdown = () => {
-    setStateDropdownVisible(!isStateDropdownVisible); // Open dropdown
-    setCategorieDropdownVisible(false); // Close other dropdown
-    setTriDropdownVisible(false); // Close other dropdown
-    setAuteurDropdownVisible(false); // Close other dropdown
-    setEditeurDropdownVisible(false); // Close other dropdown
+    setStateDropdownVisible(!isStateDropdownVisible);
+    setCategorieDropdownVisible(false);
+    setTriDropdownVisible(false);
+    setAuteurDropdownVisible(false);
+    setEditeurDropdownVisible(false);
   };
+  // Ouvre le dropdown "Auteur" et ferme tous les autres
   const toggleAuteurDropdown = () => {
-    setAuteurDropdownVisible(!isAuteurDropdownVisible); // Open dropdown
-    setCategorieDropdownVisible(false); // Close other dropdown
-    setTriDropdownVisible(false); // Close other dropdown
-    setStateDropdownVisible(false); // Close other dropdown
-    setEditeurDropdownVisible(false); // Close other dropdown
+    setAuteurDropdownVisible(!isAuteurDropdownVisible);
+    setCategorieDropdownVisible(false);
+    setTriDropdownVisible(false);
+    setStateDropdownVisible(false);
+    setEditeurDropdownVisible(false);
   };
+  // Ouvre le dropdown "Editeur" et ferme tous les autres
   const toggleEditeurDropdown = () => {
-    setEditeurDropdownVisible(!isEditeurDropdownVisible); // Open dropdown
-    setCategorieDropdownVisible(false); // Close other dropdown
-    setTriDropdownVisible(false); // Close other dropdown
-    setStateDropdownVisible(false); // Close other dropdown
-    setAuteurDropdownVisible(false); // Close other dropdown  
+    setEditeurDropdownVisible(!isEditeurDropdownVisible);
+    setCategorieDropdownVisible(false);
+    setTriDropdownVisible(false);
+    setStateDropdownVisible(false);
+    setAuteurDropdownVisible(false);  
   };
 
   useEffect(() => {
@@ -195,7 +200,7 @@ export default function Dropdowns(props) {
         style={styles.triContainer}
         isVisible={isTriDropdownVisible}
         toggleVisibility={toggleTriDropdown}
-        data={[{ value: "Le plus récent" }, { value: "Prix croissant" }]}
+        data={[{ value: "Le plus récent" }, { value: "Le plus ancien"}, { value: "Prix croissant" }, { value: "Prix décroissant" }]}
         onSelect={(item) => selectTri(item)}
         placeholder="Trier par"
         selectedValue={selectedTri}
