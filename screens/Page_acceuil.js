@@ -115,7 +115,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <View style={styles.placeholderContainer}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076549.png",
+            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png",
           }}
           style={styles.placeholderImage}
         />

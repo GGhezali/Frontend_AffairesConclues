@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Image,
 } from "react-native";
 import Headers from "./components/Headers";
 
@@ -76,8 +77,9 @@ export default function MesFavorisScreen({ navigation }) {
     setRefreshControl(!refreshControl);
   };
 
+  let article;
   if (allArticles.length === 0) {
-    const article = (
+    article = (
       <View style={styles.placeholderContainer}>
         <Image
           source={{
@@ -91,7 +93,7 @@ export default function MesFavorisScreen({ navigation }) {
       </View>
     );
   } else {
-    const article = allArticles
+    article = allArticles
       .sort((a, b) => b.timer - a.timer)
       .map((data, i) => {
         if (!data.isDone) {
