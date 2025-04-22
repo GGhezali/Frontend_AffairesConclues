@@ -11,17 +11,19 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
-import { addBookmark, removeBookmark } from "../../reducers/bookmarks";
-import { useDispatch } from "react-redux";
+import { updateBookmark } from "../../reducers/bookmarks";
 
 export default function Article(props) {
   const [bookmarkedColor, setBookmarkedColor] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
+  const [articleBookmark, setArticleBookmark] = useState(false);
 
   const user = useSelector((state) => state.user.value);
+  const bookmarks = useSelector((state) => state.bookmarks.value);
+  console.log("bookmarks", bookmarks);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const dispatch = useDispatch();
 
@@ -56,9 +58,24 @@ export default function Article(props) {
       const userIdData = await userIdResponse.json();
       setUserId(userIdData.userId);
       // --------------------------------------------------------------
-      
+      //Fetch les articlesID des bookmarks de l'utilisateur
+      const articlesIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
+      );
+      const articlesIdData = await articlesIdResponse.json();
+      dispatch(updateBookmark(articlesIdData.bookmarks));
+      //check if the article is bookmarked
+      const isBookmarked = articlesIdData.bookmarks.some(
+        (article) => article === props._id
+      );
+      setArticleBookmark(isBookmarked);
+      if (isBookmarked) {
+        setBookmarkedColor(true);
+      } else {
+        setBookmarkedColor(false);
+      }
     })();
-  }, [isFocused]);
+  }, [isFocused, bookmarkedColor]);
 
   let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
@@ -71,10 +88,32 @@ export default function Article(props) {
   }
 
   const handleBookmark = async () => {
-    console.log("click ok")
     if (user.token) {
       setBookmarkedColor(!bookmarkedColor);
-      dispatch(addBookmark(props))
+
+      const bookmarkResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            articleId: props._id,
+          }),
+        }
+      );
+      const bookmarkData = await bookmarkResponse.json();
+      if (bookmarkData.result) {
+        alert(bookmarkData.message);
+      } else {
+        alert(bookmarkData.error);
+      }
+
+      dispatch(updateBookmark(props._id));
+    }
+    else {
+      alert("Veuillez vous connecter pour ajouter un article aux favoris.");
     }
   };
 

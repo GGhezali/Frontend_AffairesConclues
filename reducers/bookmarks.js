@@ -8,15 +8,17 @@ export const bookmarksSlice = createSlice({
 	name: 'bookmarks',
 	initialState,
 	reducers: {
+		updateBookmark: (state, action) => {
+			state.value = action.payload;
+		},
 		addBookmark: (state, action) => {
 			state.value.push(action.payload);
-            console.log(action.payload)
 		},
 		removeBookmark: (state, action) => {
-			state.value = state.value.filter(bookmark => bookmark.title !== action.payload.title);
+			state.value = state.value.filter((bookmark) => bookmark !== action.payload);
 		},
 	},
 });
 
-export const { addBookmark, removeBookmark } = bookmarksSlice.actions;
+export const { updateBookmark, addBookmark, removeBookmark } = bookmarksSlice.actions;
 export default bookmarksSlice.reducer;

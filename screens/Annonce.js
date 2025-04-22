@@ -13,7 +13,8 @@ import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ImageSlider from 'react-native-image-slider';
 import { useIsFocused } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addBookmark, removeBookmark } from "../reducers/bookmarks";
 
 export default function AnnonceScreen({ route }) {
   const routeParams = route.params;
@@ -25,8 +26,11 @@ export default function AnnonceScreen({ route }) {
   const [buyer, setBuyer] = useState(null);
   const [userId, setUserId] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
+
   const isFocused = useIsFocused();
   const user = useSelector((state) => state.user.value);
+  const bookmarks = useSelector((state) => state.bookmarks.value);
+  const dispatch = useDispatch();
 
   const [timeRemaining, setTimeRemaining] = useState("");
   
@@ -90,14 +94,67 @@ export default function AnnonceScreen({ route }) {
         ;})
   },[!miseModalVisible]);
 
+
 let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
   );
 let bookmarkStyle = styles.notBookmarked;
 
-  if (isBookmarked) {
+  if (bookmarks && bookmarks.some((article) => article === routeParams._id)) {
     bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;
     bookmarkStyle = styles.bookmarked;
+  }
+
+useEffect(() => {
+    (async () => {
+      // Fetch useurId from the backend -------------------------------
+      const userIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: user.token,
+          }),
+        }
+      );
+      const userIdData = await userIdResponse.json();
+      setUserId(userIdData.userId);
+      // --------------------------------------------------------------
+      
+    })();
+  }, [isFocused]);
+
+  const handleBookmark = async () => {
+    if (user.token) {
+      const bookmarkResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            articleId: routeParams._id,
+          }),
+        }
+      );
+      const bookmarkData = await bookmarkResponse.json();
+      if (bookmarkData.result ) {
+        if (bookmarkData.message === "Article ajouté aux favoris.") {
+          dispatch(addBookmark(routeParams._id));
+        } else if (bookmarkData.message === "Article retiré des favoris.") {
+          dispatch(removeBookmark(routeParams._id));
+        }
+        alert(bookmarkData.message);
+      } else {
+        alert(bookmarkData.error);
+      }
+    } else {
+      alert("Veuillez vous connecter pour ajouter un article aux favoris.");
+    }
   }
 
   return (
@@ -127,7 +184,7 @@ let bookmarkStyle = styles.notBookmarked;
                   onPress={() => route.params.navigation.navigate("Carte", routeParams.localisation)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={bookmarkStyle}>
+              <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
                {bookmarkIcon}
               </TouchableOpacity>
             </View>
