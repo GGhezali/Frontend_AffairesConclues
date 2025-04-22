@@ -34,6 +34,7 @@ export default function Headers({
   if (isReturn) {
     return (
       <ImageBackground
+        source={require("../../assets/header.png")}
         style={styles.header}
       >
         <AntDesign
@@ -50,6 +51,7 @@ export default function Headers({
   if (isHome) {
     return (
       <ImageBackground
+        source={require("../../assets/header.png")}
         style={styles.header}
       >
         <View style={styles.searchcontainer}>
@@ -73,6 +75,7 @@ export default function Headers({
   if (isNavigation) {
     return (
       <ImageBackground
+      source={require("../../assets/header.png")}
       style={styles.header}
     >
         <TouchableOpacity
@@ -103,7 +106,6 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     paddingTop: 10,
     borderBottomColor: "#000000",
-    borderBottomWidth: 3,
   },
   return: {
     position: "absolute",
