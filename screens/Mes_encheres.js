@@ -95,7 +95,7 @@ export default function MesEncheresScreen({ navigation }) {
       setTotal("0.00");
     }
   }, [allArticles]);
-
+ 
   // Placeholder ou enchères
   let encheres;
 
