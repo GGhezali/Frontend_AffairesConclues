@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "80%",
     height: 40,
+
   },
 
   textConnexion: {
@@ -120,10 +121,12 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
+    marginTop: 8,
+  
   },
   emailText: {
     display: "flex",
     justifyContent: "flex-start",
+    marginTop: -100,
   },
 });
