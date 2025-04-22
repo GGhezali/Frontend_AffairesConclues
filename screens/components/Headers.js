@@ -33,9 +33,7 @@ export default function Headers({
   if (isReturn) {
     return (
       <LinearGradient
-        start={[0, 1]}
-        end={[1, 0]}
-        colors={["#E1F2B4", "#B1CF5F"]}
+        colors={["#EF8F57", "#EF8F57"]}
         style={styles.header}
       >
         <AntDesign
@@ -52,9 +50,7 @@ export default function Headers({
   if (isHome) {
     return (
       <LinearGradient
-        start={[0, 1]}
-        end={[1, 0]}
-        colors={["#E1F2B4", "#B1CF5F"]}
+        colors={["#EF8F57", "#EF8F57"]}
         style={styles.header}
       >
         <View style={styles.searchcontainer}>
@@ -67,7 +63,7 @@ export default function Headers({
           <FontAwesome
             name={connectIcon}
             size={30}
-            color={"#1B512D"}
+            color={"#753742"}
             onPress={() => navigation.navigate("ConnexionInscription")}
           />
         </TouchableOpacity>
@@ -78,9 +74,7 @@ export default function Headers({
   if (isNavigation) {
     return (
       <LinearGradient
-        start={[0, 1]}
-        end={[1, 0]}
-        colors={["#E1F2B4", "#B1CF5F"]}
+        colors={["#EF8F57", "#EF8F57"]}
         style={styles.header}
       >
         <TouchableOpacity
@@ -89,7 +83,7 @@ export default function Headers({
             navigation.navigate("TabNavigator", { screen: "Acceuil" })
           }
         >
-          <AntDesign name={"home"} size={30} color={"#1B512D"} />
+          <AntDesign name={"home"} size={30} color={"#753742"} />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </LinearGradient>
@@ -102,9 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
-  title: {
-    fontSize: 20,
-  },
   header: {
     height: 125,
     width: "100%",
@@ -112,20 +103,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 10,
-    borderBottomColor: "#94a075",
-    borderBottomWidth: 3,
+
   },
   return: {
     position: "absolute",
     left: 10,
     top: 50,
-    color: "#1B512D",
+    color: "#380F05",
   },
   title: {
     position: "center",
     fontSize: 24,
     fontFamily: "Roboto",
-    color: "#1B512D",
+    color: "#380F05",
   },
   searchcontainer: {
     width: "88%",
@@ -141,7 +131,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     borderWidth: 1,
     borderRightWidth: 0,
-    borderColor: "#1B512D",
+    borderColor: "#753742",
     paddingLeft: 10,
     marginTop: 20,
     marginLeft: 15,
@@ -153,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#1B512D",
+    borderColor: "#753742",
     borderLeftWidth: 0,
     borderTopRightRadius: 50,
     borderBottomRightRadius: 50,
@@ -164,13 +154,13 @@ const styles = StyleSheet.create({
   connection: {
     marginTop: 20,
     marginRight: 10,
-    color: "#1B512D",
+    color: "#753742",
     height: 50,
     width: 50,
     backgroundColor: "#fff",
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: "#1B512D",
+    borderColor: "#753742",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -185,10 +175,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: "#1B512D",
+    borderColor: "#753742",
   },
   home: {
     fontSize: 20,
-    color: "#1B512D",
+    color: "#753742",
   },
 });

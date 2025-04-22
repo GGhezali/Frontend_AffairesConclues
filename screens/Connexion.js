@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
   },
   topLeft: {
     position: "absolute",
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   connexion: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
     height: 40,

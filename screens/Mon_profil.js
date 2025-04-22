@@ -32,20 +32,20 @@ export default function MonProfilScreen({ navigation }) {
 
       <View style={styles.inputsContainer}>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesInformations")}>
-          <Text>Mes informations</Text>
-          <AntDesign name={'caretright'} size={12} />
+          <Text style={styles.textbutton} >Mes informations</Text>
+          <AntDesign name={'caretright'} size={12} color={"white"} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesPublications")}>
-          <Text>Mes publications</Text>
-          <AntDesign name={'caretright'} size={12} />
+          <Text style={styles.textbutton}>Mes publications</Text>
+          <AntDesign name={'caretright'} size={12} color={"white"} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesFavoris")}>
-          <Text>Mes favoris</Text>
-          <AntDesign name={'caretright'} size={12} />
+          <Text style={styles.textbutton}>Mes favoris</Text>
+          <AntDesign name={'caretright'} size={12} color={"white"} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.inputs} onPress={() => navigation.navigate("MesEncheres")}>
-          <Text>Mes enchères</Text>
-          <AntDesign name={'caretright'} size={12} />
+          <Text style={styles.textbutton}>Mes enchères</Text>
+          <AntDesign name={'caretright'} size={12} color={"white"} />
         </TouchableOpacity>
       </View>
 
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: '#f5fcee',
+    backgroundColor: '#FFF8EF',
   },
   header: {
     position: 'absolute',
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   inputs: {
-    backgroundColor: '#a0d9c1',
+    backgroundColor: '#AA5042',
     width: '70%',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -90,8 +90,15 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20
   },
+  textbutton: {
+    color: '#fff',
+    fontSize: 16,
+    marginRight: 10,
+    textAlign: 'center',
+    width: '80%',
+  },
   logout: {
-    backgroundColor: '#1c7c54',
+    backgroundColor: '#380F05',
     width: '70%',
     flexDirection: 'row',
     justifyContent: 'center',
