@@ -35,7 +35,7 @@ export default function AnnonceScreen({ route }) {
     photo = ["https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"]
   }
 
-  const toggleVendeur = () => {
+  const toggleVendeur = () => { 
       setContactModalVisible(true);
   };
   const toggleCloseVendeur = () => {
