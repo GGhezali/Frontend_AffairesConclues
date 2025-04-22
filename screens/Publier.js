@@ -203,13 +203,13 @@ export default function PublierScreen({ navigation }) {
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
+          <Dropdowns isCategory={true} handleCategorie={handleCategorie} />
           <Dropdowns isState={true} handleEtat={handleEtat} />
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isAuteur={true} handleAuteur={handleAuteur} />
-          <Dropdowns isEditeur={true} handleEditeur={handleEditeur} />
+          <Dropdowns isAuthor={true} handleAuteur={handleAuteur} />
+          <Dropdowns isEditor={true} handleEditeur={handleEditeur} />
         </View>
 
         <ScrollView style={styles.container}>

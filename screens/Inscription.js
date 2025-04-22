@@ -78,7 +78,9 @@ export default function InscriptionScreen({ navigation }) {
         </View>
         <Text style={styles.passwordText}>Password</Text>
         <View style={styles.centerIcon}>
+        
           <View style={styles.input}>
+            
             <TextInput
               secureTextEntry={true}
               onChangeText={(value) => setPassword(value)}
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#dcdedf",
     width: "80%",
-    height: 60,
+    height: 40,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
-    height: 40,
+    height: 45,
     marginTop: 60,
   },
 
@@ -166,9 +168,13 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
+ marginTop: 10,
   },
   emailText: {
+    display: "flex",
+    justifyContent: "flex-start",
+  },
+  passwordText: {
     display: "flex",
     justifyContent: "flex-start",
   },

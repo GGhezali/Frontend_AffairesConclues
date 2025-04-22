@@ -13,7 +13,6 @@ import { useIsFocused } from "@react-navigation/native";
 import Article from "./components/Article";
 import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
-import { useSelector } from "react-redux";
 
 export default function PageAcceuilScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
@@ -23,9 +22,6 @@ export default function PageAcceuilScreen({ navigation }) {
   const [searchText, setSearchText] = useState("");
   const isFocused = useIsFocused();
 
-  const bookmarks = useSelector((state) => state.bookmarks.value);
-  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS; 
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -33,13 +29,15 @@ export default function PageAcceuilScreen({ navigation }) {
     }, 2000);
   }, []);
 
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+
   useEffect(() => {
     (async () => {
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.data);
 
-      // Vérifie les articles expirés et met à jour `isDone`
+      // ✅ Vérifie les articles expirés et met à jour `isDone`
       let listId = articlesData.data
         .map((data) => {
           const now = new Date();
@@ -60,7 +58,7 @@ export default function PageAcceuilScreen({ navigation }) {
         });
       }
     })();
-  }, [refreshing, isFocused, bookmarks]);
+  }, [refreshing, isFocused]);
 
   const handleCategorie = (categorie) => {
     setCategorie(categorie);
@@ -115,7 +113,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <View style={styles.placeholderContainer}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png",
+            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076549.png",
           }}
           style={styles.placeholderImage}
         />
@@ -141,8 +139,8 @@ export default function PageAcceuilScreen({ navigation }) {
       />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
-          <Dropdown isCategorie={true} handleCategorie={handleCategorie} />
-          <Dropdown isTri={true} handleTri={handleTri} />
+          <Dropdown isCategory={true} handleCategorie={handleCategorie} />
+          <Dropdown isSorting={true} handleTri={handleTri} />
         </View>
         <ScrollView
           style={styles.scrollview}
