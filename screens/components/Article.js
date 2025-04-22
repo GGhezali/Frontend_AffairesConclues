@@ -104,11 +104,6 @@ export default function Article(props) {
         }
       );
       const bookmarkData = await bookmarkResponse.json();
-      if (bookmarkData.result) {
-        alert(bookmarkData.message);
-      } else {
-        alert(bookmarkData.error);
-      }
 
       dispatch(updateBookmark(props._id));
     }

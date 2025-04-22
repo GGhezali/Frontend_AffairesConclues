@@ -148,7 +148,6 @@ useEffect(() => {
         } else if (bookmarkData.message === "Article retiré des favoris.") {
           dispatch(removeBookmark(routeParams._id));
         }
-        alert(bookmarkData.message);
       } else {
         alert(bookmarkData.error);
       }
