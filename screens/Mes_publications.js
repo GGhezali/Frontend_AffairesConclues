@@ -10,7 +10,6 @@ import {
 import { useIsFocused } from "@react-navigation/native";
 import Headers from "./components/Headers";
 import Article from "./components/Article";
-import Dropdown from "./components/Dropdowns";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 

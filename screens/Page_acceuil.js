@@ -21,6 +21,7 @@ export default function PageAcceuilScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchText, setSearchText] = useState("");
   const isFocused = useIsFocused();
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   
   const origin = "PageAcceuilScreen";
  
@@ -32,15 +33,13 @@ export default function PageAcceuilScreen({ navigation }) {
     }, 2000);
   }, []);
 
-  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
-
   useEffect(() => {
     (async () => {
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.data);
 
-      // ✅ Vérifie les articles expirés et met à jour `isDone`
+      // Vérifie les articles expirés et met à jour `isDone`
       let listId = articlesData.data
         .map((data) => {
           const now = new Date();
