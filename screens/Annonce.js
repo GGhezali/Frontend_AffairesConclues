@@ -25,10 +25,10 @@ export default function AnnonceScreen({ route }) {
   const [buyer, setBuyer] = useState(null);
   const [userId, setUserId] = useState(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
-
   const isFocused = useIsFocused();
-  
   const user = useSelector((state) => state.user.value);
+
+  const [timeRemaining, setTimeRemaining] = useState("");
   
   let photo = routeParams.photoUrl;
   if (routeParams.photoUrl.length === 0 || routeParams.photoUrl === undefined) {
@@ -51,6 +51,30 @@ export default function AnnonceScreen({ route }) {
   const toggleCloseMise = () => {
     setMiseModalVisible(false);
   };
+
+  const calculateTimeRemaining = () => {
+    const now = new Date();
+    const endTime = new Date(new Date(routeParams.timer).getTime() + 24 * 60 * 60 * 1000); // Add 24 hours to creation date
+    const timeLeft = endTime.getTime() - now.getTime();
+
+    if (timeLeft <= 0) {
+      setTimeRemaining("Vente terminée");
+      return;
+    }
+
+    const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    setTimeRemaining(`${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`);
+  };
+
+  useEffect(() => {
+    calculateTimeRemaining(); // Initial calculation
+    const interval = setInterval(calculateTimeRemaining, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [routeParams.timer]);
 
   useEffect(() => {
       //------- fetch articles from the backend---------------------------
@@ -145,7 +169,8 @@ let bookmarkStyle = styles.notBookmarked;
             </View>
           </View>
           <View style={styles.timerContainer}>
-            <Text style={styles.timer}>{routeParams.timer}</Text>
+          <Text style={styles.timer}>Temps restant</Text>
+          <Text style={styles.timer}>{timeRemaining}</Text>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.buttonContact} onPress={() => toggleVendeur()}>
