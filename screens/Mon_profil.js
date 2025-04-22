@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Platform, StatusBar  } from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Headers from "./components/Headers";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../reducers/user";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function MonProfilScreen({ navigation }) {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused(); // Hook pour savoir si l'écran est en focus
+  const user = useSelector((state) => state.user.value); // Récupération de l'utilisateur depuis le store Redux
 
   const handleLogout = () => {
     // Dispatch the logout action to the Redux store
     dispatch(logout());
     navigation.navigate("TabNavigator", { screen: "Acceuil" });
   }
+
+    useEffect(() => {
+      if (!user.token) {
+        navigation.navigate('ConnexionInscription')
+      }
+    }, [isFocused]);
   
   return (
     <SafeAreaView  style={styles.safeareaview}>
