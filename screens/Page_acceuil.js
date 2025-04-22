@@ -21,6 +21,9 @@ export default function PageAcceuilScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchText, setSearchText] = useState("");
   const isFocused = useIsFocused();
+  
+  const origin = "PageAcceuilScreen";
+ 
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -125,7 +128,7 @@ export default function PageAcceuilScreen({ navigation }) {
   } else {
     // Sinon, afficher les articles normalement
     article = articleList.map((data, i) => (
-      <Article key={i} navigation={navigation} {...data} />
+      <Article key={i} navigation={navigation} origin={origin} {...data} />
     ));
   }
 
