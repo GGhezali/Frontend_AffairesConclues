@@ -204,13 +204,13 @@ export default function PublierScreen({ navigation }) {
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
+          <Dropdowns isCategory={true} handleCategorie={handleCategorie} />
           <Dropdowns isState={true} handleEtat={handleEtat} />
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isAuteur={true} handleAuteur={handleAuteur} />
-          <Dropdowns isEditeur={true} handleEditeur={handleEditeur} />
+          <Dropdowns isAuthor={true} handleAuteur={handleAuteur} />
+          <Dropdowns isEditor={true} handleEditeur={handleEditeur} />
         </View>
 
         <ScrollView style={styles.container}>
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     margin: 13,
   },
   button1: {
-    backgroundColor: "#A0D9C1",
+    backgroundColor: "#AA5042",
     borderRadius: 30,
     width: "42%",
     height: 40,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button2: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     padding: 3,
     borderRadius: 30,
     width: "100%",
@@ -357,7 +357,6 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
   },
   datalistInput: {
     marginBottom: 15,

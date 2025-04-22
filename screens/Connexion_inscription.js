@@ -56,23 +56,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
   },
   header: {
     alignItems: "flex-start",
   },
 
   connexion: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
     height: "40",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
+    marginTop: -110,
   },
   inscription: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
     height: "40",
@@ -87,6 +88,6 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
+
   },
 });

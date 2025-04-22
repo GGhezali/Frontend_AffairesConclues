@@ -78,7 +78,9 @@ export default function InscriptionScreen({ navigation }) {
         </View>
         <Text style={styles.passwordText}>Password</Text>
         <View style={styles.centerIcon}>
+        
           <View style={styles.input}>
+            
             <TextInput
               secureTextEntry={true}
               onChangeText={(value) => setPassword(value)}
@@ -91,7 +93,7 @@ export default function InscriptionScreen({ navigation }) {
                 <Ionicons
                   name="information-circle-outline"
                   size={28}
-                  color="#007AFF"
+                  color="#AA5042"
                 />
               </TouchableOpacity>
             </View>
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
   },
   header: {
     position: "absolute",
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#dcdedf",
     width: "80%",
-    height: 60,
+    height: 40,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -153,10 +155,10 @@ const styles = StyleSheet.create({
   },
 
   greenButton: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
-    height: 40,
+    height: 45,
     marginTop: 60,
   },
 
@@ -166,9 +168,13 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
+ marginTop: 10,
   },
   emailText: {
+    display: "flex",
+    justifyContent: "flex-start",
+  },
+  passwordText: {
     display: "flex",
     justifyContent: "flex-start",
   },

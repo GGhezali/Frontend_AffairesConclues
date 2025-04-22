@@ -13,145 +13,105 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 
 export default function Dropdowns(props) {
-  const { isCategorie, isTri, isState, isAuteur, isEditeur } = props;
+  // Destructure les props pour obtenir les valeurs nécessaires
+  const { isCategory, isSorting, isState, isAuthor, isEditor } = props;
 
-  const [isCategorieDropdownVisible, setCategorieDropdownVisible] = useState(false);
-  const [isTriDropdownVisible, setTriDropdownVisible] = useState(false);
+  // Etats pour gérer la visibilité des dropdowns et les valeurs sélectionnées
+  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
+  const [isSortingDropdownVisible, setSortingDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
-  const [isAuteurDropdownVisible, setAuteurDropdownVisible] = useState(false);
-  const [isEditeurDropdownVisible, setEditeurDropdownVisible] = useState(false);
-  const [selectedCategorie, setSelectedCategorie] = useState("");
-  const [selectedTri, setSelectedTri] = useState("");
+  const [isAuthorDropdownVisible, setAuthorDropdownVisible] = useState(false);
+  const [isEditorDropdownVisible, setEditorDropdownVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSorting, setSelectedSorting] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const [selectedAuteur, setSelectedAuteur] = useState("");
-  const [selectedEditeur, setSelectedEditeur] = useState("");
+  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const [selectedEditor, setSelectedEditor] = useState("");
   const [categories, setCategories] = useState([]);
   const [state, setState] = useState([]);
-  const [auteur, setAuteur] = useState([]); 
-  const [editeur, setEditeur] = useState([]); 
+  const [auteur, setAuteur] = useState([]);
+  const [editeur, setEditeur] = useState([]);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
-  // Ouvre le dropdown "Catégorie" et ferme tous les autres
-  const toggleCategorieDropdown = () => {
-    setCategorieDropdownVisible(!isCategorieDropdownVisible);
-    setTriDropdownVisible(false);
-    setStateDropdownVisible(false);
-    setAuteurDropdownVisible(false);
-    setEditeurDropdownVisible(false);
+  // Ouvre le dropdown "Catégorie"
+  const toggleCategoryDropdown = () => {
+    setCategoryDropdownVisible(!isCategoryDropdownVisible);
   };
-  // Ouvre le dropdown "Trier par" et ferme tous les autres
+  // Ouvre le dropdown "Trier par"
   const toggleTriDropdown = () => {
-    setTriDropdownVisible(!isTriDropdownVisible);
-    setCategorieDropdownVisible(false);
-    setStateDropdownVisible(false);
-    setAuteurDropdownVisible(false);
-    setEditeurDropdownVisible(false);
+    setSortingDropdownVisible(!isSortingDropdownVisible);
   };
-  // Ouvre le dropdown "Etat" et ferme tous les autres
+  // Ouvre le dropdown "Etat"
   const toggleStateDropdown = () => {
     setStateDropdownVisible(!isStateDropdownVisible);
-    setCategorieDropdownVisible(false);
-    setTriDropdownVisible(false);
-    setAuteurDropdownVisible(false);
-    setEditeurDropdownVisible(false);
   };
-  // Ouvre le dropdown "Auteur" et ferme tous les autres
+  // Ouvre le dropdown "Auteur"
   const toggleAuteurDropdown = () => {
-    setAuteurDropdownVisible(!isAuteurDropdownVisible);
-    setCategorieDropdownVisible(false);
-    setTriDropdownVisible(false);
-    setStateDropdownVisible(false);
-    setEditeurDropdownVisible(false);
+    setAuthorDropdownVisible(!isAuthorDropdownVisible);
   };
-  // Ouvre le dropdown "Editeur" et ferme tous les autres
+  // Ouvre le dropdown "Editeur"
   const toggleEditeurDropdown = () => {
-    setEditeurDropdownVisible(!isEditeurDropdownVisible);
-    setCategorieDropdownVisible(false);
-    setTriDropdownVisible(false);
-    setStateDropdownVisible(false);
-    setAuteurDropdownVisible(false);  
+    setEditorDropdownVisible(!isEditorDropdownVisible);
   };
 
   useEffect(() => {
-    // Fetch categories from the backend-----------------------------------------------------------------------
     (async () => {
+      // Fetch les catégories depuis le backend
       const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
       const categoriesData = await categoriesResponse.json();
-      //console.log("categoriesData", categoriesData);
       setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
 
-      //--------------------------------------------------------------------------------------------------------
-
-      // Fetch states from the backend--------------------------------------------------------------------------
-
+      // Fetch les états depuis le backend
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();
-      //console.log("stateData", stateData);
       setState(stateData.etats);
 
-      //--------------------------------------------------------------------------------------------------------
-
-      // Fetch auteurs from the backend ---------------------------------
-    
+      // Fetch les auteurs depuis le backend
       const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const auteursData = await auteursResponse.json();
-      //console.log("auteurData", auteursData);
-      const sortedAuteurList = auteursData.auteurs.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
-      
+      const sortedAuteurList = auteursData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
       setAuteur(sortedAuteurList);
 
-      //console.log("sortedAuteurList", sortedAuteurList);
-      // --------------------------------------------------------------
-
-      // Fetch editeurs from the backend ---------------------------------
+      // Fetch les editeurs depuis le backend
       const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editeursData = await editeursResponse.json();
-      //console.log("editeurData", editeursData);
-
-      const sortedEditeurList = editeursData.editeurs.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
-
-      //console.log("sortedEditeurList", sortedEditeurList);
-
+      const sortedEditeurList = editeursData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
       setEditeur(sortedEditeurList);
-
-      // --------------------------------------------------------------
     })();
   }, []);
 
+  // Fonctions pour gérer la sélection de l'élément "Catégorie"
+  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Catégorie"
   const selectCategorie = (item) => {
-    setSelectedCategorie(item.value);
+    setSelectedCategory(item.value);
     props.handleCategorie(item.value);
   };
+  // Fonction pour gérer la sélection de l'élément "Trier par"
+  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Trier par"
   const selectTri = (item) => {
-    setSelectedTri(item.value);
+    setSelectedSorting(item.value);
     props.handleTri(item.value);
   }
+  // Fonction pour gérer la sélection de l'élément "Etat"
+  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Etat"
   const selectEtat = (item) => {
     setSelectedState(item.value);
     props.handleEtat(item.value);
   };
+  // Fonction pour gérer la sélection de l'élément "Auteur"
+  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Auteur"
   const selectAuteur = (item) => {
-    setSelectedAuteur(item.value);
+    setSelectedAuthor(item.value);
     props.handleAuteur(item.value);
   };
+  // Fonction pour gérer la sélection de l'élément "Editeur"
+  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Editeur"
   const selectEditeur = (item) => {
-    setSelectedEditeur(item.value);
+    setSelectedEditor(item.value);
     props.handleEditeur(item.value);
   };
 
-  function Dropdown({
-    isVisible,
-    toggleVisibility,
-    data,
-    onSelect,
-    placeholder,
-    selectedValue,
-    style,
-  }) {
+  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
     return (
       <SafeAreaView style={[styles.dropdownContainer, style]}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
@@ -183,32 +143,36 @@ export default function Dropdowns(props) {
     );
   }
 
-  if (isCategorie) {
+  // Rendu conditionnel des dropdowns en fonction des props
+  // Si isCategory est vrai, afficher le dropdown "Catégorie"
+  if (isCategory) {
     return (
       <Dropdown
         style={styles.categorieContainer}
-        isVisible={isCategorieDropdownVisible}
-        toggleVisibility={toggleCategorieDropdown}
+        isVisible={isCategoryDropdownVisible}
+        toggleVisibility={toggleCategoryDropdown}
         data={categories.map((categorie) => ({ value: categorie.name }))}
         onSelect={(item) => selectCategorie(item)}
         placeholder="Catégorie"
-        selectedValue={selectedCategorie}
+        selectedValue={selectedCategory}
       />
     );
   }
-  if (isTri) {
+  // Si isSorting est vrai, afficher le dropdown "Trier par"
+  if (isSorting) {
     return (
       <Dropdown
         style={styles.triContainer}
-        isVisible={isTriDropdownVisible}
+        isVisible={isSortingDropdownVisible}
         toggleVisibility={toggleTriDropdown}
-        data={[{ value: "Le plus récent" }, { value: "Le plus ancien"}, { value: "Prix croissant" }, { value: "Prix décroissant" }]}
+        data={[{ value: "Le plus récent" }, { value: "Le plus ancien" }, { value: "Prix croissant" }, { value: "Prix décroissant" }]}
         onSelect={(item) => selectTri(item)}
         placeholder="Trier par"
-        selectedValue={selectedTri}
+        selectedValue={selectedSorting}
       />
     );
   }
+  // Si isState est vrai, afficher le dropdown "Etat"
   if (isState) {
     return (
       <Dropdown
@@ -222,39 +186,41 @@ export default function Dropdowns(props) {
       />
     );
   }
-  if (isAuteur) {
+  // Si isAuthor est vrai, afficher le dropdown "Auteur"
+  if (isAuthor) {
     return (
       <Dropdown
         style={styles.auteurContainer}
-        isVisible={isAuteurDropdownVisible}
+        isVisible={isAuthorDropdownVisible}
         toggleVisibility={toggleAuteurDropdown}
         data={auteur.map((auteur) => ({ value: auteur.name }))}
         onSelect={(item) => selectAuteur(item)}
         placeholder="Auteur"
-        selectedValue={selectedAuteur}
+        selectedValue={selectedAuthor}
       />
     );
   }
-  if (isEditeur) {
+  // Si isEditor est vrai, afficher le dropdown "Editeur"
+  if (isEditor) {
     return (
       <Dropdown
         style={styles.editeurContainer}
-        isVisible={isEditeurDropdownVisible}
+        isVisible={isEditorDropdownVisible}
         toggleVisibility={toggleEditeurDropdown}
         data={editeur.map((editeur) => ({ value: editeur.name }))}
         onSelect={(item) => selectEditeur(item)}
         placeholder="Editeur"
-        selectedValue={selectedEditeur}
+        selectedValue={selectedEditor}
       />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  // dropdownContainer: {
-  //   zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
-  //   position: "relative", // Permet de positionner la liste correctement
-  // },
+   dropdownContainer: {
+   zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
+     position: "relative", // Permet de positionner la liste correctement
+  },
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -283,8 +249,8 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     maxHeight: 150,
     zIndex: 10,
-    // zIndex: Platform.OS === "ios" ? 9999 : 10,
-    // elevation: 5,
+     zIndex: Platform.OS === "ios" ? 9999 : 10,
+     elevation: 5,
   },
   dropdownItem: {
     paddingVertical: 10,
