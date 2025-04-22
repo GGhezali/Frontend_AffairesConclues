@@ -13,7 +13,8 @@ import Modals from "./components/Modals";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import ImageSlider from 'react-native-image-slider';
 import { useIsFocused } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addBookmark, removeBookmark } from "../reducers/bookmarks";
 
 export default function AnnonceScreen({ route }) {
   const routeParams = route.params;
@@ -27,8 +28,11 @@ export default function AnnonceScreen({ route }) {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   const isFocused = useIsFocused();
-  
   const user = useSelector((state) => state.user.value);
+  const bookmarks = useSelector((state) => state.bookmarks.value);
+  const dispatch = useDispatch();
+
+  const [timeRemaining, setTimeRemaining] = useState("");
   
   let photo = routeParams.photoUrl;
   if (routeParams.photoUrl.length === 0 || routeParams.photoUrl === undefined) {
@@ -52,6 +56,30 @@ export default function AnnonceScreen({ route }) {
     setMiseModalVisible(false);
   };
 
+  const calculateTimeRemaining = () => {
+    const now = new Date();
+    const endTime = new Date(new Date(routeParams.timer).getTime() + 24 * 60 * 60 * 1000); // Add 24 hours to creation date
+    const timeLeft = endTime.getTime() - now.getTime();
+
+    if (timeLeft <= 0) {
+      setTimeRemaining("Vente terminée");
+      return;
+    }
+
+    const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    setTimeRemaining(`${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`);
+  };
+
+  useEffect(() => {
+    calculateTimeRemaining(); // Initial calculation
+    const interval = setInterval(calculateTimeRemaining, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [routeParams.timer]);
+
   useEffect(() => {
       //------- fetch articles from the backend---------------------------
       fetch(`${BACKEND_ADDRESS}:3000/articles/`)
@@ -66,10 +94,23 @@ export default function AnnonceScreen({ route }) {
         ;})
   },[!miseModalVisible]);
 
-  useEffect(() => {
-        (async () => {
-          // Fetch useurId from the backend -------------------------------
-          const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+
+let bookmarkIcon = (
+    <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
+  );
+let bookmarkStyle = styles.notBookmarked;
+
+  if (bookmarks && bookmarks.some((article) => article === routeParams._id)) {
+    bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;
+    bookmarkStyle = styles.bookmarked;
+  }
+
+useEffect(() => {
+    (async () => {
+      // Fetch useurId from the backend -------------------------------
+      const userIdResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -77,37 +118,43 @@ export default function AnnonceScreen({ route }) {
           body: JSON.stringify({
             token: user.token,
           }),
-        });
-        const userIdData = await userIdResponse.json();
-        setUserId(userIdData.userId);
-        // -------------------------------------------------------------- 
-        setIsBookmarked(routeParams.articleBookmark);    
-        })();
-      }, [isFocused]);
-  
+        }
+      );
+      const userIdData = await userIdResponse.json();
+      setUserId(userIdData.userId);
+      // --------------------------------------------------------------
+      
+    })();
+  }, [isFocused]);
+
   const handleBookmark = async () => {
     if (user.token) {
-    const response = await fetch(`${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        articleId: routeParams._id,
-      }),
-    })
-    const data = await response.json();
-  }
-  }
-
-let bookmarkIcon = (
-    <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
-  );
-let bookmarkStyle = styles.notBookmarked;
-
-  if (isBookmarked) {
-    bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;
-    bookmarkStyle = styles.bookmarked;
+      const bookmarkResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            articleId: routeParams._id,
+          }),
+        }
+      );
+      const bookmarkData = await bookmarkResponse.json();
+      if (bookmarkData.result ) {
+        if (bookmarkData.message === "Article ajouté aux favoris.") {
+          dispatch(addBookmark(routeParams._id));
+        } else if (bookmarkData.message === "Article retiré des favoris.") {
+          dispatch(removeBookmark(routeParams._id));
+        }
+        alert(bookmarkData.message);
+      } else {
+        alert(bookmarkData.error);
+      }
+    } else {
+      alert("Veuillez vous connecter pour ajouter un article aux favoris.");
+    }
   }
 
   return (
@@ -179,7 +226,8 @@ let bookmarkStyle = styles.notBookmarked;
             </View>
           </View>
           <View style={styles.timerContainer}>
-            <Text style={styles.timer}>{routeParams.timer}</Text>
+          <Text style={styles.timer}>Temps restant</Text>
+          <Text style={styles.timer}>{timeRemaining}</Text>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.buttonContact} onPress={() => toggleVendeur()}>

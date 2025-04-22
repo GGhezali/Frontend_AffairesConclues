@@ -11,17 +11,21 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
+import { updateBookmark } from "../../reducers/bookmarks";
 
 export default function Article(props) {
   const [bookmarkedColor, setBookmarkedColor] = useState(false);
-  const [articleBookmark, setArticleBookmark] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
+  const [articleBookmark, setArticleBookmark] = useState(false);
 
   const user = useSelector((state) => state.user.value);
+  const bookmarks = useSelector((state) => state.bookmarks.value);
+  console.log("bookmarks", bookmarks);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  const dispatch = useDispatch();
 
   let titre = "";
   if (props.titre && props.titre.length > 40) {
@@ -59,6 +63,7 @@ export default function Article(props) {
         `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
       );
       const articlesIdData = await articlesIdResponse.json();
+      dispatch(updateBookmark(articlesIdData.bookmarks));
       //check if the article is bookmarked
       const isBookmarked = articlesIdData.bookmarks.some(
         (article) => article === props._id
@@ -70,7 +75,7 @@ export default function Article(props) {
         setBookmarkedColor(false);
       }
     })();
-  }, [isFocused]);
+  }, [isFocused, bookmarkedColor]);
 
   let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
@@ -85,11 +90,9 @@ export default function Article(props) {
   const handleBookmark = async () => {
     if (user.token) {
       setBookmarkedColor(!bookmarkedColor);
-      if (props.origin === "MesFavorisScreen") {
-        props.refresherFromBookmark();
-      }
-      const response = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`,
+
+      const bookmarkResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -100,7 +103,17 @@ export default function Article(props) {
           }),
         }
       );
-      const data = await response.json();
+      const bookmarkData = await bookmarkResponse.json();
+      if (bookmarkData.result) {
+        alert(bookmarkData.message);
+      } else {
+        alert(bookmarkData.error);
+      }
+
+      dispatch(updateBookmark(props._id));
+    }
+    else {
+      alert("Veuillez vous connecter pour ajouter un article aux favoris.");
     }
   };
 
