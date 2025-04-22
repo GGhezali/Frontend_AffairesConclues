@@ -37,6 +37,7 @@ export default function MesFavorisScreen({ navigation }) {
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
+  const bookmarks = useSelector((state) => state.bookmarks.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function MesFavorisScreen({ navigation }) {
       }
       setAllArticles(articleInfo);
     })();
-  }, [refreshing, isFocused, refreshControl]);
+  }, [refreshing, isFocused, bookmarks]);
 
   const refresherFromBookmark = () => {
     setRefreshControl(!refreshControl);
@@ -133,14 +134,6 @@ export default function MesFavorisScreen({ navigation }) {
           <View style={styles.encheres}>{article}</View>
           {/* <View style={styles.articles}>{favorisContent}</View> */}
         </ScrollView>
-        <TouchableOpacity
-          title="Continuer mes achats"
-          onPress={() =>
-            navigation.navigate("TabNavigator", { screen: "Acceuil" })
-          }
-        >
-          <Text style={styles.greenButtonText}>Continuer mes achats</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -155,7 +148,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5FCEE",
     alignItems: "center",
-    padding: 20,
   },
 
   greenButtonText: {
@@ -174,7 +166,7 @@ const styles = StyleSheet.create({
   encheres: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     marginTop: 10,
     width: "100%",
