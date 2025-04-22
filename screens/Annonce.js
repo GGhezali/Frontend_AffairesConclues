@@ -40,7 +40,11 @@ export default function AnnonceScreen({ route }) {
   }
 
   const toggleVendeur = () => {
+    if (!user.token) {
+      alert("Veuillez vous connecter pour contacter le vendeur !")
+    } else {
       setContactModalVisible(true);
+    }
   };
   const toggleCloseVendeur = () => {
       setContactModalVisible(false);
@@ -236,7 +240,7 @@ useEffect(() => {
             <TouchableOpacity style={styles.buttonBid} onPress={() => toggleMise()}>
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
-            <Modals mise={true} visibleMise={miseModalVisible} onCloseMise={toggleCloseMise} articleId={routeParams._id} price={routeParams.currentPrice} />
+            <Modals mise={true} visibleMise={miseModalVisible} toggleCloseMise={toggleCloseMise} onCloseMise={toggleCloseMise} articleId={routeParams._id} price={routeParams.currentPrice} />
           </View>
         </View>
       </ScrollView>
