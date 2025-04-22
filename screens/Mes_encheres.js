@@ -80,7 +80,7 @@ export default function MesEncheresScreen({ navigation }) {
   }, [refreshing, isFocused]);
 
   useEffect(() => {
-    if (allArticles && allArticles.length > 0) {
+    if (allArticles.length > 0) {
       setNbArticles(allArticles.length);
 
       let totalPrix = 0;
@@ -98,7 +98,7 @@ export default function MesEncheresScreen({ navigation }) {
   // Placeholder ou enchères
   let encheres;
 
-  if (!allArticles || allArticles.length === 0) {
+  if (allArticles.length === 0) {
     encheres = (
       <View style={styles.placeholderContainer}>
         <Image
