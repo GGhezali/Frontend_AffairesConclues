@@ -247,11 +247,13 @@ useEffect(() => {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
+    backgroundColor: "#F5FCEE",
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   scrollview: {
     flex: 1,
-    backgroundColor: "#F5FCEE",
+    marginHorizontal: 20,
+    
   },
   container: {
     height: "100%",
@@ -260,30 +262,35 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#F5FCEE",
-    padding: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
+    
   },
   pictureContainer: {
     width: "100%",
     height: 500,
     marginBottom: 20,
     alignItems: "center",
+    
   },
   pictureSlider: {
     height: "100%",
+    alignItems: "center",
+    
   },
   picture: {
     height: "88%",
     resizeMode: "contain",
+    
   },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
     width: "100%",
+    
   },
   icon: {
     width: 50,
@@ -297,11 +304,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
     justifyContent: "center",
     alignItems: "center",
+    
   },
   informationContainer: {
     width: "100%",
     marginBottom: 20,
-
+    
   },
   textInfo: {
     flexDirection: "row",
