@@ -52,7 +52,7 @@ export default function MesEncheresScreen({ navigation }) {
 
   useEffect(() => {
     if (!user.token) {
-      navigation.navigate("Connexion");
+      navigation.navigate("ConnexionInscription");
     }
 
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
@@ -80,6 +80,10 @@ export default function MesEncheresScreen({ navigation }) {
   }, [refreshing, isFocused]);
 
   useEffect(() => {
+    if (!user.token) {
+      navigation.navigate("ConnexionInscription");
+    }
+
     if (allArticles.length > 0) {
       setNbArticles(allArticles.length);
 

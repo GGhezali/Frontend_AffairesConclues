@@ -77,18 +77,9 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen
-            name="ConnexionInscription"
-            component={ConnexionInscriptionScreen}
-          />
-          <Stack.Screen
-            name="MesInformations"
-            component={MesInformationsScreen}
-          />
-          <Stack.Screen
-            name="MesPublications"
-            component={MesPublicationsScreen}
-          />
+          <Stack.Screen name="ConnexionInscription" component={ConnexionInscriptionScreen} />
+          <Stack.Screen name="MesInformations" component={MesInformationsScreen} />
+          <Stack.Screen name="MesPublications" component={MesPublicationsScreen} />
           <Stack.Screen name="MesFavoris" component={MesFavorisScreen} />
           <Stack.Screen name="MesEncheres" component={MesEncheresScreen} />
           <Stack.Screen name="Connexion" component={ConnexionScreen} />

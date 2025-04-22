@@ -41,6 +41,10 @@ export default function MesFavorisScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   useEffect(() => {
+    if (!user.token) {
+      navigation.navigate("ConnexionInscription");
+    }
+
     (async () => {
       // Fetch useurId from the backend -------------------------------
       const userIdResponse = await fetch(
