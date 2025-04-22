@@ -20,9 +20,9 @@ import {
   AutocompleteDropdownContextProvider,
   AutocompleteDropdown,
 } from "react-native-autocomplete-dropdown";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function PublierScreen({ navigation }) {
-
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
   const article = useSelector((state) => state.article.value); // article.photos = [image_url] A transmettre à la route publish //
@@ -39,6 +39,7 @@ export default function PublierScreen({ navigation }) {
   const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"context": "75, Paris, Île-de-France", "coordinates": [2.309977, 48.825993], "title": "8 Rue Maurice Bouchor 75014 Paris"}
   const [places, setPlaces] = useState([]);
   const [userId, setUserId] = useState(""); // ANNONCEUR A transmettre à la route publish //
+  const isFocused = useIsFocused(); // Permet de savoir si la page est focus ou non
 
   const [auteurIsFocus, setAuteurIsFocus] = useState(false);
   const [editeurIsFocus, setEditeurIsFocus] = useState(false);
@@ -47,6 +48,9 @@ export default function PublierScreen({ navigation }) {
   const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
+    if (!user.token) {
+      navigation.navigate("ConnexionInscription");
+    }
     // Fetch auteurs from the backend ---------------------------------
     (async () => {
       const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
@@ -95,7 +99,7 @@ export default function PublierScreen({ navigation }) {
         });
       // --------------------------------------------------------------
     })();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${input}`)
@@ -115,7 +119,6 @@ export default function PublierScreen({ navigation }) {
 
   const handlePublish = () => {
     if (user.token) {
-
       fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
         method: "POST",
         headers: {
@@ -137,16 +140,16 @@ export default function PublierScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            console.log("Article published successfully");
+            alert("Votre annonce a été publiée avec succès.");
+            navigation.navigate("MesPublications");
+          } else {
+            throw new Error(data.error);
           }
         })
         .catch((error) => {
-          console.error("Error publishing article:", error);
-          alert(error);
+          alert(error.message);
+          navigation.navigate("Publier");
         });
-      alert("Votre annonce a été publiée avec succès.");
-      navigation.navigate("MesPublications");
-
     } else {
       navigation.navigate("Connexion");
     }
@@ -169,26 +172,47 @@ export default function PublierScreen({ navigation }) {
     // console.log("categorie ==", categorie);
   };
 
-  
-
   return (
     <SafeAreaView style={styles.safeareaview}>
       <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
-        <Headers navigation={navigation} isNavigation={true} title={"Publier"} />
+        <Headers
+          navigation={navigation}
+          isNavigation={true}
+          title={"Publier"}
+        />
+
+        <View style={styles.alignButtons}>
+          <View style={styles.button1}>
+            <TouchableOpacity
+              title="Gallerie"
+              onPress={() => navigation.navigate("Gallerie")}
+            >
+              <Text style={styles.textButton}>Gallerie</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.button1}>
+            <TouchableOpacity
+              title="Photo"
+              onPress={() => navigation.navigate("Photo")}
+            >
+              <Text style={styles.textButton}>Photo</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         <View style={styles.alignDropdowns}>
           <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
           <Dropdowns isState={true} handleEtat={handleEtat} />
         </View>
-        
+
         <View style={styles.alignDropdowns}>
           <Dropdowns isAuteur={true} handleAuteur={handleAuteur} />
           <Dropdowns isEditeur={true} handleEditeur={handleEditeur} />
         </View>
 
         <ScrollView style={styles.container}>
-
           <Text style={styles.inputText}>Titre</Text>
           <View style={styles.input}>
             <TextInput
@@ -230,35 +254,28 @@ export default function PublierScreen({ navigation }) {
               onChangeText={(value) => setInput(value)}
               onSelectItem={(value) => setOutput(value)}
               dataSet={places}
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: "#888",
+                backgroundColor: "#fff",
+                padding: 12,
+                borderRadius: 8,
+                marginBottom: 15,
+                fontSize: 16,
+                borderColor: "#dcdedf",
+                width: "100%",
+              }}
+              textInputProps={{
+                placeholder: "Localisation",
+              }}
             />
           </AutocompleteDropdownContextProvider>
 
-          <View style={styles.alignButtons}>
-            <View style={styles.button1}>
-              <TouchableOpacity
-                title="Gallerie"
-                onPress={() => navigation.navigate("Gallerie")}
-              >
-                <Text style={styles.textButton}>Gallerie</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.button1}>
-              <TouchableOpacity
-                title="Photo"
-                onPress={() => navigation.navigate("Photo")}
-              >
-                <Text style={styles.textButton}>Photo</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          
           <View style={styles.button2}>
             <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
               <Text style={styles.textButton}>Publier</Text>
             </TouchableOpacity>
           </View>
-          
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -305,6 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 30,
+    marginBottom: 30,
   },
   alignDropdowns: {
     display: "flex",
@@ -328,7 +346,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     marginBottom: 30,
-    marginTop: 30, 
+    marginTop: 30,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -356,18 +374,18 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    marginVertical:10,
+    marginVertical: 10,
   },
   icon: {
     marginRight: 5,
   },
   label: {
-    position: 'absolute',
-    backgroundColor: 'white',
+    position: "absolute",
+    backgroundColor: "white",
     left: 22,
     top: 8,
     zIndex: 999,

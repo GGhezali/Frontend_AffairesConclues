@@ -13,6 +13,7 @@ import { useIsFocused } from "@react-navigation/native";
 import Article from "./components/Article";
 import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
+import { useSelector } from "react-redux";
 
 export default function PageAcceuilScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
@@ -21,10 +22,9 @@ export default function PageAcceuilScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [searchText, setSearchText] = useState("");
   const isFocused = useIsFocused();
-  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
-  
-  const origin = "PageAcceuilScreen";
- 
+
+  const bookmarks = useSelector((state) => state.bookmarks.value);
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS; 
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -60,7 +60,7 @@ export default function PageAcceuilScreen({ navigation }) {
         });
       }
     })();
-  }, [refreshing, isFocused]);
+  }, [refreshing, isFocused, bookmarks]);
 
   const handleCategorie = (categorie) => {
     setCategorie(categorie);
@@ -127,7 +127,7 @@ export default function PageAcceuilScreen({ navigation }) {
   } else {
     // Sinon, afficher les articles normalement
     article = articleList.map((data, i) => (
-      <Article key={i} navigation={navigation} origin={origin} {...data} />
+      <Article key={i} navigation={navigation} {...data} />
     ));
   }
 

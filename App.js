@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import article from "./reducers/article";
+import bookmarks from "./reducers/bookmarks"
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -67,7 +68,7 @@ const TabNavigator = () => {
 };
 
 const store = configureStore({
-  reducer: { user, article },
+  reducer: { user, article, bookmarks },
 });
 
 export default function App() {
@@ -76,18 +77,9 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen
-            name="ConnexionInscription"
-            component={ConnexionInscriptionScreen}
-          />
-          <Stack.Screen
-            name="MesInformations"
-            component={MesInformationsScreen}
-          />
-          <Stack.Screen
-            name="MesPublications"
-            component={MesPublicationsScreen}
-          />
+          <Stack.Screen name="ConnexionInscription" component={ConnexionInscriptionScreen} />
+          <Stack.Screen name="MesInformations" component={MesInformationsScreen} />
+          <Stack.Screen name="MesPublications" component={MesPublicationsScreen} />
           <Stack.Screen name="MesFavoris" component={MesFavorisScreen} />
           <Stack.Screen name="MesEncheres" component={MesEncheresScreen} />
           <Stack.Screen name="Connexion" component={ConnexionScreen} />

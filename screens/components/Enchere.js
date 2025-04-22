@@ -8,10 +8,9 @@ export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
   let lastAcheteur = "";
-    if (props.acheteur && props.acheteur.length > 0) {
-      lastAcheteur = props.acheteur[props.acheteur.length - 1];
-    }
-
+  if (props.acheteur && props.acheteur.length > 0) {
+    lastAcheteur = props.acheteur[props.acheteur.length - 1];
+  }
 
   let titre = "";
   if (props.titre.length > 25) {
@@ -22,7 +21,8 @@ export default function Enchere(props) {
 
   let photo = props.photoUrl[0];
   if (props.photoUrl.length === 0 || props.photoUrl === undefined) {
-    photo = "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg"
+    photo =
+      "https://img.freepik.com/vecteurs-libre/illustration-icone-galerie_53876-27002.jpg";
   }
 
   let iconName = "clock-rotate-left";
@@ -49,6 +49,18 @@ export default function Enchere(props) {
     etatVente = "Enchère perdue";
   }
 
+  const convertTime = (time) => {
+    const date = new Date(time);
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return date.toLocaleString("fr-FR", options);
+  };
+
   return (
     <TouchableOpacity
       style={styles.enchere}
@@ -56,20 +68,19 @@ export default function Enchere(props) {
     >
       <View style={styles.leftContent}>
         <Text style={styles.titre}>{titre}</Text>
-          <Image style={styles.picture} source={{uri: photo}} />
+        <Image style={styles.picture} source={{ uri: photo }} />
       </View>
       <View style={styles.rightContent}>
-          <View style={styles.icon}>
-            <Text>{etatVente} </Text>
-            <FontAwesome6 name={iconName} size={20} color={iconeColor} />
-          </View>
+        <View style={styles.icon}>
+          <Text>{etatVente} </Text>
+          <FontAwesome6 name={iconName} size={20} color={iconeColor} />
+        </View>
         <View style={styles.sellContent}>
-            <Text>{props.timer}</Text>
+          <Text style={styles.text}>{convertTime(props.timer)}</Text>
         </View>
         <View style={styles.priceContent}>
-          <Text>Prix de départ - {props.startPrice} €</Text>
-          <Text>
-            Prix en cours - {props.currentPrice} € - {lastAcheteur.username}
+          <Text style={styles.text}>Prix de départ - {props.startPrice} €</Text>
+          <Text style={styles.text}>Prix en cours - {props.currentPrice} € Dernière mise - {lastAcheteur.username}
           </Text>
         </View>
       </View>
@@ -126,5 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 50,
   },
-
+  text: {
+    fontSize: 13,
+  }
 });
