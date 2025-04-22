@@ -76,12 +76,11 @@ export default function Enchere(props) {
           <FontAwesome6 name={iconName} size={20} color={iconeColor} />
         </View>
         <View style={styles.sellContent}>
-          <Text>{convertTime(props.timer)}</Text>
+          <Text style={styles.text}>{convertTime(props.timer)}</Text>
         </View>
         <View style={styles.priceContent}>
-          <Text>Prix de départ - {props.startPrice} €</Text>
-          <Text>
-            Prix en cours - {props.currentPrice} € - {lastAcheteur.username}
+          <Text style={styles.text}>Prix de départ - {props.startPrice} €</Text>
+          <Text style={styles.text}>Prix en cours - {props.currentPrice} € Dernière mise - {lastAcheteur.username}
           </Text>
         </View>
       </View>
@@ -138,4 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 50,
   },
+  text: {
+    fontSize: 13,
+  }
 });

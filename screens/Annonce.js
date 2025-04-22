@@ -210,48 +210,47 @@ export default function AnnonceScreen({ route }) {
           </View>
           <View style={styles.informationContainer}>
             <View style={styles.textInfo}>
-              <Text style={styles.textParams}>Etat</Text>
+              <Text style={styles.textParams}>Etat:</Text>
               <Text style={styles.description}>
                 {" "}
-                : {routeParams.etat.condition}
+                {routeParams.etat.condition}
               </Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textParams}>Categorie</Text>
+              <Text style={styles.textParams}>Categorie:</Text>
               <Text style={styles.description}>
                 {" "}
-                : {routeParams.categorie.name}
+                {routeParams.categorie.name}
               </Text>
             </View>
             <View style={styles.textInfoDescription}>
-              <Text style={styles.textParams}>Description</Text>
+              <Text style={styles.textParams}>Description:</Text>
               <Text style={styles.description}>{routeParams.description}</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textParams}>Auteur</Text>
+              <Text style={styles.textParams}>Auteur:</Text>
               <Text style={styles.description}>
                 {" "}
-                : {routeParams.auteur.name}
+                {routeParams.auteur.name}
               </Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textParams}>Editeur</Text>
+              <Text style={styles.textParams}>Editeur:</Text>
               <Text style={styles.description}>
                 {" "}
-                : {routeParams.editeur.name}
+                {routeParams.editeur.name}
               </Text>
             </View>
             <View style={styles.priceContainer}>
-              <Text style={styles.priceInfoLeft}>Prix de départ :</Text>
-              <Text style={styles.priceInfo}>{routeParams.startPrice} €</Text>
+              <Text style={styles.priceInfoLeft}>Prix de départ:</Text>
+              <Text style={styles.priceInfo}> {routeParams.startPrice} €</Text>
               <Text style={styles.priceInfoRight}>
-                {routeParams.annonceur.username}
-              </Text>
+               <Text style={styles.priceInfoLeft}>Vendu par:</Text> {routeParams.annonceur.username}</Text>
             </View>
             <View style={styles.priceContainer}>
-              <Text style={styles.priceInfoLeft}>Prix actuel :</Text>
-              <Text style={styles.priceInfo}>{price} €</Text>
-              <Text style={styles.priceInfoRight}>{buyer}</Text>
+              <Text style={styles.priceInfoLeft}>Prix actuel:</Text>
+              <Text style={styles.priceInfo}> {price} €</Text>
+              <Text style={styles.priceInfoRight}><Text style={styles.priceInfoLeft}>Dernière mise:</Text> {buyer}</Text>
             </View>
           </View>
           <View style={styles.timerContainer}>
@@ -367,7 +366,7 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
     marginBottom: 5,
@@ -380,11 +379,12 @@ const styles = StyleSheet.create({
   },
   priceInfo: {
     width: 50,
-    textAlign: "right",
+    textAlign: "center",
   },
   priceInfoRight: {
-    width: 100,
-    textAlign: "right",
+    width: 200,
+    textAlign: "left",
+    marginLeft: 20,
   },
   timerContainer: {
     width: "65%",
