@@ -20,6 +20,7 @@ import {
   AutocompleteDropdownContextProvider,
   AutocompleteDropdown,
 } from "react-native-autocomplete-dropdown";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -38,6 +39,7 @@ export default function PublierScreen({ navigation }) {
   const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"context": "75, Paris, Île-de-France", "coordinates": [2.309977, 48.825993], "title": "8 Rue Maurice Bouchor 75014 Paris"}
   const [places, setPlaces] = useState([]);
   const [userId, setUserId] = useState(""); // ANNONCEUR A transmettre à la route publish //
+  const isFocused = useIsFocused(); // Permet de savoir si la page est focus ou non
 
   const [auteurIsFocus, setAuteurIsFocus] = useState(false);
   const [editeurIsFocus, setEditeurIsFocus] = useState(false);
@@ -46,6 +48,9 @@ export default function PublierScreen({ navigation }) {
   const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
+    if (!user.token) {
+      navigation.navigate("ConnexionInscription");
+    }
     // Fetch auteurs from the backend ---------------------------------
     (async () => {
       const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
@@ -94,7 +99,7 @@ export default function PublierScreen({ navigation }) {
         });
       // --------------------------------------------------------------
     })();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${input}`)
