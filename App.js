@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import article from "./reducers/article";
+import bookmarks from "./reducers/bookmarks"
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -67,7 +68,7 @@ const TabNavigator = () => {
 };
 
 const store = configureStore({
-  reducer: { user, article },
+  reducer: { user, article, bookmarks },
 });
 
 export default function App() {

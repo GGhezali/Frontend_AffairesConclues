@@ -66,40 +66,6 @@ export default function AnnonceScreen({ route }) {
         ;})
   },[!miseModalVisible]);
 
-  useEffect(() => {
-        (async () => {
-          // Fetch useurId from the backend -------------------------------
-          const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: user.token,
-          }),
-        });
-        const userIdData = await userIdResponse.json();
-        setUserId(userIdData.userId);
-        // -------------------------------------------------------------- 
-        setIsBookmarked(routeParams.articleBookmark);    
-        })();
-      }, [isFocused]);
-  
-  const handleBookmark = async () => {
-    if (user.token) {
-    const response = await fetch(`${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        articleId: routeParams._id,
-      }),
-    })
-    const data = await response.json();
-  }
-  }
-
 let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
   );
@@ -137,7 +103,7 @@ let bookmarkStyle = styles.notBookmarked;
                   onPress={() => route.params.navigation.navigate("Carte", routeParams.localisation)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
+              <TouchableOpacity style={bookmarkStyle}>
                {bookmarkIcon}
               </TouchableOpacity>
             </View>

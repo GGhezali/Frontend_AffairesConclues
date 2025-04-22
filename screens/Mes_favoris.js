@@ -20,13 +20,11 @@ import { useIsFocused } from "@react-navigation/native";
 import Article from "./components/Article";
 
 export default function MesFavorisScreen({ navigation }) {
-  const [userId, setUserId] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [allArticles, setAllArticles] = useState([]);
   const [refreshControl, setRefreshControl] = useState(false);
 
   const isFocused = useIsFocused();
-  const origin = "MesFavorisScreen";
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -37,45 +35,9 @@ export default function MesFavorisScreen({ navigation }) {
 
   //Accéder au token dans Redux
   const user = useSelector((state) => state.user.value);
+  const bookmarks = useSelector((state) => state.bookmarks.value)
+  console.log("bookmarks", bookmarks)
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
-
-  useEffect(() => {
-    (async () => {
-      // Fetch useurId from the backend -------------------------------
-      const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: user.token,
-          }),
-        }
-      );
-      const userIdData = await userIdResponse.json();
-      setUserId(userIdData.userId);
-      // --------------------------------------------------------------
-      const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userId}`
-      );
-      const articlesIdData = await articlesIdResponse.json();
-      let articleInfo = [];
-      for (let article of articlesIdData.bookmarks) {
-        const articleResponse = await fetch(
-          `${BACKEND_ADDRESS}:3000/articles/findArticleById/${article}`
-        );
-        const articleData = await articleResponse.json();
-        articleInfo.push(articleData.data);
-      }
-      setAllArticles(articleInfo);
-    })();
-  }, [refreshing, isFocused, refreshControl]);
-
-  const refresherFromBookmark = () => {
-    setRefreshControl(!refreshControl);
-  };
 
   let article;
   if (allArticles.length === 0) {
@@ -100,8 +62,6 @@ export default function MesFavorisScreen({ navigation }) {
           return (
             <Article
               key={i}
-              refresherFromBookmark={refresherFromBookmark}
-              origin={origin}
               navigation={navigation}
               {...data}
             />

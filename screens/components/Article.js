@@ -13,15 +13,17 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
+import { addBookmark, removeBookmark } from "../../reducers/bookmarks";
+import { useDispatch } from "react-redux";
 
 export default function Article(props) {
   const [bookmarkedColor, setBookmarkedColor] = useState(false);
-  const [articleBookmark, setArticleBookmark] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
 
   const user = useSelector((state) => state.user.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  const dispatch = useDispatch();
 
   let titre = "";
   if (props.titre && props.titre.length > 40) {
@@ -54,21 +56,7 @@ export default function Article(props) {
       const userIdData = await userIdResponse.json();
       setUserId(userIdData.userId);
       // --------------------------------------------------------------
-      //Fetch les articlesID des bookmarks de l'utilisateur
-      const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
-      );
-      const articlesIdData = await articlesIdResponse.json();
-      //check if the article is bookmarked
-      const isBookmarked = articlesIdData.bookmarks.some(
-        (article) => article === props._id
-      );
-      setArticleBookmark(isBookmarked);
-      if (isBookmarked) {
-        setBookmarkedColor(true);
-      } else {
-        setBookmarkedColor(false);
-      }
+      
     })();
   }, [isFocused]);
 
@@ -83,24 +71,10 @@ export default function Article(props) {
   }
 
   const handleBookmark = async () => {
+    console.log("click ok")
     if (user.token) {
       setBookmarkedColor(!bookmarkedColor);
-      if (props.origin === "MesFavorisScreen") {
-        props.refresherFromBookmark();
-      }
-      const response = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/addBookmark/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            articleId: props._id,
-          }),
-        }
-      );
-      const data = await response.json();
+      dispatch(addBookmark(props))
     }
   };
 
