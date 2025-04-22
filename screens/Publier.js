@@ -177,6 +177,26 @@ export default function PublierScreen({ navigation }) {
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
         <Headers navigation={navigation} isNavigation={true} title={"Publier"} />
 
+        <View style={styles.alignButtons}>
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Gallerie"
+                onPress={() => navigation.navigate("Gallerie")}
+              >
+                <Text style={styles.textButton}>Gallerie</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Photo"
+                onPress={() => navigation.navigate("Photo")}
+              >
+                <Text style={styles.textButton}>Photo</Text>
+              </TouchableOpacity>
+            </View>
+        </View>
+
         <View style={styles.alignDropdowns}>
           <Dropdowns isCategorie={true} handleCategorie={handleCategorie} />
           <Dropdowns isState={true} handleEtat={handleEtat} />
@@ -230,28 +250,24 @@ export default function PublierScreen({ navigation }) {
               onChangeText={(value) => setInput(value)}
               onSelectItem={(value) => setOutput(value)}
               dataSet={places}
+              inputContainerStyle={{
+                borderWidth: 1,
+                borderColor: "#888",
+                backgroundColor: "#fff",
+                padding: 12,
+                borderRadius: 8,
+                marginBottom: 15,
+                fontSize: 16,
+                borderColor: "#dcdedf",
+                width: "100%",
+              }}
+              textInputProps={{
+            placeholder: 'Localisation'
+              }}
             />
           </AutocompleteDropdownContextProvider>
 
-          <View style={styles.alignButtons}>
-            <View style={styles.button1}>
-              <TouchableOpacity
-                title="Gallerie"
-                onPress={() => navigation.navigate("Gallerie")}
-              >
-                <Text style={styles.textButton}>Gallerie</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.button1}>
-              <TouchableOpacity
-                title="Photo"
-                onPress={() => navigation.navigate("Photo")}
-              >
-                <Text style={styles.textButton}>Photo</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          
           
           <View style={styles.button2}>
             <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
@@ -305,6 +321,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 30,
+    marginBottom: 30,
   },
   alignDropdowns: {
     display: "flex",
