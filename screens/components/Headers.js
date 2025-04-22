@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   StatusBar,
+  ImageBackground
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -32,8 +33,7 @@ export default function Headers({
 
   if (isReturn) {
     return (
-      <LinearGradient
-        colors={["#EF8F57", "#EF8F57"]}
+      <ImageBackground
         style={styles.header}
       >
         <AntDesign
@@ -43,14 +43,13 @@ export default function Headers({
           onPress={() => navigation.goBack()}
         />
         <Text style={styles.title}>{title}</Text>
-      </LinearGradient>
+      </ImageBackground>
     );
   }
 
   if (isHome) {
     return (
-      <LinearGradient
-        colors={["#EF8F57", "#EF8F57"]}
+      <ImageBackground
         style={styles.header}
       >
         <View style={styles.searchcontainer}>
@@ -67,16 +66,15 @@ export default function Headers({
             onPress={() => navigation.navigate("ConnexionInscription")}
           />
         </TouchableOpacity>
-      </LinearGradient>
+      </ImageBackground>
     );
   }
 
   if (isNavigation) {
     return (
-      <LinearGradient
-        colors={["#EF8F57", "#EF8F57"]}
-        style={styles.header}
-      >
+      <ImageBackground
+      style={styles.header}
+    >
         <TouchableOpacity
           style={styles.homebutton}
           onPress={() =>
@@ -86,7 +84,7 @@ export default function Headers({
           <AntDesign name={"home"} size={30} color={"#753742"} />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
-      </LinearGradient>
+      </ImageBackground>
     );
   }
 }
@@ -102,8 +100,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    resizeMode: "contain",
     paddingTop: 10,
-
+    borderBottomColor: "#000000",
+    borderBottomWidth: 3,
   },
   return: {
     position: "absolute",
