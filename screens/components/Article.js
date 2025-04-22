@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     padding: 10,
     alignItems: "center",
-    margin: 8,
+    margin: 5,
   },
   titre: {
     textAlign: "center",
