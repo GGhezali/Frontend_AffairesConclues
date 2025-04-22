@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
+    marginTop: -110,
   },
   inscription: {
     backgroundColor: "#1C7C54",
@@ -87,6 +88,6 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
+
   },
 });

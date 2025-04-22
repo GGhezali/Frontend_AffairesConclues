@@ -6,7 +6,9 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  SafeAreaView, Platform, StatusBar 
+  SafeAreaView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import Headers from "./components/Headers";
 
@@ -21,7 +23,7 @@ export default function ConnexionScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSumbit = () => {
-    console.log('clicked');
+    console.log("clicked");
     if (!email || !password) {
       return;
     }
@@ -38,53 +40,51 @@ export default function ConnexionScreen({ navigation }) {
           dispatch(login(data.token));
           alert("Connexion reussi");
           navigation.navigate("TabNavigator", { screen: "Acceuil" });
-        } else{
+        } else {
           alert(data.error);
         }
       });
-      
   };
 
   return (
-    <SafeAreaView  style={styles.safeareaview}>
+    <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
 
       <Headers navigation={navigation} isReturn={true} title={"Connexion"} />
       <View style={styles.container}>
+        <Text style={styles.emailText}>Email</Text>
+        <View style={styles.input}>
+          <TextInput
+            onChangeText={(value) => setEmail(value)}
+            value={email}
+            placeholder="john.doe@hotmail.com"
+          />
+        </View>
+        <Text style={styles.passwordText}>Password</Text>
+        <View style={styles.input}>
+          <TextInput
+            secureTextEntry={true}
+            onChangeText={(value) => setPassword(value)}
+            value={password}
+            placeholder="********"
+          />
+        </View>
 
-      
-      <Text style={styles.emailText}>Email</Text>
-      <View style={styles.input}>
-        <TextInput
-          onChangeText={(value) => setEmail(value)}
-          value={email}
-          placeholder="john.doe@hotmail.com"
-        />
-      </View>
-      <Text style={styles.passwordText}>Password</Text>
-      <View style={styles.input}>
-        <TextInput
-          secureTextEntry={true}
-          onChangeText={(value) => setPassword(value)}
-          value={password}
-          placeholder="********"
-        />
-      </View>
-      <View style={styles.connexion}>
-        <TouchableOpacity title="Connexion" onPress={() => handleSumbit()}>
-          <Text style={styles.textConnexion}>Connexion</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.connexion}>
+          <TouchableOpacity title="Connexion" onPress={() => handleSumbit()}>
+            <Text style={styles.textConnexion}>Connexion</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-    safeareaview: {
-      flex: 1,
-      // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    },
+  safeareaview: {
+    flex: 1,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "80%",
     height: 40,
+
   },
 
   textConnexion: {
@@ -120,12 +121,12 @@ const styles = StyleSheet.create({
     fontStyle: "bold",
     fontSize: 20,
     color: "white",
-    marginTop: 7,
+    marginTop: 8,
+  
   },
   emailText: {
     display: "flex",
     justifyContent: "flex-start",
+    marginTop: -100,
   },
-
- 
 });

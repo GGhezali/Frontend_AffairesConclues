@@ -217,10 +217,10 @@ export default function Dropdowns(props) {
 }
 
 const styles = StyleSheet.create({
-  // dropdownContainer: {
-  //   zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
-  //   position: "relative", // Permet de positionner la liste correctement
-  // },
+   dropdownContainer: {
+   zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
+     position: "relative", // Permet de positionner la liste correctement
+  },
   dropdownInputs: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -249,8 +249,8 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     maxHeight: 150,
     zIndex: 10,
-    // zIndex: Platform.OS === "ios" ? 9999 : 10,
-    // elevation: 5,
+     zIndex: Platform.OS === "ios" ? 9999 : 10,
+     elevation: 5,
   },
   dropdownItem: {
     paddingVertical: 10,
