@@ -10,7 +10,10 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useSelector } from "react-redux";
 
-export default function Modals({ visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, price, contactVendeur, mise }) {
+export default function Modals(props) {
+
+    const { visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, price, contactVendeur, mise } = props;
+
     const [miseValue, setMiseValue] = useState('');
     const [messageEnchere, setMessageEnchere] = useState('');
     const [colorMessage, setColorMessage] = useState('');
@@ -42,11 +45,8 @@ export default function Modals({ visibleContact, visibleMise, onCloseContact, on
                     .then((data) => {
                         setMessageEnchere(data.message);
                         if (data.message === "Prix mis à jour avec succès") {
-                            console.log("ok")
-                            setColorMessage('green')
-                            setTimeout(() => {
-                                setMessageEnchere('');
-                            }, 3000); 
+                            props.toggleCloseMise();
+                            alert("Prix mis à jour avec succès !")
                         } 
                         if (data.message === "Veuillez vous connecter pour enchérir") {
                             setMessageEnchere('');
