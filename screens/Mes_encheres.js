@@ -72,10 +72,7 @@ export default function MesEncheresScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
+          });
       });
   }, [refreshing, isFocused]);
 
