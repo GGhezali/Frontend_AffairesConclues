@@ -105,7 +105,7 @@ export default function AnnonceScreen({ route }) {
   }, [!miseModalVisible]);
 
   let bookmarkIcon = (
-    <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
+    <FontAwesome name={"bookmark-o"} size={25} color={"#753742"} />
   );
   let bookmarkStyle = styles.notBookmarked;
 
@@ -191,7 +191,7 @@ export default function AnnonceScreen({ route }) {
                 <FontAwesome
                   name={"map"}
                   size={25}
-                  color={"#39D996"}
+                  color={"#753742"}
                   onPress={() =>
                     route.params.navigation.navigate(
                       "Carte",
@@ -287,7 +287,7 @@ export default function AnnonceScreen({ route }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   scrollview: {
@@ -299,7 +299,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#F5FCEE",
   },
   title: {
     fontSize: 20,
@@ -309,7 +308,7 @@ const styles = StyleSheet.create({
   },
   slider: {
     width: "100%",
-    backgroundColor: "#dedede",
+    backgroundColor: "#EDE1D4",
   },
   pictureContainer: {
     width: "100%",
@@ -331,6 +330,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     width: "90%",
+    marginTop: 20,
   },
   icon: {
     width: 50,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "#39D996",
+    borderColor: "#753742",
     marginRight: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -389,12 +389,8 @@ const styles = StyleSheet.create({
   timerContainer: {
     width: "65%",
     height: 50,
-    backgroundColor: "#B1CF5F",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#dcdedf",
     marginBottom: 20,
   },
   timer: {
@@ -411,7 +407,7 @@ const styles = StyleSheet.create({
   buttonContact: {
     width: "45%",
     height: 50,
-    backgroundColor: "#A0D9C1",
+    backgroundColor: "#AA5042",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
@@ -421,7 +417,7 @@ const styles = StyleSheet.create({
   buttonBid: {
     width: "45%",
     height: 50,
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#AA5042",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
@@ -429,7 +425,7 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
   },
   buttonTextContact: {
-    color: "#1B512D",
+    color: "white",
   },
   buttonTextBid: {
     color: "white",
@@ -441,7 +437,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#39D996",
+    borderColor: "#753742",
     backgroundColor: "white",
   },
   bookmarked: {
@@ -451,7 +447,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#39D996",
-    backgroundColor: "#39D996",
+    borderColor: "#753742",
+    backgroundColor: "#753742",
   },
 });

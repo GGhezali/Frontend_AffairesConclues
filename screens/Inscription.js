@@ -93,7 +93,7 @@ export default function InscriptionScreen({ navigation }) {
                 <Ionicons
                   name="information-circle-outline"
                   size={28}
-                  color="#007AFF"
+                  color="#AA5042"
                 />
               </TouchableOpacity>
             </View>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
   },
   header: {
     position: "absolute",
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   },
 
   greenButton: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
     height: 45,

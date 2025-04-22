@@ -56,14 +56,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
   },
   header: {
     alignItems: "flex-start",
   },
 
   connexion: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
     height: "40",
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: -110,
   },
   inscription: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#753742",
     borderRadius: 30,
     width: "80%",
     height: "40",

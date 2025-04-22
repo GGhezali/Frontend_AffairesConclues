@@ -78,7 +78,7 @@ export default function Article(props) {
   }, [isFocused, bookmarkedColor]);
 
   let bookmarkIcon = (
-    <FontAwesome name={"bookmark-o"} size={25} color={"#39D996"} />
+    <FontAwesome name={"bookmark-o"} size={25} color={"#753742"} />
   );
   let bookmarkStyle = styles.notBookmarked;
 
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#39D996",
+    borderColor: "#753742",
     backgroundColor: "white",
   },
   bookmarked: {
@@ -188,8 +188,8 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#39D996",
-    backgroundColor: "#39D996",
+    borderColor: "#753742",
+    backgroundColor: "#753742",
   },
   description: {
     width: "90%",

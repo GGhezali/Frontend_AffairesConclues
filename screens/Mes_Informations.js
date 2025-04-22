@@ -115,7 +115,7 @@ export default function MesInformationsScreen({ navigation }) {
                   value={email}
                   onChangeText={(value) => setEmail(value)}
                 />
-                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+                <FontAwesome name={"pencil"} size={16} color={"#F5A28F"} />
               </View>
             </View>
             <Text style={styles.title}>Username</Text>
@@ -127,7 +127,7 @@ export default function MesInformationsScreen({ navigation }) {
                   value={username}
                   onChangeText={(value) => setUsername(value)}
                 />
-                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+                <FontAwesome name={"pencil"} size={16} color={"#F5A28F"} />
               </View>
             </View>
             <Text style={styles.title}>Password</Text>
@@ -143,7 +143,7 @@ export default function MesInformationsScreen({ navigation }) {
                 <Entypo
                   name={icon}
                   size={16}
-                  color={"#39d996"}
+                  color={"#F5A28F"}
                   onPress={() => visiblePassword()}
                 />
               </View>
@@ -157,7 +157,7 @@ export default function MesInformationsScreen({ navigation }) {
                   value={donneeBancaire}
                   onChangeText={(value) => setDonneeBancaire(value)}
                 />
-                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+                <FontAwesome name={"pencil"} size={16} color={"#F5A28F"} />
               </View>
             </View>
             <Text style={styles.title}>Téléphone</Text>
@@ -169,7 +169,7 @@ export default function MesInformationsScreen({ navigation }) {
                   value={telephone}
                   onChangeText={(value) => setTelephone(value)}
                 />
-                <FontAwesome name={"pencil"} size={16} color={"#39d996"} />
+                <FontAwesome name={"pencil"} size={16} color={"#F5A28F"} />
               </View>
             </View>
             <TouchableOpacity
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#f5fcee",
+    backgroundColor: "#FFF8EF",
     alignItems: "center",
     justifyContent: "space-between",
   },
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   greenButton: {
-    backgroundColor: "#1C7C54",
+    backgroundColor: "#AA5042",
     borderRadius: 30,
     width: "80%",
     height: 40,
