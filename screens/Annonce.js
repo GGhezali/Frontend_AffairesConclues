@@ -41,14 +41,10 @@ export default function AnnonceScreen({ route }) {
     ];
   }
 
-<<<<<<< HEAD
-  const toggleVendeur = () => { 
-=======
   const toggleVendeur = () => {
     if (!user.token) {
       alert("Veuillez vous connecter pour contacter le vendeur !")
     } else {
->>>>>>> 2e673902e0ac0fade22e472f67053358b3410e3e
       setContactModalVisible(true);
     }
   };
