@@ -158,6 +158,7 @@ export default function PageAcceuilScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
+
   },
   container: {
     flex: 1,

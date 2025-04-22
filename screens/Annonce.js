@@ -309,7 +309,6 @@ const styles = StyleSheet.create({
   slider: {
     width: "100%",
     backgroundColor: "#EDE1D4",
-    borderRadius: 25,
   },
   pictureContainer: {
     width: "100%",

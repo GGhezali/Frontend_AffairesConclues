@@ -53,6 +53,7 @@ export default function Headers({
       <ImageBackground
         source={require("../../assets/header.png")}
         style={styles.header}
+        resizeMode="cover"
       >
         <View style={styles.searchcontainer}>
           <TextInput style={styles.input} placeholder="What's up ?" onChangeText={(text) => onSearch(text)} />
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     resizeMode: "contain",
     paddingTop: 10,
-    borderBottomColor: "#000000",
+    marginBottom: 3,
   },
   return: {
     position: "absolute",
