@@ -106,11 +106,12 @@ export default function PublierScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         let table = [];
-        for (let obj of data.features) {
+        for (let i =0; i< data.features.length; i++) {
           table.push({
-            title: obj.properties.label,
-            context: obj.properties.context,
-            coordinates: obj.geometry.coordinates,
+            key: i,
+            title: data.features[i].properties.label,
+            context: data.features[i].properties.context,
+            coordinates: data.features[i].geometry.coordinates,
           });
         }
         setPlaces(table);
