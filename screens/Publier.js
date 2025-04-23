@@ -1,12 +1,9 @@
 import React from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   SafeAreaView,
-  Platform,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -29,57 +26,21 @@ export default function PublierScreen({ navigation }) {
   const [title, setTitle] = useState(""); // TITLE A transmettre à la route publish //
   const [description, setDescription] = useState(""); // DESCRIPTION A transmettre à la route publish //
   const [price, setPrice] = useState(0); // PRIX A transmettre à la route publish //
-  const [auteur, setAuteur] = useState(""); // AUTEUR A transmettre à la route publish //
-  const [editeur, setEditeur] = useState(""); // EDITEUR A transmettre à la route publish //
-  const [auteurList, setAuteurList] = useState([]);
-  const [editeurList, setEditeurList] = useState([]);
+  const [author, setAuthor] = useState(""); // AUTEUR A transmettre à la route publish //
+  const [editor, setEditor] = useState(""); // EDITEUR A transmettre à la route publish //
   const [categorie, setCategorie] = useState(""); // CATEGORIE A transmettre à la route publish //
-  const [etat, setEtat] = useState(""); // ETAT A transmettre à la route publish //
+  const [state, setState] = useState(""); // ETAT A transmettre à la route publish //
   const [input, setInput] = useState("");
   const [output, setOutput] = useState(""); // LOCALISATION A transmettre à la route publish // output example: {"context": "75, Paris, Île-de-France", "coordinates": [2.309977, 48.825993], "title": "8 Rue Maurice Bouchor 75014 Paris"}
   const [places, setPlaces] = useState([]);
   const [userId, setUserId] = useState(""); // ANNONCEUR A transmettre à la route publish //
   const isFocused = useIsFocused(); // Permet de savoir si la page est focus ou non
 
-  const [auteurIsFocus, setAuteurIsFocus] = useState(false);
-  const [editeurIsFocus, setEditeurIsFocus] = useState(false);
-
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
-
   useEffect(() => {
     if (!user.token) {
       navigation.navigate("ConnexionInscription");
     }
-    // Fetch auteurs from the backend ---------------------------------
     (async () => {
-      const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
-      const auteursData = await auteursResponse.json();
-
-      const sortedAuteurList = auteursData.auteurs.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
-      let auteursList = sortedAuteurList.map((data) => {
-        return data.name;
-      });
-      setAuteurList(auteursList);
-
-      // --------------------------------------------------------------
-
-      // Fetch editeurs from the backend ---------------------------------
-      const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
-      const editeursData = await editeursResponse.json();
-
-      const sortedEditeurList = editeursData.editeurs.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
-      let editeursList = sortedEditeurList.map((data) => {
-        return data.name;
-      });
-      setEditeurList(editeursList);
-
-      // --------------------------------------------------------------
-
       // Fetch UseurId from the backend -------------------------------
       fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
         method: "POST",
@@ -93,9 +54,6 @@ export default function PublierScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           setUserId(data.userId);
-        })
-        .catch((error) => {
-          console.error("Error fetching user ID:", error);
         });
       // --------------------------------------------------------------
     })();
@@ -106,7 +64,7 @@ export default function PublierScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         let table = [];
-        for (let i =0; i< data.features.length; i++) {
+        for (let i = 0; i < data.features.length; i++) {
           table.push({
             id: i,
             title: data.features[i].properties.label,
@@ -129,10 +87,10 @@ export default function PublierScreen({ navigation }) {
           titre: title,
           description: description,
           prix: price,
-          auteur: auteur,
-          editeur: editeur,
+          auteur: author,
+          editeur: editor,
           categorie: categorie,
-          etat: etat,
+          etat: state,
           localisation: output,
           photoUrl: article.photos,
           annonceur: userId,
@@ -158,131 +116,130 @@ export default function PublierScreen({ navigation }) {
 
   const handleCategory = (categorie) => {
     setCategorie(categorie);
-    // console.log("categorie ==", categorie);
   };
-  const handleState = (etat) => {
-    setEtat(etat);
-    // console.log("etat ==", etat);
+  const handleState = (state) => {
+    setState(state);
   };
-  const handleAuthor = (auteur) => {
-    setAuteur(auteur);
-    // console.log("categorie ==", categorie);
+  const handleAuthor = (author) => {
+    setAuthor(author);
   };
-  const handleEditor = (editeur) => {
-    setEditeur(editeur);
-    // console.log("categorie ==", categorie);
+  const handleEditor = (editor) => {
+    setEditor(editor);
   };
 
-  console.log("places", places);
-  return (
-    <SafeAreaView style={styles.safeareaview}>
-      <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
-        {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
-        <Headers
-          navigation={navigation}
-          isNavigation={true}
-          title={"Publier"}
-        />
-
-        <View style={styles.alignButtons}>
-          <View style={styles.button1}>
-            <TouchableOpacity
-              title="Gallerie"
-              onPress={() => navigation.navigate("Gallerie")}
-            >
-              <Text style={styles.textButton}>Gallerie</Text>
-            </TouchableOpacity>
+  if (!user.token) {
+    return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
+  } else {
+    return (
+      <SafeAreaView style={styles.safeareaview}>
+        <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
+          {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
+          <Headers
+            navigation={navigation}
+            isNavigation={true}
+            title={"Publier"}
+          />
+  
+          <View style={styles.alignButtons}>
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Gallerie"
+                onPress={() => navigation.navigate("Gallerie")}
+              >
+                <Text style={styles.textButton}>Gallerie</Text>
+              </TouchableOpacity>
+            </View>
+  
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Photo"
+                onPress={() => navigation.navigate("Photo")}
+              >
+                <Text style={styles.textButton}>Photo</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <View style={styles.button1}>
-            <TouchableOpacity
-              title="Photo"
-              onPress={() => navigation.navigate("Photo")}
-            >
-              <Text style={styles.textButton}>Photo</Text>
-            </TouchableOpacity>
+  
+          <View style={styles.alignDropdowns}>
+            <Dropdowns isCategory={true} handleCategory={handleCategory} />
+            <Dropdowns isState={true} handleState={handleState} />
           </View>
-        </View>
-
-        <View style={styles.alignDropdowns}>
-          <Dropdowns isCategory={true} handleCategory={handleCategory} />
-          <Dropdowns isState={true} handleState={handleState} />
-        </View>
-
-        <View style={styles.alignDropdowns}>
-          <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
-          <Dropdowns isEditor={true} handleEditor={handleEditor} />
-        </View>
-
-        <ScrollView style={styles.container}>
-          <Text style={styles.inputText}>Titre</Text>
-          <View style={styles.input}>
-            <TextInput
-              onChangeText={(value) => setTitle(value)}
-              value={title}
-              placeholder="Titre"
-            />
+  
+          <View style={styles.alignDropdowns}>
+            <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
+            <Dropdowns isEditor={true} handleEditor={handleEditor} />
           </View>
-
-          <Text style={styles.inputText}>Description</Text>
-          <View style={styles.input}>
-            <TextInput
-              editable
-              textAlignVertical="top"
-              multiline={true}
-              numberOfLines={4}
-              maxLength={600}
-              onChangeText={(value) => setDescription(value)}
-              value={description}
-              placeholder="Description"
-            />
-          </View>
-
-          <Text style={styles.inputText}>Prix de départ</Text>
-          <View style={styles.input}>
-            <TextInput
-              onChangeText={(value) => setPrice(value)}
-              value={price}
-              placeholder="Prix de départ"
-            />
-          </View>
-
-          <Text style={styles.inputText}>Localisation</Text>
-          <AutocompleteDropdownContextProvider>
-            <AutocompleteDropdown
-              flatListProps={{scrollEnabled:false}}
-              clearOnFocus={false}
-              closeOnBlur={true}
-              closeOnSubmit={true}
-              onChangeText={(value) => setInput(value)}
-              onSelectItem={(value) => setOutput(value)}
-              dataSet={places}
-              inputContainerStyle={{
-                borderWidth: 1,
-                borderColor: "#888",
-                backgroundColor: "#fff",
-                padding: 12,
-                borderRadius: 8,
-                marginBottom: 15,
-                fontSize: 16,
-                borderColor: "#dcdedf",
-                width: "100%",
-              }}
-              textInputProps={{
-                placeholder: "Localisation",
-              }}
-            />
-          </AutocompleteDropdownContextProvider>
-
-          <View style={styles.button2}>
-            <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
-              <Text style={styles.textButton}>Publier</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
+  
+          <ScrollView style={styles.container}>
+            <Text style={styles.inputText}>Titre</Text>
+            <View style={styles.input}>
+              <TextInput
+                onChangeText={(value) => setTitle(value)}
+                value={title}
+                placeholder="Titre"
+              />
+            </View>
+  
+            <Text style={styles.inputText}>Description</Text>
+            <View style={styles.input}>
+              <TextInput
+                editable
+                textAlignVertical="top"
+                multiline={true}
+                numberOfLines={4}
+                maxLength={600}
+                onChangeText={(value) => setDescription(value)}
+                value={description}
+                placeholder="Description"
+              />
+            </View>
+  
+            <Text style={styles.inputText}>Prix de départ</Text>
+            <View style={styles.input}>
+              <TextInput
+                onChangeText={(value) => setPrice(value)}
+                value={price}
+                placeholder="Prix de départ"
+              />
+            </View>
+  
+            <Text style={styles.inputText}>Localisation</Text>
+            <AutocompleteDropdownContextProvider>
+              <AutocompleteDropdown
+                flatListProps={{scrollEnabled:false}}
+                clearOnFocus={false}
+                closeOnBlur={true}
+                closeOnSubmit={true}
+                onChangeText={(value) => setInput(value)}
+                onSelectItem={(value) => setOutput(value)}
+                dataSet={places}
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: "#888",
+                  backgroundColor: "#fff",
+                  padding: 12,
+                  borderRadius: 8,
+                  marginBottom: 15,
+                  fontSize: 16,
+                  borderColor: "#dcdedf",
+                  width: "100%",
+                }}
+                textInputProps={{
+                  placeholder: "Localisation",
+                }}
+              />
+            </AutocompleteDropdownContextProvider>
+  
+            <View style={styles.button2}>
+              <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
+                <Text style={styles.textButton}>Publier</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
