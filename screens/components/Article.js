@@ -17,7 +17,6 @@ import { useIsFocused } from "@react-navigation/native";
 import { updateBookmark } from "../../reducers/bookmarks";
 
 export default function Article(props) {
-  console.log(props)
   const [bookmarkedColor, setBookmarkedColor] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
@@ -112,6 +111,7 @@ export default function Article(props) {
     else {
       Alert.alert("Attention", "Veuillez vous connecter pour ajouter un article aux favoris.");
     }
+    props.refreshOnBookmark(props._id)
   };
 
 let title = (
@@ -138,7 +138,8 @@ const deleteOnClick = async () => {
     },
     body: JSON.stringify({})
   })
-props.refresherOnDelete(props._id)}
+props.refresherOnDelete(props._id)
+}
 
 if (props.isPublication) {
   title = (
