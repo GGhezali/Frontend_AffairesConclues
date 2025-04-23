@@ -147,6 +147,7 @@ export default function MesInformationsScreen({ navigation }) {
             <View style={styles.head}>
               <View style={styles.input}>
                 <TextInput
+                  secureTextEntry={true}
                   style={styles.placeholder}
                   placeholder="**** **** **** **** ***"
                   value={donneeBancaire}
