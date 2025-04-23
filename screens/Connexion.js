@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
+  Alert
 } from "react-native";
 import Headers from "./components/Headers";
 
@@ -38,7 +39,7 @@ export default function ConnexionScreen({ navigation }) {
 
         if (data.result) {
           dispatch(login(data.token));
-          alert("Connexion reussi");
+          Alert.alert("Connexion", "Connexion reussi");
           navigation.navigate("TabNavigator", { screen: "Acceuil" });
         } else {
           alert(data.error);

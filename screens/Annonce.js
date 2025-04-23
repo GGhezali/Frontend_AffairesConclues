@@ -335,7 +335,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 20,
     height: 10,
     width: 10,
     justifyContent: "center",
@@ -370,7 +371,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     width: "90%",
-    marginTop: 20,
+    marginTop: -55,
+    marginBottom: 20,
   },
   icon: {
     width: 50,
