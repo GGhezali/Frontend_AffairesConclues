@@ -156,19 +156,19 @@ export default function PublierScreen({ navigation }) {
     }
   };
 
-  const handleCategorie = (categorie) => {
+  const handleCategory = (categorie) => {
     setCategorie(categorie);
     // console.log("categorie ==", categorie);
   };
-  const handleEtat = (etat) => {
+  const handleState = (etat) => {
     setEtat(etat);
     // console.log("etat ==", etat);
   };
-  const handleAuteur = (auteur) => {
+  const handleAuthor = (auteur) => {
     setAuteur(auteur);
     // console.log("categorie ==", categorie);
   };
-  const handleEditeur = (editeur) => {
+  const handleEditor = (editeur) => {
     setEditeur(editeur);
     // console.log("categorie ==", categorie);
   };
@@ -205,13 +205,13 @@ export default function PublierScreen({ navigation }) {
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isCategory={true} handleCategorie={handleCategorie} />
-          <Dropdowns isState={true} handleEtat={handleEtat} />
+          <Dropdowns isCategory={true} handleCategory={handleCategory} />
+          <Dropdowns isState={true} handleState={handleState} />
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isAuthor={true} handleAuteur={handleAuteur} />
-          <Dropdowns isEditor={true} handleEditeur={handleEditeur} />
+          <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
+          <Dropdowns isEditor={true} handleEditor={handleEditor} />
         </View>
 
         <ScrollView style={styles.container}>

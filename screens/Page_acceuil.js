@@ -60,7 +60,7 @@ export default function PageAcceuilScreen({ navigation }) {
     })();
   }, [refreshing, isFocused]);
 
-  const handleCategorie = (categorie) => {
+  const handleCategory = (categorie) => {
     setCategorie(categorie);
     fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`, {
       method: "POST",
@@ -73,7 +73,7 @@ export default function PageAcceuilScreen({ navigation }) {
       });
   };
 
-  const handleTri = (tri) => {
+  const handleSorting = (tri) => {
     setTri(tri);
     fetch(`${BACKEND_ADDRESS}:3000/articles/searchByTri`, {
       method: "POST",
@@ -139,8 +139,8 @@ export default function PageAcceuilScreen({ navigation }) {
       />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
-          <Dropdown isCategory={true} handleCategorie={handleCategorie} />
-          <Dropdown isSorting={true} handleTri={handleTri} />
+          <Dropdown isCategory={true} handleCategory={handleCategory} />
+          <Dropdown isSorting={true} handleSorting={handleSorting} />
         </View>
         <ScrollView
           style={styles.scrollview}
