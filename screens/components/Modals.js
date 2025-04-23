@@ -84,7 +84,7 @@ export default function Modals(props) {
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={styles.infoName}>Téléphone: </Text>
-                                    <Text style={styles.infoText}>{annonceurInfo.phone}</Text>
+                                    <Text style={styles.infoText}>{annonceurInfo.telephone}</Text>
                                 </View>
                             </View>
                         )}
