@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   header: {
-    height: 125,
+    height: 100,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
