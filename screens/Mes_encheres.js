@@ -26,57 +26,61 @@ export default function MesEncheresScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const isFocused = useIsFocused();
 
-  const handleEnCours = () => {
-    setOngletActif("enCours");
-
-    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllArticles(data.articles);
-      })
-      .catch((error) => console.error("Error fetching open articles:", error));
+  const handleEnCours = async () => {
+    try {
+      setOngletActif("enCours");
+  
+      const response = await fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`);
+      const data = await response.json();
+      setAllArticles(data.articles);
+    } catch (error) {
+      console.error("Error fetching open articles:", error);
+    }
   };
 
-  const handleTerminees = () => {
-    setOngletActif("terminees");
-
-    fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setAllArticles(data.articles);
-      })
-      .catch((error) =>
-        console.error("Error fetching closed articles:", error)
-      );
+  const handleTerminees = async () => {
+    try {
+      setOngletActif("terminees");
+  
+      const response = await fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`);
+      const data = await response.json();
+      setAllArticles(data.articles);
+    } catch (error) {
+      console.error("Error fetching closed articles:", error);
+    }
   };
 
   useEffect(() => {
-    if (!user.token) {
-      navigation.navigate("ConnexionInscription");
-    }
-
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: user.token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUserId(data.userId);
-
-        fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${data.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setAllArticles(data.articles);
-          })
-          .catch((error) =>
-            console.error("Error fetching open articles:", error)
-          );
-      });
+    const fetchData = async () => {
+      try {
+        if (!user.token) {
+          navigation.navigate("ConnexionInscription");
+          return;
+        }
+  
+        // Récupérer l'userId à partir du token
+        const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: user.token,
+          }),
+        });
+        const userIdData = await userIdResponse.json();
+        setUserId(userIdData.userId);
+  
+        // Récupérer les enchères en cours pour cet userId
+        const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userIdData.userId}`);
+        const articlesData = await articlesResponse.json();
+        setAllArticles(articlesData.articles);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
   }, [refreshing, isFocused]);
 
   useEffect(() => {
@@ -135,6 +139,9 @@ export default function MesEncheresScreen({ navigation }) {
     }, 2000);
   }, []);
 
+  if (!user.token) {
+    return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
+  } else {
   return (
     <SafeAreaView style={styles.safeareaview}>
       <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
@@ -207,6 +214,7 @@ export default function MesEncheresScreen({ navigation }) {
       </View>
     </SafeAreaView>
   );
+}
 }
 
 const styles = StyleSheet.create({

@@ -173,116 +173,119 @@ export default function PublierScreen({ navigation }) {
     // console.log("categorie ==", categorie);
   };
 
-  console.log("places", places);
-  return (
-    <SafeAreaView style={styles.safeareaview}>
-      <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
-        {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
-        <Headers
-          navigation={navigation}
-          isNavigation={true}
-          title={"Publier"}
-        />
-
-        <View style={styles.alignButtons}>
-          <View style={styles.button1}>
-            <TouchableOpacity
-              title="Gallerie"
-              onPress={() => navigation.navigate("Gallerie")}
-            >
-              <Text style={styles.textButton}>Gallerie</Text>
-            </TouchableOpacity>
+  if (!user.token) {
+    return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
+  } else {
+    return (
+      <SafeAreaView style={styles.safeareaview}>
+        <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
+          {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title*/}
+          <Headers
+            navigation={navigation}
+            isNavigation={true}
+            title={"Publier"}
+          />
+  
+          <View style={styles.alignButtons}>
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Gallerie"
+                onPress={() => navigation.navigate("Gallerie")}
+              >
+                <Text style={styles.textButton}>Gallerie</Text>
+              </TouchableOpacity>
+            </View>
+  
+            <View style={styles.button1}>
+              <TouchableOpacity
+                title="Photo"
+                onPress={() => navigation.navigate("Photo")}
+              >
+                <Text style={styles.textButton}>Photo</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <View style={styles.button1}>
-            <TouchableOpacity
-              title="Photo"
-              onPress={() => navigation.navigate("Photo")}
-            >
-              <Text style={styles.textButton}>Photo</Text>
-            </TouchableOpacity>
+  
+          <View style={styles.alignDropdowns}>
+            <Dropdowns isCategory={true} handleCategory={handleCategory} />
+            <Dropdowns isState={true} handleState={handleState} />
           </View>
-        </View>
-
-        <View style={styles.alignDropdowns}>
-          <Dropdowns isCategory={true} handleCategory={handleCategory} />
-          <Dropdowns isState={true} handleState={handleState} />
-        </View>
-
-        <View style={styles.alignDropdowns}>
-          <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
-          <Dropdowns isEditor={true} handleEditor={handleEditor} />
-        </View>
-
-        <ScrollView style={styles.container}>
-          <Text style={styles.inputText}>Titre</Text>
-          <View style={styles.input}>
-            <TextInput
-              onChangeText={(value) => setTitle(value)}
-              value={title}
-              placeholder="Titre"
-            />
+  
+          <View style={styles.alignDropdowns}>
+            <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
+            <Dropdowns isEditor={true} handleEditor={handleEditor} />
           </View>
-
-          <Text style={styles.inputText}>Description</Text>
-          <View style={styles.input}>
-            <TextInput
-              editable
-              textAlignVertical="top"
-              multiline={true}
-              numberOfLines={4}
-              maxLength={600}
-              onChangeText={(value) => setDescription(value)}
-              value={description}
-              placeholder="Description"
-            />
-          </View>
-
-          <Text style={styles.inputText}>Prix de départ</Text>
-          <View style={styles.input}>
-            <TextInput
-              onChangeText={(value) => setPrice(value)}
-              value={price}
-              placeholder="Prix de départ"
-            />
-          </View>
-
-          <Text style={styles.inputText}>Localisation</Text>
-          <AutocompleteDropdownContextProvider>
-            <AutocompleteDropdown
-              flatListProps={{scrollEnabled:false}}
-              clearOnFocus={false}
-              closeOnBlur={true}
-              closeOnSubmit={true}
-              onChangeText={(value) => setInput(value)}
-              onSelectItem={(value) => setOutput(value)}
-              dataSet={places}
-              inputContainerStyle={{
-                borderWidth: 1,
-                borderColor: "#888",
-                backgroundColor: "#fff",
-                padding: 12,
-                borderRadius: 8,
-                marginBottom: 15,
-                fontSize: 16,
-                borderColor: "#dcdedf",
-                width: "100%",
-              }}
-              textInputProps={{
-                placeholder: "Localisation",
-              }}
-            />
-          </AutocompleteDropdownContextProvider>
-
-          <View style={styles.button2}>
-            <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
-              <Text style={styles.textButton}>Publier</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
+  
+          <ScrollView style={styles.container}>
+            <Text style={styles.inputText}>Titre</Text>
+            <View style={styles.input}>
+              <TextInput
+                onChangeText={(value) => setTitle(value)}
+                value={title}
+                placeholder="Titre"
+              />
+            </View>
+  
+            <Text style={styles.inputText}>Description</Text>
+            <View style={styles.input}>
+              <TextInput
+                editable
+                textAlignVertical="top"
+                multiline={true}
+                numberOfLines={4}
+                maxLength={600}
+                onChangeText={(value) => setDescription(value)}
+                value={description}
+                placeholder="Description"
+              />
+            </View>
+  
+            <Text style={styles.inputText}>Prix de départ</Text>
+            <View style={styles.input}>
+              <TextInput
+                onChangeText={(value) => setPrice(value)}
+                value={price}
+                placeholder="Prix de départ"
+              />
+            </View>
+  
+            <Text style={styles.inputText}>Localisation</Text>
+            <AutocompleteDropdownContextProvider>
+              <AutocompleteDropdown
+                flatListProps={{scrollEnabled:false}}
+                clearOnFocus={false}
+                closeOnBlur={true}
+                closeOnSubmit={true}
+                onChangeText={(value) => setInput(value)}
+                onSelectItem={(value) => setOutput(value)}
+                dataSet={places}
+                inputContainerStyle={{
+                  borderWidth: 1,
+                  borderColor: "#888",
+                  backgroundColor: "#fff",
+                  padding: 12,
+                  borderRadius: 8,
+                  marginBottom: 15,
+                  fontSize: 16,
+                  borderColor: "#dcdedf",
+                  width: "100%",
+                }}
+                textInputProps={{
+                  placeholder: "Localisation",
+                }}
+              />
+            </AutocompleteDropdownContextProvider>
+  
+            <View style={styles.button2}>
+              <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
+                <Text style={styles.textButton}>Publier</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
