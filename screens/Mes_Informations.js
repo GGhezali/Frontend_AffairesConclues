@@ -28,8 +28,6 @@ export default function MesInformationsScreen({ navigation }) {
   const [icon, setIcon] = useState('eye-with-line');
   const [secure, setSecure] = useState(true);
 
-
-
   useEffect(() => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
       method: "POST",
@@ -76,13 +74,8 @@ export default function MesInformationsScreen({ navigation }) {
         console.log(error);
 
         alert("Une erreur est survenue lors de la mise à jour.");
-      });
-      setDonneeBancaire("");
-      setPassword("");
-      
+      });      
   };
-
-
 
   const visiblePassword = () => {
     console.log("visiblePassword");
