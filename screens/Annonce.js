@@ -58,7 +58,12 @@ export default function AnnonceScreen({ route }) {
       Alert.alert("", "Cette annonce est terminée, vous ne pouvez plus enchérir !");
       return;
     }
-    setMiseModalVisible(true);
+    if (!user.token) {
+      Alert.alert("", "Veuillez vous connecter pour enchérir !")
+    }
+    else {
+      setMiseModalVisible(true);
+    }
   };
   const toggleCloseMise = () => {
     setMiseModalVisible(false);
