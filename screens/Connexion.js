@@ -1,15 +1,12 @@
 import React from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  Platform,
-  StatusBar,
-  Alert
+  Alert,
 } from "react-native";
 import Headers from "./components/Headers";
 
@@ -24,7 +21,6 @@ export default function ConnexionScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSumbit = () => {
-    console.log("clicked");
     if (!email || !password) {
       return;
     }
@@ -35,8 +31,6 @@ export default function ConnexionScreen({ navigation }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-
         if (data.result) {
           dispatch(login(data.token));
           Alert.alert("Connexion", "Connexion reussi");
@@ -61,7 +55,7 @@ export default function ConnexionScreen({ navigation }) {
             placeholder="john.doe@hotmail.com"
           />
         </View>
-        <Text style={styles.passwordText}>Password</Text>
+        <Text>Password</Text>
         <View style={styles.input}>
           <TextInput
             secureTextEntry={true}
@@ -92,10 +86,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFF8EF",
   },
-  topLeft: {
-    position: "absolute",
-    top: 1,
-    left: 20,
+  emailText: {
+    display: "flex",
+    justifyContent: "flex-start",
+    marginTop: -100,
   },
   input: {
     borderWidth: 1,
@@ -113,9 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "80%",
     height: 40,
-
   },
-
   textConnexion: {
     justifyContent: "center",
     textAlign: "center",
@@ -123,11 +115,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
     marginTop: 8,
-  
-  },
-  emailText: {
-    display: "flex",
-    justifyContent: "flex-start",
-    marginTop: -100,
   },
 });

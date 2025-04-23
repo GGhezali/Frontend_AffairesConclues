@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   SafeAreaView,
-  Platform,
-  StatusBar,
-  TouchableOpacity,
   ScrollView,
   RefreshControl,
   Image,
@@ -24,9 +20,9 @@ export default function MesFavorisScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [allArticles, setAllArticles] = useState([]);
   const [refreshControl, setRefreshControl] = useState(false);
-
   const isFocused = useIsFocused();
-  const origin = "MesFavorisScreen";
+  const user = useSelector((state) => state.user.value);
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -34,11 +30,6 @@ export default function MesFavorisScreen({ navigation }) {
       setRefreshing(false);
     }, 2000);
   }, []);
-
-  //Accéder au token dans Redux
-  const user = useSelector((state) => state.user.value);
-  const bookmarks = useSelector((state) => state.bookmarks.value);
-  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   useEffect(() => {
     if (!user.token) {
@@ -106,7 +97,6 @@ export default function MesFavorisScreen({ navigation }) {
             <Article
               key={i}
               refresherFromBookmark={refresherFromBookmark}
-              origin={origin}
               navigation={navigation}
               {...data}
             />
@@ -128,8 +118,12 @@ export default function MesFavorisScreen({ navigation }) {
     return (
       <SafeAreaView style={styles.safeareaview}>
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
-  
-        <Headers navigation={navigation} isReturn={true} title={"Mes Favoris"} />
+
+        <Headers
+          navigation={navigation}
+          isReturn={true}
+          title={"Mes Favoris"}
+        />
         <View style={styles.container}>
           <View style={styles.content}></View>
           <ScrollView
@@ -144,9 +138,7 @@ export default function MesFavorisScreen({ navigation }) {
         </View>
       </SafeAreaView>
     );
-
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -158,12 +150,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF8EF",
     alignItems: "center",
-  },
-
-  greenButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
   },
   content: {
     marginTop: 20,

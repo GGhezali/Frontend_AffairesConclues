@@ -5,8 +5,6 @@ import {
   Text,
   TextInput,
   SafeAreaView,
-  Platform,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -19,17 +17,14 @@ import { useState, useEffect } from "react";
 export default function MesInformationsScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
-  console.log(user.email);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [donneeBancaire, setDonneeBancaire] = useState("");
-  const [telephone, setTelephone] = useState("");
+  const [bankData, setBankData] = useState("");
+  const [phone, setPhone] = useState("");
   const [userId, setUserId] = useState("");
-  const [icon, setIcon] = useState('eye-with-line');
+  const [icon, setIcon] = useState("eye-with-line");
   const [secure, setSecure] = useState(true);
-
-
 
   useEffect(() => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
@@ -46,8 +41,8 @@ export default function MesInformationsScreen({ navigation }) {
         setUserId(data.data._id);
         setEmail(data.data.email);
         setUsername(data.data.username);
-        setDonneeBancaire(data.data.donneeBancaire);
-        setTelephone(data.data.telephone);
+        setBankData(data.data.donneeBancaire);
+        setPhone(data.data.telephone);
       });
   }, []);
 
@@ -61,8 +56,8 @@ export default function MesInformationsScreen({ navigation }) {
         email: email,
         username: username,
         password: password,
-        telephone: telephone,
-        donneeBancaire: donneeBancaire,
+        telephone: phone,
+        donneeBancaire: bankData,
       }),
     })
       .then((response) => response.json())
@@ -80,15 +75,13 @@ export default function MesInformationsScreen({ navigation }) {
       });
   };
 
-
-
   const visiblePassword = () => {
     console.log("visiblePassword");
-    if (icon === 'eye-with-line') {
-      setIcon('eye');
+    if (icon === "eye-with-line") {
+      setIcon("eye");
       setSecure(false);
     } else {
-      setIcon('eye-with-line');
+      setIcon("eye-with-line");
       setSecure(true);
     }
   };
@@ -135,7 +128,6 @@ export default function MesInformationsScreen({ navigation }) {
               <View style={styles.input}>
                 <TextInput
                   secureTextEntry={secure}
-                  style={styles.placeholder}
                   placeholder="********"
                   value={password}
                   onChangeText={(value) => setPassword(value)}
@@ -152,10 +144,9 @@ export default function MesInformationsScreen({ navigation }) {
             <View style={styles.head}>
               <View style={styles.input}>
                 <TextInput
-                  style={styles.placeholder}
                   placeholder="**** **** **** **** ***"
-                  value={donneeBancaire}
-                  onChangeText={(value) => setDonneeBancaire(value)}
+                  value={bankData}
+                  onChangeText={(value) => setBankData(value)}
                 />
                 <FontAwesome name={"pencil"} size={16} color={"#F5A28F"} />
               </View>
@@ -164,10 +155,9 @@ export default function MesInformationsScreen({ navigation }) {
             <View style={styles.head}>
               <View style={styles.input}>
                 <TextInput
-                  style={styles.placeholder}
                   placeholder="Téléphone"
-                  value={telephone}
-                  onChangeText={(value) => setTelephone(value)}
+                  value={phone}
+                  onChangeText={(value) => setPhone(value)}
                 />
                 <FontAwesome name={"pencil"} size={16} color={"#F5A28F"} />
               </View>
@@ -196,6 +186,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  inputsContainer: {
+    backgroundColor: "#fff",
+    width: "80%",
+    borderRadius: 10,
+    borderWidth: 0.5,
+    alignItems: "center",
+    marginTop: 30,
+    height: "90%",
+    padding: 20,
+  },
   title: {
     fontSize: 16,
     marginTop: 20,
@@ -206,16 +206,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginTop: 10,
-  },
-  inputsContainer: {
-    backgroundColor: "#fff",
-    width: "80%",
-    borderRadius: 10,
-    borderWidth: 0.5,
-    alignItems: "center",
-    marginTop: 30,
-    height: "90%",
-    padding: 20,
   },
   input: {
     borderWidth: 1,
@@ -230,13 +220,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 40,
-    aspectRatio: 1,
   },
   greenButton: {
     backgroundColor: "#AA5042",

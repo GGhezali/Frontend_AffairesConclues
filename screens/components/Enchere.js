@@ -1,15 +1,14 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
-  let lastAcheteur = "";
+  let lastBuyer = "";
   if (props.acheteur && props.acheteur.length > 0) {
-    lastAcheteur = props.acheteur[props.acheteur.length - 1];
+    lastBuyer = props.acheteur[props.acheteur.length - 1];
   }
 
   let titre = "";
@@ -27,26 +26,25 @@ export default function Enchere(props) {
 
   let iconName = "clock-rotate-left";
   let iconeColor = "grey";
-  let etatVente = "Enchère en cours";
+  let stateSale = "Enchère en cours";
 
   if (
-    props.ongletActif === "terminees" &&
+    props.activeTab === "terminees" &&
     props.isDone === true &&
-    lastAcheteur.token === user.token
+    lastBuyer.token === user.token
   ) {
-    console.log(props.ongletActif);
     iconName = "check";
     iconeColor = "#39D996";
-    etatVente = "Enchère gagnée";
+    stateSale = "Enchère gagnée";
   }
   if (
-    props.ongletActif === "terminees" &&
+    props.activeTab === "terminees" &&
     props.isDone === true &&
-    lastAcheteur.token !== user.token
+    lastBuyer.token !== user.token
   ) {
     iconName = "xmark";
     iconeColor = "red";
-    etatVente = "Enchère perdue";
+    stateSale = "Enchère perdue";
   }
 
   const convertTime = (time) => {
@@ -72,7 +70,7 @@ export default function Enchere(props) {
       </View>
       <View style={styles.rightContent}>
         <View style={styles.icon}>
-          <Text>{etatVente} </Text>
+          <Text>{stateSale} </Text>
           <FontAwesome6 name={iconName} size={20} color={iconeColor} />
         </View>
         <View style={styles.sellContent}>
@@ -80,7 +78,9 @@ export default function Enchere(props) {
         </View>
         <View style={styles.priceContent}>
           <Text style={styles.text}>Prix de départ - {props.startPrice} €</Text>
-          <Text style={styles.text}>Prix en cours - {props.currentPrice} € Dernière mise - {lastAcheteur.username}
+          <Text style={styles.text}>
+            Prix en cours - {props.currentPrice} € Dernière mise -{" "}
+            {lastBuyer.username}
           </Text>
         </View>
       </View>
@@ -139,5 +139,5 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 13,
-  }
+  },
 });

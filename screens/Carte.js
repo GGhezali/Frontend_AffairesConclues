@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  Button,
-  StyleSheet,
-  View,
-  Text,
-  SafeAreaView,
-  Platform,
-  StatusBar,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import MapView from "react-native-maps";
-import { Marker } from 'react-native-maps';
-
+import { Marker } from "react-native-maps";
 import Headers from "./components/Headers";
 
 export default function CarteScreen({ navigation, route }) {
@@ -20,8 +10,7 @@ export default function CarteScreen({ navigation, route }) {
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
       <Headers navigation={navigation} isReturn={true} title={"Carte"} />
-      <View style={styles.input}>
-      </View>
+      <View style={styles.input}></View>
       <MapView
         initialRegion={{
           latitude: props.latitude,
@@ -31,7 +20,10 @@ export default function CarteScreen({ navigation, route }) {
         }}
         style={{ flex: 1 }}
       >
-        <Marker coordinate={{ latitude: props.latitude, longitude: props.longitude }} title={props.adresse} />
+        <Marker
+          coordinate={{ latitude: props.latitude, longitude: props.longitude }}
+          title={props.adresse}
+        />
       </MapView>
     </SafeAreaView>
   );
@@ -41,12 +33,6 @@ const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "green",
   },
   input: {
     width: "100%",

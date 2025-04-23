@@ -1,14 +1,11 @@
 import { useState } from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
   SafeAreaView,
-  Platform,
-  StatusBar,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons"; // Assure-toi d’avoir installé expo/vector-icons ou react-native-vector-icons
@@ -20,7 +17,6 @@ export default function InscriptionScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(false);
-
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const handleSignup = () => {
@@ -78,9 +74,7 @@ export default function InscriptionScreen({ navigation }) {
         </View>
         <Text style={styles.passwordText}>Password</Text>
         <View style={styles.centerIcon}>
-        
           <View style={styles.input}>
-            
             <TextInput
               secureTextEntry={true}
               onChangeText={(value) => setPassword(value)}
@@ -121,15 +115,19 @@ const styles = StyleSheet.create({
     flex: 1,
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
+  header: {
+    position: "absolute",
+    top: 0,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF8EF",
   },
-  header: {
-    position: "absolute",
-    top: 0,
+  emailText: {
+    display: "flex",
+    justifyContent: "flex-start",
   },
   input: {
     borderWidth: 1,
@@ -147,6 +145,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 10,
   },
+  passwordText: {
+    display: "flex",
+    justifyContent: "flex-start",
+  },
   centerIcon: {
     width: "100%",
     height: 80,
@@ -155,31 +157,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-
-  greenButton: {
-    backgroundColor: "#753742",
-    borderRadius: 30,
-    width: "80%",
-    height: 45,
-    marginTop: 60,
-  },
-
-  greenButtonText: {
-    justifyContent: "center",
-    textAlign: "center",
-    fontStyle: "bold",
-    fontSize: 20,
-    color: "white",
- marginTop: 10,
-  },
-  emailText: {
-    display: "flex",
-    justifyContent: "flex-start",
-  },
-  passwordText: {
-    display: "flex",
-    justifyContent: "flex-start",
-  },
   row: {
     flexDirection: "row",
     justifyContent: "center",
@@ -187,7 +164,6 @@ const styles = StyleSheet.create({
     height: 40,
     aspectRatio: 1,
   },
-
   messageBox: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
@@ -197,5 +173,20 @@ const styles = StyleSheet.create({
   message: {
     fontSize: 14,
     color: "#333",
+  },
+  greenButton: {
+    backgroundColor: "#753742",
+    borderRadius: 30,
+    width: "80%",
+    height: 45,
+    marginTop: 60,
+  },
+  greenButtonText: {
+    justifyContent: "center",
+    textAlign: "center",
+    fontStyle: "bold",
+    fontSize: 20,
+    color: "white",
+    marginTop: 10,
   },
 });

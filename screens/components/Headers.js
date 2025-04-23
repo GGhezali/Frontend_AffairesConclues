@@ -7,12 +7,10 @@ import {
   TouchableOpacity,
   Platform,
   StatusBar,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useSelector } from "react-redux";
 
 export default function Headers({
@@ -23,13 +21,12 @@ export default function Headers({
   title,
   onSearch,
 }) {
-
   const user = useSelector((state) => state.user.value);
 
-  let connectIcon = "user-circle"
+  let connectIcon = "user-circle";
 
   if (user.token) {
-    connectIcon = "check-circle"
+    connectIcon = "check-circle";
   }
 
   if (isReturn) {
@@ -39,13 +36,11 @@ export default function Headers({
         style={styles.header}
       >
         <TouchableOpacity style={styles.return}>
-
-        <AntDesign
-          
-          name={"left"}
-          size={25}
-          onPress={() => navigation.goBack()}
-        />
+          <AntDesign
+            name={"left"}
+            size={25}
+            onPress={() => navigation.goBack()}
+          />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </ImageBackground>
@@ -60,7 +55,11 @@ export default function Headers({
         resizeMode="cover"
       >
         <View style={styles.searchcontainer}>
-          <TextInput style={styles.input} placeholder="Rechercher un livre" onChangeText={(text) => onSearch(text)} />
+          <TextInput
+            style={styles.input}
+            placeholder="Rechercher un livre"
+            onChangeText={(text) => onSearch(text)}
+          />
           <TouchableOpacity style={styles.search} activeOpacity={1}>
             <AntDesign name={"search1"} size={18} />
           </TouchableOpacity>
@@ -80,9 +79,9 @@ export default function Headers({
   if (isNavigation) {
     return (
       <ImageBackground
-      source={require("../../assets/header.png")}
-      style={styles.header}
-    >
+        source={require("../../assets/header.png")}
+        style={styles.header}
+      >
         <TouchableOpacity
           style={styles.homebutton}
           onPress={() =>
@@ -126,17 +125,16 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     color: "#380F05",
     marginRight: 65,
-    textAlign: 'center',
-    width: '75%',
+    textAlign: "center",
+    width: "75%",
   },
   titleNavigation: {
-    fontSize: 24, 
+    fontSize: 24,
     fontFamily: "Roboto",
     color: "#380F05",
     marginRight: 90,
-    textAlign: 'center',
-    width: '70%',
-
+    textAlign: "center",
+    width: "70%",
   },
   searchcontainer: {
     width: "88%",
@@ -196,7 +194,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#753742",
     marginLeft: 40,
-
   },
   home: {
     fontSize: 20,
