@@ -67,16 +67,16 @@ export default function Dropdowns(props) {
       setState(stateData.etats);
 
       // Fetch les auteurs depuis le backend
-      const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
-      const auteursData = await auteursResponse.json();
-      const sortedAuteurList = auteursData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
-      setAuteur(sortedAuteurList);
+      const authorResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
+      const authorData = await authorResponse.json();
+      const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
+      setAuteur(sortedAuthorlist);
 
       // Fetch les editeurs depuis le backend
-      const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
-      const editeursData = await editeursResponse.json();
-      const sortedEditeurList = editeursData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
-      setEditeur(sortedEditeurList);
+      const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
+      const editorData = await editorResponse.json();
+      const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
+      setEditeur(sortedEditorList);
     })();
   }, []);
 
@@ -119,7 +119,7 @@ export default function Dropdowns(props) {
           <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
         </TouchableOpacity>
         {isVisible && (
-          <View style={styles.dropdownList}>
+          <View style={[styles.dropdownList, Platform.OS === "ios" ? styles.iosDropdown : styles.androidDropdown]}>
             <FlatList
               keyExtractor={(item) => item.value}
               data={data}
@@ -217,9 +217,9 @@ export default function Dropdowns(props) {
 }
 
 const styles = StyleSheet.create({
-  //  dropdownContainer: {
-  //  zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
-  //    position: "relative", // Permet de positionner la liste correctement
+  // dropdownContainer: {
+  //   zIndex: Platform.OS === "ios" ? 9999 : 1, // Assurez un zIndex élevé pour iOS et Android
+  //   position: "relative", // Permet de positionner la liste correctement
   // },
   dropdownInputs: {
     flexDirection: "row",
@@ -248,9 +248,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dcdedf",
     maxHeight: 150,
-    zIndex: 10,
-    //  zIndex: Platform.OS === "ios" ? 9999 : 10,
-    //  elevation: 5,
+  },
+  iosDropdown: {
+    zIndex: 9999, // iOS nécessite un zIndex élevé pour afficher les dropdowns
+  },
+  androidDropdown: {
+    zIndex: 10, // Android utilise elevation pour gérer la superposition
   },
   dropdownItem: {
     paddingVertical: 10,
