@@ -41,54 +41,55 @@ export default function Modals(props) {
       .then((data) => {
         let bool = true;
 
-        fetch(`${BACKEND_ADDRESS}:3000/users/getUserById/${data.userId}`)
-          .then((response) => response.json())
-          .then((userData) => {
-            console.log(userData.userData.donneeBancaire);
-            if (
-              userData.userData.donneeBancaire === "" ||
-              userData.userData.donneeBancaire === null
-            ) {
-              props.toggleCloseMise();
-              alert("Veuillez renseigner vos données bancaires");
-              bool = false;
-            }
-            if (bool) {
-              fetch(`${BACKEND_ADDRESS}:3000/articles/updateCurrentPrice`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  newPrice: miseValue,
-                  newBuyer: data.userId,
-                  id: articleId,
-                }),
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  setMessageEnchere(data.message);
-                  if (data.message === "Prix mis à jour avec succès") {
-                    props.toggleCloseMise();
-                    setMessageEnchere("");
-                    alert("Prix mis à jour avec succès !");
-                  }
-                  if (
-                    data.message === "Veuillez vous connecter pour enchérir"
-                  ) {
-                    props.toggleCloseMise();
-                    setMessageEnchere("");
-                    alert("Veuillez vous connecter pour enchérir !");
-                  }
-                  if (data.message !== "Prix mis à jour avec succès") {
-                    props.toggleCloseMise();
-                    setMessageEnchere("");
-                    alert("Le prix actuel doit respecter la mise minimale");
-                  }
+        console.log("data.userId", data.userId);
+
+        if (data.userId) {
+          fetch(`${BACKEND_ADDRESS}:3000/users/getUserById/${data.userId}`)
+            .then((response) => response.json())
+            .then((userData) => {
+              console.log(userData.userData.donneeBancaire);
+              if (
+                userData.userData.donneeBancaire === "" ||
+                userData.userData.donneeBancaire === null
+              ) {
+                props.toggleCloseMise();
+                alert("Veuillez renseigner vos données bancaires");
+                bool = false;
+              }
+              if (bool) {
+                fetch(`${BACKEND_ADDRESS}:3000/articles/updateCurrentPrice`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    newPrice: miseValue,
+                    newBuyer: data.userId,
+                    id: articleId,
+                  }),
                 })
-                .catch((error) => {
-                  console.error(error);
-                });
-            }
-          });
+                  .then((response) => response.json())
+                  .then((data) => {
+                    setMessageEnchere(data.message);
+                    if (data.message === "Prix mis à jour avec succès") {
+                      props.toggleCloseMise();
+                      setMessageEnchere("");
+                      alert("Prix mis à jour avec succès !");
+                    }
+                    if (data.message !== "Prix mis à jour avec succès") {
+                      props.toggleCloseMise();
+                      setMessageEnchere("");
+                      alert("Le prix actuel doit respecter la mise minimale");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+              }
+            });
+        } else {
+          props.toggleCloseMise();
+          setMessageEnchere("");
+          alert("Veuillez vous connecter pour enchérir !");
+        }
       });
   };
 
@@ -97,32 +98,45 @@ export default function Modals(props) {
     onCloseMise = true;
   };
 
-    if (contactVendeur) {
-        return (
-            <Modal visible={visibleContact} animationType="fade" transparent onRequestClose={onCloseContact}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <View style={styles.close}>
-                            <AntDesign name={'close'} size={24} onPress={onCloseContact} activeOpacity={0.8} />
-                        </View>
-                        <Text style={styles.infoText}>Contacter le vendeur</Text>
-                        {annonceurInfo && (
-                            <View style={styles.contactInfo}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.infoName}>Email :</Text>
-                                    <Text style={styles.infoText}> {annonceurInfo.email}</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.infoName}>Téléphone :</Text>
-                                    <Text style={styles.infoText}> {annonceurInfo.telephone}</Text>
-                                </View>
-                            </View>
-                        )}
-                    </View>
+  if (contactVendeur) {
+    return (
+      <Modal
+        visible={visibleContact}
+        animationType="fade"
+        transparent
+        onRequestClose={onCloseContact}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.close}>
+              <AntDesign
+                name={"close"}
+                size={24}
+                onPress={onCloseContact}
+                activeOpacity={0.8}
+              />
+            </View>
+            <Text style={styles.infoText}>Contacter le vendeur</Text>
+            {annonceurInfo && (
+              <View style={styles.contactInfo}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.infoName}>Email :</Text>
+                  <Text style={styles.infoText}> {annonceurInfo.email}</Text>
                 </View>
-            </Modal>
-        );
-    }
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.infoName}>Téléphone :</Text>
+                  <Text style={styles.infoText}>
+                    {" "}
+                    {annonceurInfo.telephone}
+                  </Text>
+                </View>
+              </View>
+            )}
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 
   if (mise) {
     return (
@@ -177,78 +191,78 @@ export default function Modals(props) {
 }
 
 const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+  modalView: {
+    width: "75%",
+    backgroundColor: "#FFF8EF",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    modalView: {
-        width: '75%',
-        backgroundColor: '#FFF8EF',
-        borderRadius: 20,
-        padding: 20,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    close: {
-        width: '100%',
-        alignItems: 'flex-end',
-    },
-    button: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
-    contactInfo: {
-        width: '100%',
-        marginTop: 20,
-        marginBottom: 20,
-        alignItems: 'flex-start',
-    },
-    infoName: {
-        fontSize: 16,
-        fontWeight: 500,
-        textDecorationLine: "underline",
-    },
-    infoText: {
-        fontSize: 16,
-        marginBottom: 5,
-    },
-    miseInput: {
-        width: '100%',
-        height: 40,
-        backgroundColor: '#ffffff',
-        borderColor: '#dcdedf',
-        borderWidth: 1,
-        borderRadius: 10,
-        paddingHorizontal: 10,
-        fontSize: 13,
-    },
-    confirmBtn: {
-        width: '40%',
-        height: 40,
-        backgroundColor: '#AA5042',
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    confirmText: {
-        color: '#ffffff',
-        fontWeight: 500,
-    },
-    cancelBtn: {
-        width: '40%',
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  close: {
+    width: "100%",
+    alignItems: "flex-end",
+  },
+  button: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  contactInfo: {
+    width: "100%",
+    marginTop: 20,
+    marginBottom: 20,
+    alignItems: "flex-start",
+  },
+  infoName: {
+    fontSize: 16,
+    fontWeight: 500,
+    textDecorationLine: "underline",
+  },
+  infoText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  miseInput: {
+    width: "100%",
+    height: 40,
+    backgroundColor: "#ffffff",
+    borderColor: "#dcdedf",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    fontSize: 13,
+  },
+  confirmBtn: {
+    width: "40%",
+    height: 40,
+    backgroundColor: "#AA5042",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  confirmText: {
+    color: "#ffffff",
+    fontWeight: 500,
+  },
+  cancelBtn: {
+    width: "40%",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
