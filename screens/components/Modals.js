@@ -79,12 +79,12 @@ export default function Modals(props) {
                         {annonceurInfo && (
                             <View style={styles.contactInfo}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.infoName}>Email: </Text>
-                                    <Text style={styles.infoText}>{annonceurInfo.email}</Text>
+                                    <Text style={styles.infoName}>Email :</Text>
+                                    <Text style={styles.infoText}> {annonceurInfo.email}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text style={styles.infoName}>Téléphone: </Text>
-                                    <Text style={styles.infoText}>{annonceurInfo.phone}</Text>
+                                    <Text style={styles.infoName}>Téléphone :</Text>
+                                    <Text style={styles.infoText}> {annonceurInfo.telephone}</Text>
                                 </View>
                             </View>
                         )}
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         width: '75%',
-        backgroundColor: '#F5FCEE',
+        backgroundColor: '#FFF8EF',
         borderRadius: 20,
         padding: 20,
         alignItems: 'center',
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     confirmBtn: {
         width: '40%',
         height: 40,
-        backgroundColor: '#1c7c54',
+        backgroundColor: '#AA5042',
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',

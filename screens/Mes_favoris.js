@@ -76,7 +76,7 @@ export default function MesFavorisScreen({ navigation }) {
       }
       setAllArticles(articleInfo);
     })();
-  }, [refreshing, isFocused, bookmarks]);
+  }, [refreshing, isFocused]);
 
   const refresherFromBookmark = () => {
     setRefreshControl(!refreshControl);

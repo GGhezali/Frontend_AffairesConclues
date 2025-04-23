@@ -24,23 +24,22 @@ export default function ConnexionInscriptionScreen({ navigation }) {
       <View style={styles.container}>
         {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isNavigation et title */}
         
-          <View style={styles.connexion}>
+          
             <TouchableOpacity
               title="Connexion"
               onPress={() => navigation.navigate("Connexion")}
+              style={styles.connexion}
             >
               <Text style={styles.textConnexion}>Connexion</Text>
             </TouchableOpacity>
-          </View>
 
-          <View style={styles.inscription}>
             <TouchableOpacity
               title="Inscription"
               onPress={() => navigation.navigate("Inscription")}
+              style={styles.inscription}
             >
               <Text style={styles.textConnexion}>Inscription</Text>
             </TouchableOpacity>
-          </View>
        
       </View>
     </SafeAreaView>
