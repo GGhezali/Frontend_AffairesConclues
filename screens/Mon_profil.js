@@ -28,6 +28,17 @@ export default function MonProfilScreen({ navigation }) {
     }
   }, [isFocused]);
 
+    useEffect(() => {
+      if (!user.token) {
+        navigation.navigate('ConnexionInscription')
+      }
+    }, [isFocused]);
+  
+  
+    if (!user.token) {
+      return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
+    } else {  
+      
   return (
     <SafeAreaView style={styles.safeareaview}>
       {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
@@ -76,6 +87,7 @@ export default function MonProfilScreen({ navigation }) {
       </View>
     </SafeAreaView>
   );
+}
 }
 
 const styles = StyleSheet.create({

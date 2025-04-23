@@ -62,7 +62,7 @@ export default function Headers({
         <View style={styles.searchcontainer}>
           <TextInput style={styles.input} placeholder="Rechercher un livre" onChangeText={(text) => onSearch(text)} />
           <TouchableOpacity style={styles.search} activeOpacity={1}>
-            <AntDesign name={"search1"} size={20} />
+            <AntDesign name={"search1"} size={18} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.connection}>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderBottomLeftRadius: 50,
     borderWidth: 1,
-    borderRightWidth: 0,
+    borderRightWidth: 1,
     borderColor: "#753742",
     paddingLeft: 10,
     marginTop: 20,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   search: {
     height: 50,
-    width: 50,
+    width: "15%",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,

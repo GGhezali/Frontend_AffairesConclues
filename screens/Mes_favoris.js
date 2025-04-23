@@ -122,25 +122,31 @@ export default function MesFavorisScreen({ navigation }) {
     }
   }, []);
 
-  return (
-    <SafeAreaView style={styles.safeareaview}>
-      {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+  if (!user.token) {
+    return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
+  } else {
+    return (
+      <SafeAreaView style={styles.safeareaview}>
+        {/* Ajout d'un header qui envoie vers le component "Header" les props navigation, isReturn et title */}
+  
+        <Headers navigation={navigation} isReturn={true} title={"Mes Favoris"} />
+        <View style={styles.container}>
+          <View style={styles.content}></View>
+          <ScrollView
+            style={styles.scrollview}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.encheres}>{article}</View>
+            {/* <View style={styles.articles}>{favorisContent}</View> */}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+    );
 
-      <Headers navigation={navigation} isReturn={true} title={"Mes Favoris"} />
-      <View style={styles.container}>
-        <View style={styles.content}></View>
-        <ScrollView
-          style={styles.scrollview}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.encheres}>{article}</View>
-          {/* <View style={styles.articles}>{favorisContent}</View> */}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
-  );
+  }
+
 }
 
 const styles = StyleSheet.create({
