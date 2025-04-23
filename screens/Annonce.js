@@ -7,6 +7,7 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
+  TouchableHighlight,
 } from "react-native";
 import Headers from "./components/Headers";
 import Modals from "./components/Modals";
@@ -185,6 +186,24 @@ export default function AnnonceScreen({ route }) {
                   <Image source={{ uri: item }} style={styles.picture} />
                 </View>
               )}
+              customButtons={(position, move) => (
+                <View style={styles.buttons}>
+                  {photo.map((photo, index) => {
+                    return (
+                      <TouchableHighlight
+                        key={index}
+                        underlayColor="#ccc"
+                        onPress={() => move(index)}
+                        style={styles.button}
+                      >
+                        <Text style={position === index && styles.buttonSelected}>
+                        
+                        </Text>
+                      </TouchableHighlight>
+                    );
+                  })}
+                </View>
+              )}
             />
             <View style={styles.iconContainer}>
               <TouchableOpacity style={styles.icon}>
@@ -310,10 +329,31 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#EDE1D4",
   },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    margin: 10,
+    height: 10,
+    width: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "#FFFFFF",
+  },
+  buttonSelected: {
+    backgroundColor: "#753742",
+    height: 10,
+    width: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+  },
   pictureContainer: {
     width: "100%",
     height: 500,
-    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center",
   },
