@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 14,
     fontWeight: "bold",
-    height: "15%",
     width: "90%",
     justifyContent: "flex-start",
     alignItems: "center",
