@@ -17,7 +17,9 @@ export default function Dropdowns(props) {
   const { isCategory, isSorting, isState, isAuthor, isEditor } = props;
 
   // Etats pour gérer la visibilité des dropdowns et les valeurs sélectionnées
-  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
+  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
+    false
+  );
   const [isSortingDropdownVisible, setSortingDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
   const [isAuthorDropdownVisible, setAuthorDropdownVisible] = useState(false);
@@ -29,8 +31,8 @@ export default function Dropdowns(props) {
   const [selectedEditor, setSelectedEditor] = useState("");
   const [categories, setCategories] = useState([]);
   const [state, setState] = useState([]);
-  const [auteur, setAuthor] = useState([]);
-  const [editeur, setEditor] = useState([]);
+  const [author, setAuthor] = useState([]);
+  const [editor, setEditor] = useState([]);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   // Ouvre le dropdown "Catégorie"
@@ -57,9 +59,13 @@ export default function Dropdowns(props) {
   useEffect(() => {
     (async () => {
       // Fetch les catégories depuis le backend
-      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
+      const categoriesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/categories`
+      );
       const categoriesData = await categoriesResponse.json();
-      setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
+      setCategories(
+        categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name))
+      );
 
       // Fetch les états depuis le backend
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
@@ -91,7 +97,7 @@ export default function Dropdowns(props) {
   const selectSorting = (item) => {
     setSelectedSorting(item.value);
     props.handleSort(item.value);
-  }
+  };
   // Fonction pour gérer la sélection de l'élément "Etat"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Etat"
   const selectState = (item) => {
@@ -111,7 +117,15 @@ export default function Dropdowns(props) {
     props.handleEditor(item.value);
   };
 
-  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+  function Dropdown({
+    isVisible,
+    toggleVisibility,
+    data,
+    onSelect,
+    placeholder,
+    selectedValue,
+    style,
+  }) {
     return (
       <SafeAreaView style={[styles.dropdownContainer, style]}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
@@ -119,7 +133,14 @@ export default function Dropdowns(props) {
           <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
         </TouchableOpacity>
         {isVisible && (
-          <View style={[styles.dropdownList, Platform.OS === "ios" ? styles.iosDropdown : styles.androidDropdown]}>
+          <View
+            style={[
+              styles.dropdownList,
+              Platform.OS === "ios"
+                ? styles.iosDropdown
+                : styles.androidDropdown,
+            ]}
+          >
             <FlatList
               keyExtractor={(item) => item.value}
               data={data}
@@ -193,7 +214,7 @@ export default function Dropdowns(props) {
         style={styles.authorContainer}
         isVisible={isAuthorDropdownVisible}
         toggleVisibility={toggleAuthorDropdown}
-        data={auteur.map((authorValue) => ({ value: authorValue.name }))}
+        data={author.map((authorValue) => ({ value: authorValue.name }))}
         onSelect={(item) => selectAuthor(item)}
         placeholder="Auteur"
         selectedValue={selectedAuthor}
@@ -207,7 +228,7 @@ export default function Dropdowns(props) {
         style={styles.editorContainer}
         isVisible={isEditorDropdownVisible}
         toggleVisibility={toggleEditorDropdown}
-        data={editeur.map((editorValue) => ({ value: editorValue.name }))}
+        data={editor.map((editorValue) => ({ value: editorValue.name }))}
         onSelect={(item) => selectEditor(item)}
         placeholder="Editeur"
         selectedValue={selectedEditor}
