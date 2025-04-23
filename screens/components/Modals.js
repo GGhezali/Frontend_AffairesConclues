@@ -1,71 +1,101 @@
 import React, { useState } from "react";
 import {
-    StyleSheet,
-    View,
-    Text,
-    Modal,
-    TextInput,
-    TouchableOpacity,
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useSelector } from "react-redux";
 
 export default function Modals(props) {
+  const {
+    visibleContact,
+    visibleMise,
+    onCloseContact,
+    onCloseMise,
+    annonceurInfo,
+    articleId,
+    price,
+    contactVendeur,
+    mise,
+  } = props;
 
-    const { visibleContact, visibleMise, onCloseContact, onCloseMise, annonceurInfo, articleId, price, contactVendeur, mise } = props;
+  const [miseValue, setMiseValue] = useState("");
+  const [messageEnchere, setMessageEnchere] = useState("");
+  const [colorMessage, setColorMessage] = useState("");
+  const user = useSelector((state) => state.user.value);
+  const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
-    const [miseValue, setMiseValue] = useState('');
-    const [messageEnchere, setMessageEnchere] = useState('');
-    const [colorMessage, setColorMessage] = useState('');
-    const user = useSelector((state) => state.user.value);
-    const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
+  const addMise = () => {
+    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: user.token,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let bool = true;
 
-    const addMise = () => {
-        fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                token: user.token,
-            })
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                fetch(`${BACKEND_ADDRESS}:3000/articles/updateCurrentPrice`,
-                    {
-                        method: 'PUT',
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            newPrice: miseValue,
-                            newBuyer: data.userId,
-                            id: articleId,
-                        })
-                    }
-                )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        setMessageEnchere(data.message);
-                        if (data.message === "Prix mis à jour avec succès") {
-                            props.toggleCloseMise();
-                            alert("Prix mis à jour avec succès !")
-                        } 
-                        if (data.message === "Veuillez vous connecter pour enchérir") {
-                            setMessageEnchere('');
-                            alert("Veuillez vous connecter pour enchérir !")
-                        }
-                        if (data.message !== "Prix mis à jour avec succès")  {
-                            setColorMessage('red'); 
-                        }
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            })      
-    }
+        fetch(`${BACKEND_ADDRESS}:3000/users/getUserById/${data.userId}`)
+          .then((response) => response.json())
+          .then((userData) => {
+            console.log(userData.userData.donneeBancaire);
+            if (
+              userData.userData.donneeBancaire === "" ||
+              userData.userData.donneeBancaire === null
+            ) {
+              props.toggleCloseMise();
+              alert("Veuillez renseigner vos données bancaires");
+              bool = false;
+            }
+            if (bool) {
+              fetch(`${BACKEND_ADDRESS}:3000/articles/updateCurrentPrice`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  newPrice: miseValue,
+                  newBuyer: data.userId,
+                  id: articleId,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  setMessageEnchere(data.message);
+                  if (data.message === "Prix mis à jour avec succès") {
+                    props.toggleCloseMise();
+                    setMessageEnchere("");
+                    alert("Prix mis à jour avec succès !");
+                  }
+                  if (
+                    data.message === "Veuillez vous connecter pour enchérir"
+                  ) {
+                    props.toggleCloseMise();
+                    setMessageEnchere("");
+                    alert("Veuillez vous connecter pour enchérir !");
+                  }
+                  if (data.message !== "Prix mis à jour avec succès") {
+                    props.toggleCloseMise();
+                    setMessageEnchere("");
+                    alert("Le prix actuel doit respecter la mise minimale");
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                });
+            }
+          });
+      });
+  };
 
-    const closeMise = () => {
-        setMiseValue('');
-        onCloseMise = true
-    }
+  const closeMise = () => {
+    setMiseValue("");
+    onCloseMise = true;
+  };
 
     if (contactVendeur) {
         return (
@@ -94,29 +124,56 @@ export default function Modals(props) {
         );
     }
 
-    if (mise) {
-        return (
-            <Modal visible={visibleMise} animationType="fade" transparent onRequestClose={onCloseMise}>
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.infoText}>Faire une enchère</Text>
-                        <View style={styles.contactInfo}>
-                            <TextInput placeholder="Entrez votre mise (min 0,50€ en plus)" style={styles.miseInput} onChangeText={(number) => setMiseValue(number)} value={miseValue} />
-                            {messageEnchere !== '' && <Text style={{ color: colorMessage, fontSize: 14, marginLeft: 7 }}>{messageEnchere}</Text>}
-                        </View>
-                        <View style={styles.button}>
-                            <TouchableOpacity style={styles.cancelBtn} onPress={onCloseMise} activeOpacity={0.8}>
-                                <Text>Annuler</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {addMise(); setMiseValue('')}} style={styles.confirmBtn} activeOpacity={0.8}>
-                                <Text style={styles.confirmText}>Confirmer</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
+  if (mise) {
+    return (
+      <Modal
+        visible={visibleMise}
+        animationType="fade"
+        transparent
+        onRequestClose={onCloseMise}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.infoText}>Faire une enchère</Text>
+            <View style={styles.contactInfo}>
+              <TextInput
+                placeholder="Entrez votre mise (min 0,50€ en plus)"
+                style={styles.miseInput}
+                onChangeText={(number) => setMiseValue(number)}
+                value={miseValue}
+              />
+              {messageEnchere !== "" && (
+                <Text
+                  style={{ color: colorMessage, fontSize: 14, marginLeft: 7 }}
+                >
+                  {messageEnchere}
+                </Text>
+              )}
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.cancelBtn}
+                onPress={onCloseMise}
+                activeOpacity={0.8}
+              >
+                <Text>Annuler</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  addMise();
+                  setMiseValue("");
+                }}
+                style={styles.confirmBtn}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.confirmText}>Confirmer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
