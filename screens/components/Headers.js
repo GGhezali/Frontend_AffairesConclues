@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useSelector } from "react-redux";
 
 export default function Headers({
@@ -111,8 +112,10 @@ const styles = StyleSheet.create({
   return: {
     position: "absolute",
     left: 10,
-    top: 50,
+    top: 60,
     color: "#380F05",
+    height: 100,
+    width: 100,
   },
   title: {
     position: "center",
@@ -171,9 +174,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 10,
     top: 45,
-    backgroundColor: "#fff",
-    height: 45,
-    width: 45,
+    backgroundColor: "#FFF8EF",
+    height: 50,
+    width: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
