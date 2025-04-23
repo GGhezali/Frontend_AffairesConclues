@@ -53,15 +53,16 @@ const TabNavigator = () => {
 
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#753742",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: "#f4b490",
+        tabBarInactiveTintColor: "#fff8ef",
+        tabBarStyle: { backgroundColor: "#aa5042" },
         headerShown: false,
       })}
     >
       <Tab.Screen name="Acceuil" component={PageAcceuilScreen} />
       <Tab.Screen name="MesFavoris" component={MesFavorisScreen} />
-      <Tab.Screen name="MesEncheres" component={MesEncheresScreen} />
       <Tab.Screen name="Publier" component={PublierScreen} />
+      <Tab.Screen name="MesEncheres" component={MesEncheresScreen} />
       <Tab.Screen name="Profil" component={MonProfilScreen} />
     </Tab.Navigator>
   );

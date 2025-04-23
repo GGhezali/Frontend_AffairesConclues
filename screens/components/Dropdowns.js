@@ -67,16 +67,16 @@ export default function Dropdowns(props) {
       setState(stateData.etats);
 
       // Fetch les auteurs depuis le backend
-      const auteursResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
-      const auteursData = await auteursResponse.json();
-      const sortedAuteurList = auteursData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
-      setAuteur(sortedAuteurList);
+      const authorResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
+      const authorData = await authorResponse.json();
+      const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
+      setAuteur(sortedAuthorlist);
 
       // Fetch les editeurs depuis le backend
-      const editeursResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
-      const editeursData = await editeursResponse.json();
-      const sortedEditeurList = editeursData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
-      setEditeur(sortedEditeurList);
+      const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
+      const editorData = await editorResponse.json();
+      const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
+      setEditeur(sortedEditorList);
     })();
   }, []);
 
