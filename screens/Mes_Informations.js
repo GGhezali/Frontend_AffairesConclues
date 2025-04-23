@@ -5,10 +5,9 @@ import {
   Text,
   TextInput,
   SafeAreaView,
-  Platform,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -28,8 +27,6 @@ export default function MesInformationsScreen({ navigation }) {
   const [userId, setUserId] = useState("");
   const [icon, setIcon] = useState('eye-with-line');
   const [secure, setSecure] = useState(true);
-
-
 
   useEffect(() => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
@@ -68,7 +65,7 @@ export default function MesInformationsScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          alert(data.message);
+          Alert.alert("Notification", data.message);
         } else {
           alert(data.error);
         }
@@ -77,10 +74,8 @@ export default function MesInformationsScreen({ navigation }) {
         console.log(error);
 
         alert("Une erreur est survenue lors de la mise à jour.");
-      });
+      });      
   };
-
-
 
   const visiblePassword = () => {
     console.log("visiblePassword");
@@ -152,6 +147,7 @@ export default function MesInformationsScreen({ navigation }) {
             <View style={styles.head}>
               <View style={styles.input}>
                 <TextInput
+                  secureTextEntry={secure}
                   style={styles.placeholder}
                   placeholder="**** **** **** **** ***"
                   value={donneeBancaire}

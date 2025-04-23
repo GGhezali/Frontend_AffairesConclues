@@ -110,7 +110,7 @@ export default function Article(props) {
       dispatch(updateBookmark(props._id));
     }
     else {
-      alert("Veuillez vous connecter pour ajouter un article aux favoris.");
+      Alert.alert("Attention", "Veuillez vous connecter pour ajouter un article aux favoris.");
     }
   };
 
@@ -170,9 +170,9 @@ if (props.isPublication) {
         </TouchableOpacity>
       </View>
       <View style={styles.description}>
-        <Text>{props.categorie.name}</Text>
-        <Text>{props.etat.condition}</Text>
-        <Text>{props.currentPrice} €</Text>
+        <Text style={styles.descriptiontext}>{props.categorie.name}</Text>
+        <Text style={styles.descriptiontext}>{props.etat.condition}</Text>
+        <Text style={styles.descriptiontext}>{props.currentPrice} €</Text>
       </View>
     </TouchableOpacity>
   );
@@ -252,5 +252,11 @@ const styles = StyleSheet.create({
     width: "50%",
     justifyContent: "space-around",
     alignItems: "flex-start",
+  },
+  descriptiontext: {
+    fontSize: 12,
+    color: "#753742",
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
