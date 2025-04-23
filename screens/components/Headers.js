@@ -118,23 +118,24 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: 15,
   },
   title: {
     position: "center",
     fontSize: 24,
     fontFamily: "Roboto",
     color: "#380F05",
-    marginRight: 50,
+    marginRight: 65,
     textAlign: 'center',
-    width: '80%',
+    width: '75%',
   },
   titleNavigation: {
     fontSize: 24, 
     fontFamily: "Roboto",
     color: "#380F05",
-    marginRight: 70,
+    marginRight: 90,
     textAlign: 'center',
-    width: '75%',
+    width: '70%',
 
   },
   searchcontainer: {
@@ -194,6 +195,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 1,
     borderColor: "#753742",
+    marginLeft: 40,
+
   },
   home: {
     fontSize: 20,
