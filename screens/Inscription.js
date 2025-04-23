@@ -39,7 +39,7 @@ export default function InscriptionScreen({ navigation }) {
           Alert.alert("Compte créé !");
           navigation.navigate("Connexion");
         } else {
-          alert(data.error);
+          Alert.alert("Attention", data.error);
         }
       });
   };
