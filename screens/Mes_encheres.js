@@ -72,7 +72,10 @@ export default function MesEncheresScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
             setAllArticles(data.articles);
-          });
+          })
+          .catch((error) =>
+            console.error("Error fetching open articles:", error)
+          );
       });
   }, [refreshing, isFocused]);
 
@@ -95,7 +98,7 @@ export default function MesEncheresScreen({ navigation }) {
       setTotal("0.00");
     }
   }, [allArticles]);
- 
+
   // Placeholder ou enchères
   let encheres;
 
