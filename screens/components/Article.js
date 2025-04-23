@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
   StatusBar,
+  Alert,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { updateBookmark } from "../../reducers/bookmarks";
 
 export default function Article(props) {
+  console.log(props)
   const [bookmarkedColor, setBookmarkedColor] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
@@ -112,6 +114,43 @@ export default function Article(props) {
     }
   };
 
+let title = (
+  <View style={styles.titreContainer}>
+<Text style={styles.titre}>{titre}</Text>
+</View>
+)
+
+const alertSuppresion = () => {
+  Alert.alert('Suppression', 'Voulez vous vraiment supprimer cet article ?', [
+    {
+      text: 'Cancel',
+      style: 'cancel',
+    },
+    {text: 'OK', onPress: () => deleteOnClick()},
+  ]);
+}
+
+const deleteOnClick = async () => {
+  await fetch(`${BACKEND_ADDRESS}:3000/articles/deleteArticle/${props._id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({})
+  })
+props.refresherOnDelete(props._id)}
+
+if (props.isPublication) {
+  title = (
+    <View style={styles.titreContainer}> 
+    <Text style={styles.titre}>{titre}</Text>
+    <TouchableOpacity onPress={() => alertSuppresion()} style={styles.trash}>
+      <FontAwesome name={"trash"} size={20} color={"#753742"} />
+    </TouchableOpacity>
+  </View>
+  )
+}
+  
   return (
     <TouchableOpacity
       title="Annonce"
@@ -120,9 +159,7 @@ export default function Article(props) {
         props.navigation.navigate("Annonce", props);
       }}
     >
-      <View style={styles.titreContainer}> 
-        <Text style={styles.titre}>{titre}</Text>
-      </View>
+      {title}
       <Image style={styles.picture} source={{ uri: photo }} />
       <View style={styles.bookmarkContainer}>
         <TouchableOpacity
@@ -154,18 +191,26 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   titreContainer: {
-    justifyContent: "center",
-    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
     height: "20%",
-    width: "90%",
+    width: "100%",
   },
   titre: {
-    marginBottom: 10,
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "bold",
     justifyContent: "center",
     alignItems: "center",
     textAlign: "left",
+    width: "80%",
+  },
+  trash: {
+    width: "18%",
+    height: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    margin: 5,
   },
   picture: {
     width: "90%",

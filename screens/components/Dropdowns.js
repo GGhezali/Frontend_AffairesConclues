@@ -29,8 +29,8 @@ export default function Dropdowns(props) {
   const [selectedEditor, setSelectedEditor] = useState("");
   const [categories, setCategories] = useState([]);
   const [state, setState] = useState([]);
-  const [auteur, setAuteur] = useState([]);
-  const [editeur, setEditeur] = useState([]);
+  const [auteur, setAuthor] = useState([]);
+  const [editeur, setEditor] = useState([]);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   // Ouvre le dropdown "Catégorie"
@@ -38,7 +38,7 @@ export default function Dropdowns(props) {
     setCategoryDropdownVisible(!isCategoryDropdownVisible);
   };
   // Ouvre le dropdown "Trier par"
-  const toggleTriDropdown = () => {
+  const toggleSortingDropdown = () => {
     setSortingDropdownVisible(!isSortingDropdownVisible);
   };
   // Ouvre le dropdown "Etat"
@@ -46,11 +46,11 @@ export default function Dropdowns(props) {
     setStateDropdownVisible(!isStateDropdownVisible);
   };
   // Ouvre le dropdown "Auteur"
-  const toggleAuteurDropdown = () => {
+  const toggleAuthorDropdown = () => {
     setAuthorDropdownVisible(!isAuthorDropdownVisible);
   };
   // Ouvre le dropdown "Editeur"
-  const toggleEditeurDropdown = () => {
+  const toggleEditorDropdown = () => {
     setEditorDropdownVisible(!isEditorDropdownVisible);
   };
 
@@ -70,45 +70,45 @@ export default function Dropdowns(props) {
       const authorResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const authorData = await authorResponse.json();
       const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
-      setAuteur(sortedAuthorlist);
+      setAuthor(sortedAuthorlist);
 
       // Fetch les editeurs depuis le backend
       const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editorData = await editorResponse.json();
       const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
-      setEditeur(sortedEditorList);
+      setEditor(sortedEditorList);
     })();
   }, []);
 
   // Fonctions pour gérer la sélection de l'élément "Catégorie"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Catégorie"
-  const selectCategorie = (item) => {
+  const selectCategory = (item) => {
     setSelectedCategory(item.value);
-    props.handleCategorie(item.value);
+    props.handleCategory(item.value);
   };
   // Fonction pour gérer la sélection de l'élément "Trier par"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Trier par"
-  const selectTri = (item) => {
+  const selectSorting = (item) => {
     setSelectedSorting(item.value);
-    props.handleTri(item.value);
+    props.handleSorting(item.value);
   }
   // Fonction pour gérer la sélection de l'élément "Etat"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Etat"
-  const selectEtat = (item) => {
+  const selectState = (item) => {
     setSelectedState(item.value);
-    props.handleEtat(item.value);
+    props.handleState(item.value);
   };
   // Fonction pour gérer la sélection de l'élément "Auteur"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Auteur"
-  const selectAuteur = (item) => {
+  const selectAuthor = (item) => {
     setSelectedAuthor(item.value);
-    props.handleAuteur(item.value);
+    props.handleAuthor(item.value);
   };
   // Fonction pour gérer la sélection de l'élément "Editeur"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Editeur"
-  const selectEditeur = (item) => {
+  const selectEditor = (item) => {
     setSelectedEditor(item.value);
-    props.handleEditeur(item.value);
+    props.handleEditor(item.value);
   };
 
   function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
@@ -148,11 +148,11 @@ export default function Dropdowns(props) {
   if (isCategory) {
     return (
       <Dropdown
-        style={styles.categorieContainer}
+        style={styles.categoryContainer}
         isVisible={isCategoryDropdownVisible}
         toggleVisibility={toggleCategoryDropdown}
-        data={categories.map((categorie) => ({ value: categorie.name }))}
-        onSelect={(item) => selectCategorie(item)}
+        data={categories.map((categoryValue) => ({ value: categoryValue.name }))}
+        onSelect={(item) => selectCategory(item)}
         placeholder="Catégorie"
         selectedValue={selectedCategory}
       />
@@ -162,11 +162,11 @@ export default function Dropdowns(props) {
   if (isSorting) {
     return (
       <Dropdown
-        style={styles.triContainer}
+        style={styles.sortingContainer}
         isVisible={isSortingDropdownVisible}
-        toggleVisibility={toggleTriDropdown}
+        toggleVisibility={toggleSortingDropdown}
         data={[{ value: "Le plus récent" }, { value: "Le plus ancien" }, { value: "Prix croissant" }, { value: "Prix décroissant" }]}
-        onSelect={(item) => selectTri(item)}
+        onSelect={(item) => selectSorting(item)}
         placeholder="Trier par"
         selectedValue={selectedSorting}
       />
@@ -179,8 +179,8 @@ export default function Dropdowns(props) {
         style={styles.stateContainer}
         isVisible={isStateDropdownVisible}
         toggleVisibility={toggleStateDropdown}
-        data={state.map((etat) => ({ value: etat.condition }))}
-        onSelect={(item) => selectEtat(item)}
+        data={state.map((stateValue) => ({ value: stateValue.condition }))}
+        onSelect={(item) => selectState(item)}
         placeholder="Etat"
         selectedValue={selectedState}
       />
@@ -190,11 +190,11 @@ export default function Dropdowns(props) {
   if (isAuthor) {
     return (
       <Dropdown
-        style={styles.auteurContainer}
+        style={styles.authorContainer}
         isVisible={isAuthorDropdownVisible}
-        toggleVisibility={toggleAuteurDropdown}
-        data={auteur.map((auteur) => ({ value: auteur.name }))}
-        onSelect={(item) => selectAuteur(item)}
+        toggleVisibility={toggleAuthorDropdown}
+        data={auteur.map((authorValue) => ({ value: authorValue.name }))}
+        onSelect={(item) => selectAuthor(item)}
         placeholder="Auteur"
         selectedValue={selectedAuthor}
       />
@@ -204,11 +204,11 @@ export default function Dropdowns(props) {
   if (isEditor) {
     return (
       <Dropdown
-        style={styles.editeurContainer}
+        style={styles.editorContainer}
         isVisible={isEditorDropdownVisible}
-        toggleVisibility={toggleEditeurDropdown}
-        data={editeur.map((editeur) => ({ value: editeur.name }))}
-        onSelect={(item) => selectEditeur(item)}
+        toggleVisibility={toggleEditorDropdown}
+        data={editeur.map((editorValue) => ({ value: editorValue.name }))}
+        onSelect={(item) => selectEditor(item)}
         placeholder="Editeur"
         selectedValue={selectedEditor}
       />
@@ -258,11 +258,11 @@ const styles = StyleSheet.create({
   dropdownItem: {
     paddingVertical: 10,
   },
-  categorieContainer: {
+  categoryContainer: {
     position: "relative",
     width: 160,
   },
-  triContainer: {
+  sortingContainer: {
     position: "relative",
     width: 160,
   },
@@ -270,11 +270,11 @@ const styles = StyleSheet.create({
     position: "relative",
     width: 160,
   },
-  auteurContainer: {
+  authorContainer: {
     position: "relative",
     width: 160,
   },
-  editeurContainer: {
+  editorContainer: {
     position: "relative",
     width: 160,
   },

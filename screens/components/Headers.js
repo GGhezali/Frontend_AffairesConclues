@@ -60,7 +60,7 @@ export default function Headers({
         resizeMode="cover"
       >
         <View style={styles.searchcontainer}>
-          <TextInput style={styles.input} placeholder="What's up ?" onChangeText={(text) => onSearch(text)} />
+          <TextInput style={styles.input} placeholder="Rechercher un livre" onChangeText={(text) => onSearch(text)} />
           <TouchableOpacity style={styles.search} activeOpacity={1}>
             <AntDesign name={"search1"} size={20} />
           </TouchableOpacity>
