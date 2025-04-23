@@ -38,12 +38,15 @@ export default function Headers({
         source={require("../../assets/header.png")}
         style={styles.header}
       >
+        <TouchableOpacity style={styles.return}>
+
         <AntDesign
-          style={styles.return}
+          
           name={"left"}
-          size={20}
+          size={25}
           onPress={() => navigation.goBack()}
         />
+        </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </ImageBackground>
     );
@@ -88,7 +91,7 @@ export default function Headers({
         >
           <AntDesign name={"home"} size={30} color={"#753742"} />
         </TouchableOpacity>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.titleNavigation}>{title}</Text>
       </ImageBackground>
     );
   }
@@ -110,18 +113,29 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   return: {
-    position: "absolute",
-    left: 10,
-    top: 60,
     color: "#380F05",
-    height: 100,
-    width: 100,
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     position: "center",
     fontSize: 24,
     fontFamily: "Roboto",
     color: "#380F05",
+    marginRight: 50,
+    textAlign: 'center',
+    width: '80%',
+  },
+  titleNavigation: {
+    fontSize: 24, 
+    fontFamily: "Roboto",
+    color: "#380F05",
+    marginRight: 70,
+    textAlign: 'center',
+    width: '75%',
+
   },
   searchcontainer: {
     width: "88%",
@@ -171,9 +185,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   homebutton: {
-    position: "absolute",
-    left: 10,
-    top: 45,
+    marginLeft: 30,
     backgroundColor: "#FFF8EF",
     height: 50,
     width: 50,
