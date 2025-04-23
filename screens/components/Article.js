@@ -120,7 +120,9 @@ export default function Article(props) {
         props.navigation.navigate("Annonce", props);
       }}
     >
-      <Text style={styles.titre}>{titre}</Text>
+      <View style={styles.titreContainer}> 
+        <Text style={styles.titre}>{titre}</Text>
+      </View>
       <Image style={styles.picture} source={{ uri: photo }} />
       <View style={styles.bookmarkContainer}>
         <TouchableOpacity
@@ -148,15 +150,20 @@ const styles = StyleSheet.create({
     borderColor: "#dcdedf",
     padding: 10,
     alignItems: "center",
-    margin: 5,
+    marginHorizontal: 5,
+    marginBottom: 20,
+  },
+  titreContainer: {
+    justifyContent: "center",
+    alignItems: "flex-start",
+    height: "20%",
+    width: "90%",
   },
   titre: {
-    textAlign: "center",
     marginBottom: 10,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "bold",
-    width: "90%",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
     textAlign: "left",
   },
