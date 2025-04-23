@@ -106,11 +106,12 @@ export default function PublierScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         let table = [];
-        for (let obj of data.features) {
+        for (let i =0; i< data.features.length; i++) {
           table.push({
-            title: obj.properties.label,
-            context: obj.properties.context,
-            coordinates: obj.geometry.coordinates,
+            id: i,
+            title: data.features[i].properties.label,
+            context: data.features[i].properties.context,
+            coordinates: data.features[i].geometry.coordinates,
           });
         }
         setPlaces(table);
@@ -172,6 +173,7 @@ export default function PublierScreen({ navigation }) {
     // console.log("categorie ==", categorie);
   };
 
+  console.log("places", places);
   return (
     <SafeAreaView style={styles.safeareaview}>
       <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
@@ -248,6 +250,7 @@ export default function PublierScreen({ navigation }) {
           <Text style={styles.inputText}>Localisation</Text>
           <AutocompleteDropdownContextProvider>
             <AutocompleteDropdown
+              flatListProps={{scrollEnabled:false}}
               clearOnFocus={false}
               closeOnBlur={true}
               closeOnSubmit={true}
