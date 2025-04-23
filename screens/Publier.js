@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import Headers from "./components/Headers";
 import { useSelector } from "react-redux";
@@ -99,14 +100,14 @@ export default function PublierScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            alert("Votre annonce a été publiée avec succès.");
+            Alert.alert("", "Votre annonce a été publiée avec succès.");
             navigation.navigate("MesPublications");
           } else {
             throw new Error(data.error);
           }
         })
         .catch((error) => {
-          alert(error.message);
+          Alert.alert("Attetion", error.message);
           navigation.navigate("Publier");
         });
     } else {

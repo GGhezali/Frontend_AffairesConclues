@@ -67,13 +67,13 @@ export default function MesInformationsScreen({ navigation }) {
         if (data.result) {
           Alert.alert("Notification", data.message);
         } else {
-          alert(data.error);
+          Alert.alert("Notification", data.error);
         }
       })
       .catch((error) => {
         console.log(error);
 
-        alert("Une erreur est survenue lors de la mise à jour.");
+        Alert.alert("Attention", "Une erreur est survenue lors de la mise à jour.");
       });      
   };
 
