@@ -90,7 +90,7 @@ export default function Dropdowns(props) {
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Trier par"
   const selectSorting = (item) => {
     setSelectedSorting(item.value);
-    props.handleSorting(item.value);
+    props.handleSort(item.value);
   }
   // Fonction pour gérer la sélection de l'élément "Etat"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Etat"
