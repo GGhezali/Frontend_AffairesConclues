@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
+  Alert,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons"; // Assure-toi d’avoir installé expo/vector-icons ou react-native-vector-icons
@@ -33,10 +34,10 @@ export default function InscriptionScreen({ navigation }) {
         console.log(data);
 
         if (data.result) {
-          alert("Compte créé !");
+          Alert.alert("Compte créé !");
           navigation.navigate("Connexion");
         } else {
-          alert(data.error);
+          Alert.alert("Attention", data.error);
         }
       });
   };

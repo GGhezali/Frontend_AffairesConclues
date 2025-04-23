@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -63,16 +64,16 @@ export default function MesInformationsScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          alert(data.message);
+          Alert.alert("Notification", data.message);
         } else {
-          alert(data.error);
+          Alert.alert("Notification", data.error);
         }
       })
       .catch((error) => {
         console.log(error);
 
-        alert("Une erreur est survenue lors de la mise à jour.");
-      });
+        Alert.alert("Attention", "Une erreur est survenue lors de la mise à jour.");
+      });      
   };
 
   const visiblePassword = () => {
@@ -144,6 +145,8 @@ export default function MesInformationsScreen({ navigation }) {
             <View style={styles.head}>
               <View style={styles.input}>
                 <TextInput
+                  secureTextEntry={secure}
+                  style={styles.placeholder}
                   placeholder="**** **** **** **** ***"
                   value={bankData}
                   onChangeText={(value) => setBankData(value)}

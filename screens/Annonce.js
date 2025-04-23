@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableHighlight,
+  Alert,
 } from "react-native";
 import Headers from "./components/Headers";
 import Modals from "./components/Modals";
@@ -40,7 +41,7 @@ export default function AnnonceScreen({ route }) {
 
   const toggleVendor = () => {
     if (!user.token) {
-      alert("Veuillez vous connecter pour contacter le vendeur !");
+      Alert.alert("", "Veuillez vous connecter pour contacter le vendeur !")
     } else {
       setContactModalVisible(true);
     }
@@ -50,10 +51,16 @@ export default function AnnonceScreen({ route }) {
   };
   const toggleBid = () => {
     if (routeParams.isDone) {
-      alert("Cette annonce est terminée, vous ne pouvez plus enchérir !");
+      Alert.alert("", "Cette annonce est terminée, vous ne pouvez plus enchérir !");
       return;
     }
-    setBidModalVisible(true);
+    
+    if (!user.token) {
+      Alert.alert("", "Veuillez vous connecter pour enchérir !")
+    }
+    else {
+      setBidModalVisible(true);
+    }
   };
   const toggleCloseBid = () => {
     setBidModalVisible(false);
@@ -154,10 +161,10 @@ export default function AnnonceScreen({ route }) {
           dispatch(removeBookmark(routeParams._id));
         }
       } else {
-        alert(bookmarkData.error);
+        Alert.alert("Attention", bookmarkData.error);
       }
     } else {
-      alert("Veuillez vous connecter pour ajouter un article aux favoris.");
+      Alert.alert("Notification", "Veuillez vous connecter pour ajouter un article aux favoris.");
     }
   };
 

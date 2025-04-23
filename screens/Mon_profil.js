@@ -22,12 +22,6 @@ export default function MonProfilScreen({ navigation }) {
     navigation.navigate("TabNavigator", { screen: "Acceuil" });
   };
 
-  useEffect(() => {
-    if (!user.token) {
-      navigation.navigate("ConnexionInscription");
-    }
-  }, [isFocused]);
-
     useEffect(() => {
       if (!user.token) {
         navigation.navigate('ConnexionInscription')
@@ -106,10 +100,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF8EF",
   },
   inputsContainer: {
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: '40%',
-    width: '100%',
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: "40%",
+    width: "100%",
     marginTop: 50,
   },
   inputs: {

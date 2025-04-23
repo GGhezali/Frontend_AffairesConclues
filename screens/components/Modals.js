@@ -53,7 +53,7 @@ export default function Modals(props) {
                 userData.userData.donneeBancaire === null
               ) {
                 props.toggleCloseBid();
-                alert("Veuillez renseigner vos données bancaires");
+                Alert.alert("Attention", "Veuillez renseigner vos données bancaires");
                 bool = false;
               }
               if (bool) {
@@ -77,7 +77,7 @@ export default function Modals(props) {
                     if (data.message !== "Prix mis à jour avec succès") {
                       props.toggleCloseBid();
                       setMessageBid("");
-                      alert("Le prix actuel doit respecter la mise minimale");
+                      Alert.alert("Attention","Le prix actuel doit respecter la mise minimale");
                     }
                   })
                   .catch((error) => {
@@ -88,7 +88,7 @@ export default function Modals(props) {
         } else {
           props.toggleCloseBid();
           setMessageBid("");
-          alert("Veuillez vous connecter pour enchérir !");
+          Alert.alert("Attention","Veuillez vous connecter pour enchérir !");
         }
       });
   };

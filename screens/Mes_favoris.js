@@ -19,7 +19,8 @@ export default function MesFavorisScreen({ navigation }) {
   const [userId, setUserId] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [allArticles, setAllArticles] = useState([]);
-  const [refreshControl, setRefreshControl] = useState(false);
+  const [refresher, setRefresher] = useState("");
+
   const isFocused = useIsFocused();
   const user = useSelector((state) => state.user.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -67,11 +68,12 @@ export default function MesFavorisScreen({ navigation }) {
       }
       setAllArticles(articleInfo);
     })();
-  }, [refreshing, isFocused]);
+  }, [refreshing, isFocused, refresher]);
 
-  const refresherFromBookmark = () => {
-    setRefreshControl(!refreshControl);
-  };
+  //Inverse Data Flow pour suppression d'articles dans le bookmark
+  const refreshOnBookmark = (name) => {
+    setRefresher(name);
+  }
 
   let article;
   if (allArticles.length === 0) {
@@ -96,9 +98,9 @@ export default function MesFavorisScreen({ navigation }) {
           return (
             <Article
               key={i}
-              refresherFromBookmark={refresherFromBookmark}
               navigation={navigation}
               {...data}
+              refreshOnBookmark={refreshOnBookmark}
             />
           );
         }
