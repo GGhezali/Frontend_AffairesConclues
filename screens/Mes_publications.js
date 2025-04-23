@@ -18,6 +18,7 @@ export default function MesPublicationsScreen({ navigation }) {
   const user = useSelector((state) => state.user.value);
   const [allArticles, setAllArticles] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [refresher, setRefresher] = useState("");
   const isFocused = useIsFocused();
 
   const onRefresh = React.useCallback(() => {
@@ -49,7 +50,11 @@ export default function MesPublicationsScreen({ navigation }) {
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.articles);
     })();
-  }, [refreshing, isFocused]);
+  }, [refreshing, isFocused, refresher]);
+
+const refresherOnDelete = (name) => {
+  setRefresher(name);
+}
 
   let article;
 
@@ -71,7 +76,7 @@ export default function MesPublicationsScreen({ navigation }) {
     article = allArticles
       .sort((a, b) => b.timer - a.timer)
       .map((data, i) => {
-        return <Article key={i} navigation={navigation} {...data} />;
+        return <Article key={i} navigation={navigation} isPublication={true} refresherOnDelete={refresherOnDelete} {...data} />;
       });
   }
 

@@ -99,4 +99,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
   },
+  goBackButton: {
+    marginLeft: 20,
+    marginTop: 20,
+    borderRadius: 50,
+    padding: 10,
+  },
+  gallerieButton: {
+    marginRight: 20,
+    marginTop: 20,
+    borderRadius: 50,
+    padding: 10,
+  },
 });

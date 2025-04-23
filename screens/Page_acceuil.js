@@ -15,7 +15,7 @@ import Dropdown from "./components/Dropdowns";
 
 export default function PageAcceuilScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
-  const [categorie, setCategorie] = useState(null);
+  const [category, setCategory] = useState(null);
   const [sort, setSort] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const isFocused = useIsFocused();
@@ -58,12 +58,12 @@ export default function PageAcceuilScreen({ navigation }) {
     })();
   }, [refreshing, isFocused]);
 
-  const handleCategorie = (categorie) => {
-    setCategorie(categorie);
-    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`, {
+  const handleCategory = (category) => {
+    setCategory(category);
+    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategory`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ categorie, sort }),
+      body: JSON.stringify({ category, sort }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -76,7 +76,7 @@ export default function PageAcceuilScreen({ navigation }) {
     fetch(`${BACKEND_ADDRESS}:3000/articles/searchBySort`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ categorie, sort }),
+      body: JSON.stringify({ category, sort }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -88,7 +88,7 @@ export default function PageAcceuilScreen({ navigation }) {
     fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: text, author: text, categorie }),
+      body: JSON.stringify({ title: text, author: text, category }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -136,7 +136,7 @@ export default function PageAcceuilScreen({ navigation }) {
       />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
-          <Dropdown isCategory={true} handleCategorie={handleCategorie} />
+          <Dropdown isCategory={true} handleCategory={handleCategory} />
           <Dropdown isSorting={true} handleSort={handleSort} />
         </View>
         <ScrollView
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 10,
+    marginBottom: 10,
   },
   scrollview: {
     flex: 1,

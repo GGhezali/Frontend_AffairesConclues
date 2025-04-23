@@ -114,7 +114,7 @@ export default function PublierScreen({ navigation }) {
     }
   };
 
-  const handleCategorie = (categorie) => {
+  const handleCategory = (categorie) => {
     setCategorie(categorie);
   };
   const handleState = (state) => {
@@ -158,7 +158,7 @@ export default function PublierScreen({ navigation }) {
         </View>
 
         <View style={styles.alignDropdowns}>
-          <Dropdowns isCategory={true} handleCategorie={handleCategorie} />
+          <Dropdowns isCategory={true} handleCategory={handleCategory} />
           <Dropdowns isState={true} handleState={handleState} />
         </View>
 

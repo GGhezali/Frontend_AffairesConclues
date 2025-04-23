@@ -94,10 +94,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF8EF",
   },
   inputsContainer: {
-    justifyContent: "space-around",
-    alignItems: "center",
-    height: "40%",
-    width: "100%",
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: '40%',
+    width: '100%',
+    marginTop: 50,
   },
   inputs: {
     backgroundColor: "#AA5042",
