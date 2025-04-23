@@ -139,37 +139,35 @@ export default function PublierScreen({ navigation }) {
             isNavigation={true}
             title={"Publier"}
           />
-  
+
           <View style={styles.alignButtons}>
-            <View style={styles.button1}>
-              <TouchableOpacity
-                title="Gallerie"
-                onPress={() => navigation.navigate("Gallerie")}
-              >
-                <Text style={styles.textButton}>Gallerie</Text>
-              </TouchableOpacity>
-            </View>
-  
-            <View style={styles.button1}>
-              <TouchableOpacity
-                title="Photo"
-                onPress={() => navigation.navigate("Photo")}
-              >
-                <Text style={styles.textButton}>Photo</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              title="Gallerie"
+              style={styles.button1}
+              onPress={() => navigation.navigate("Gallerie")}
+            >
+              <Text style={styles.textButton}>Gallerie</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              title="Photo"
+              style={styles.button1}
+              onPress={() => navigation.navigate("Photo")}
+            >
+              <Text style={styles.textButton}>Photo</Text>
+            </TouchableOpacity>
           </View>
-  
+
           <View style={styles.alignDropdowns}>
             <Dropdowns isCategory={true} handleCategory={handleCategory} />
             <Dropdowns isState={true} handleState={handleState} />
           </View>
-  
+
           <View style={styles.alignDropdowns}>
             <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
             <Dropdowns isEditor={true} handleEditor={handleEditor} />
           </View>
-  
+
           <ScrollView style={styles.container}>
             <Text style={styles.inputText}>Titre</Text>
             <View style={styles.input}>
@@ -179,7 +177,7 @@ export default function PublierScreen({ navigation }) {
                 placeholder="Titre"
               />
             </View>
-  
+
             <Text style={styles.inputText}>Description</Text>
             <View style={styles.input}>
               <TextInput
@@ -193,7 +191,7 @@ export default function PublierScreen({ navigation }) {
                 placeholder="Description"
               />
             </View>
-  
+
             <Text style={styles.inputText}>Prix de départ</Text>
             <View style={styles.input}>
               <TextInput
@@ -202,11 +200,11 @@ export default function PublierScreen({ navigation }) {
                 placeholder="Prix de départ"
               />
             </View>
-  
+
             <Text style={styles.inputText}>Localisation</Text>
             <AutocompleteDropdownContextProvider>
               <AutocompleteDropdown
-                flatListProps={{scrollEnabled:false}}
+                flatListProps={{ scrollEnabled: false }}
                 clearOnFocus={false}
                 closeOnBlur={true}
                 closeOnSubmit={true}
@@ -229,12 +227,10 @@ export default function PublierScreen({ navigation }) {
                 }}
               />
             </AutocompleteDropdownContextProvider>
-  
-            <View style={styles.button2}>
-              <TouchableOpacity title="Publier" onPress={() => handlePublish()}>
-                <Text style={styles.textButton}>Publier</Text>
-              </TouchableOpacity>
-            </View>
+
+            <TouchableOpacity title="Publier" style={styles.button2} onPress={() => handlePublish()}>
+              <Text style={styles.textButton}>Publier</Text>
+            </TouchableOpacity>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
