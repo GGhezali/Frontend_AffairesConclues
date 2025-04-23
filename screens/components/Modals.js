@@ -6,6 +6,7 @@ import {
     Modal,
     TextInput,
     TouchableOpacity,
+    Alert,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useSelector } from "react-redux";
@@ -46,7 +47,7 @@ export default function Modals(props) {
                         setMessageEnchere(data.message);
                         if (data.message === "Prix mis à jour avec succès") {
                             props.toggleCloseMise();
-                            alert("Prix mis à jour avec succès !")
+                            Alert.alert("Enchère", "Prix mis à jour avec succès !")
                         } 
                         if (data.message === "Veuillez vous connecter pour enchérir") {
                             setMessageEnchere('');
