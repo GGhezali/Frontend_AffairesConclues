@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   SafeAreaView,
   ScrollView,
   RefreshControl,
-  Image, // Import nécessaire pour afficher l'image du placeholder
+  Image,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Article from "./components/Article";
@@ -17,9 +16,8 @@ import Dropdown from "./components/Dropdowns";
 export default function PageAcceuilScreen({ navigation }) {
   const [allArticles, setAllArticles] = useState([]);
   const [categorie, setCategorie] = useState(null);
-  const [tri, setTri] = useState(null);
+  const [sort, setSort] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [searchText, setSearchText] = useState("");
   const isFocused = useIsFocused();
 
   const onRefresh = React.useCallback(() => {
@@ -65,7 +63,7 @@ export default function PageAcceuilScreen({ navigation }) {
     fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategorie`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ categorie, tri }),
+      body: JSON.stringify({ categorie, sort }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -73,12 +71,12 @@ export default function PageAcceuilScreen({ navigation }) {
       });
   };
 
-  const handleTri = (tri) => {
-    setTri(tri);
-    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByTri`, {
+  const handleSort = (sort) => {
+    setSort(sort);
+    fetch(`${BACKEND_ADDRESS}:3000/articles/searchBySort`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ categorie, tri }),
+      body: JSON.stringify({ categorie, sort }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -87,7 +85,6 @@ export default function PageAcceuilScreen({ navigation }) {
   };
 
   const handleSearch = (text) => {
-    setSearchText(text);
     fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -140,7 +137,7 @@ export default function PageAcceuilScreen({ navigation }) {
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
           <Dropdown isCategory={true} handleCategorie={handleCategorie} />
-          <Dropdown isSorting={true} handleTri={handleTri} />
+          <Dropdown isSorting={true} handleSort={handleSort} />
         </View>
         <ScrollView
           style={styles.scrollview}
@@ -159,13 +156,13 @@ const styles = StyleSheet.create({
   safeareaview: {
     flex: 1,
   },
+  header: {
+    top: 0,
+  },
   container: {
     flex: 1,
     backgroundColor: "#FFF8EF",
     justifyContent: "space-around",
-  },
-  header: {
-    top: 0,
   },
   dropdownInputs: {
     flexDirection: "row",
@@ -183,14 +180,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     marginBottom: 50,
-  },
-
-  placeholderContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 80,
-    marginBottom: 80,
   },
   placeholderImage: {
     width: 120,

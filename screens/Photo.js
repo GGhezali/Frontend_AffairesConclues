@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  Platform,
-  StatusBar,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { CameraView, Camera } from "expo-camera";
 import { useEffect, useState, useRef } from "react";
 import { useIsFocused } from "@react-navigation/native";
@@ -48,12 +41,8 @@ export default function PhotoScreen({ navigation }) {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Success:", data);
           data.result && dispatch(addPhoto(data.url));
           //navigation.navigate("Gallerie");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
         });
     }
   };
@@ -72,36 +61,19 @@ export default function PhotoScreen({ navigation }) {
 
   return (
     <CameraView style={{ flex: 1 }} ref={(ref) => (cameraRef.current = ref)}>
-      <View style={styles.container3}>
-        <View style={styles.container1}>
-          <TouchableOpacity
-            style={styles.goBackButton}
-            onPress={() => handleGoBack()}
-          >
-            <FontAwesome
-              name="arrow-left"
-              size={35}
-              color={"white"}
-            />
+      <View style={styles.container1}>
+        <View style={styles.container2}>
+          <TouchableOpacity onPress={() => handleGoBack()}>
+            <FontAwesome name="arrow-left" size={35} color={"white"} />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.gallerieButton}
-            onPress={() => handleGallerie()}
-          >
-            <FontAwesome
-              name="image"
-              size={35}
-              color={"white"}
-            />
+          <TouchableOpacity onPress={() => handleGallerie()}>
+            <FontAwesome name="image" size={35} color={"white"} />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.container2}>
-          <TouchableOpacity
-            style={styles.takePicture}
-            onPress={() => takePicture()}
-          >
+        <View>
+          <TouchableOpacity onPress={() => takePicture()}>
             <FontAwesome name="circle-thin" size={95} color="white" />
           </TouchableOpacity>
         </View>
@@ -113,18 +85,18 @@ export default function PhotoScreen({ navigation }) {
 const styles = StyleSheet.create({
   container1: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    height: 100,
-  },
-  container3: {
-    display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
     height: "100%",
+  },
+  container2: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    height: 100,
   },
 });

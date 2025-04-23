@@ -17,7 +17,9 @@ export default function Dropdowns(props) {
   const { isCategory, isSorting, isState, isAuthor, isEditor } = props;
 
   // Etats pour gérer la visibilité des dropdowns et les valeurs sélectionnées
-  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
+  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
+    false
+  );
   const [isSortingDropdownVisible, setSortingDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
   const [isAuthorDropdownVisible, setAuthorDropdownVisible] = useState(false);
@@ -57,9 +59,13 @@ export default function Dropdowns(props) {
   useEffect(() => {
     (async () => {
       // Fetch les catégories depuis le backend
-      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
+      const categoriesResponse = await fetch(
+        `${BACKEND_ADDRESS}:3000/categories`
+      );
       const categoriesData = await categoriesResponse.json();
-      setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
+      setCategories(
+        categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name))
+      );
 
       // Fetch les états depuis le backend
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
@@ -69,13 +75,17 @@ export default function Dropdowns(props) {
       // Fetch les auteurs depuis le backend
       const authorResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const authorData = await authorResponse.json();
-      const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedAuthorlist = authorData.auteurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setAuteur(sortedAuthorlist);
 
       // Fetch les editeurs depuis le backend
       const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editorData = await editorResponse.json();
-      const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedEditorList = editorData.editeurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setEditeur(sortedEditorList);
     })();
   }, []);
@@ -90,28 +100,36 @@ export default function Dropdowns(props) {
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Trier par"
   const selectTri = (item) => {
     setSelectedSorting(item.value);
-    props.handleTri(item.value);
-  }
+    props.handleSort(item.value);
+  };
   // Fonction pour gérer la sélection de l'élément "Etat"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Etat"
   const selectEtat = (item) => {
     setSelectedState(item.value);
-    props.handleEtat(item.value);
+    props.handleState(item.value);
   };
   // Fonction pour gérer la sélection de l'élément "Auteur"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Auteur"
   const selectAuteur = (item) => {
     setSelectedAuthor(item.value);
-    props.handleAuteur(item.value);
+    props.handleAuthor(item.value);
   };
   // Fonction pour gérer la sélection de l'élément "Editeur"
   // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Editeur"
   const selectEditeur = (item) => {
     setSelectedEditor(item.value);
-    props.handleEditeur(item.value);
+    props.handleEditor(item.value);
   };
 
-  function Dropdown({ isVisible, toggleVisibility, data, onSelect, placeholder, selectedValue, style }) {
+  function Dropdown({
+    isVisible,
+    toggleVisibility,
+    data,
+    onSelect,
+    placeholder,
+    selectedValue,
+    style,
+  }) {
     return (
       <SafeAreaView style={[styles.dropdownContainer, style]}>
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
@@ -119,7 +137,14 @@ export default function Dropdowns(props) {
           <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
         </TouchableOpacity>
         {isVisible && (
-          <View style={[styles.dropdownList, Platform.OS === "ios" ? styles.iosDropdown : styles.androidDropdown]}>
+          <View
+            style={[
+              styles.dropdownList,
+              Platform.OS === "ios"
+                ? styles.iosDropdown
+                : styles.androidDropdown,
+            ]}
+          >
             <FlatList
               keyExtractor={(item) => item.value}
               data={data}
@@ -165,7 +190,12 @@ export default function Dropdowns(props) {
         style={styles.triContainer}
         isVisible={isSortingDropdownVisible}
         toggleVisibility={toggleTriDropdown}
-        data={[{ value: "Le plus récent" }, { value: "Le plus ancien" }, { value: "Prix croissant" }, { value: "Prix décroissant" }]}
+        data={[
+          { value: "Le plus récent" },
+          { value: "Le plus ancien" },
+          { value: "Prix croissant" },
+          { value: "Prix décroissant" },
+        ]}
         onSelect={(item) => selectTri(item)}
         placeholder="Trier par"
         selectedValue={selectedSorting}

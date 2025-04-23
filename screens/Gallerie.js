@@ -13,8 +13,8 @@ export default function GallerieScreen({navigation}) {
   const photos = article.photos.map((data, i) => {
     return (
       <View key={i} style={styles.photoContainer}>
-        <TouchableOpacity onPress={() => dispatch(removePhoto(data))}>
-          <FontAwesome name='times' size={20} color='#000000' style={styles.deleteIcon} />
+        <TouchableOpacity onPress={() => dispatch(removePhoto(data))} style={styles.deleteIconContainer}>
+          <FontAwesome name='trash-o' size={30} color='#000000' style={styles.deleteIcon} />
         </TouchableOpacity>
 
         <Image source={{ uri: data }} style={styles.photo} />
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCEE",
   },
   title: {
-    fontSize: 50,
+    fontSize: 45,
     textAlign: 'center',
   },
   goBackButton:{
@@ -61,11 +61,22 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     alignItems: 'flex-end',
+    position: "relative",
+    margin: 10
   },
   photo: {
     margin: 10,
     width: 150,
     height: 150,
+    borderRadius: 10,
+  },
+  deleteIconContainer: {
+    position: "absolute", // Positionne l'icône au-dessus de l'image
+    top: 10, // Distance depuis le haut
+    right: 5, // Distance depuis la droite
+    padding: 5, // Ajoute un peu d'espace autour de l'icône
+    borderRadius: 15, // Arrondit le fond de l'icône
+    zIndex: 1, // Assure que l'icône est au-dessus de l'image
   },
   deleteIcon: {
     marginRight: 10,
