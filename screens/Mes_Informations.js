@@ -5,10 +5,9 @@ import {
   Text,
   TextInput,
   SafeAreaView,
-  Platform,
-  StatusBar,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -68,7 +67,7 @@ export default function MesInformationsScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          alert(data.message);
+          Alert.alert("Notification", data.message);
         } else {
           alert(data.error);
         }
@@ -78,6 +77,9 @@ export default function MesInformationsScreen({ navigation }) {
 
         alert("Une erreur est survenue lors de la mise à jour.");
       });
+      setDonneeBancaire("");
+      setPassword("");
+      
   };
 
 
