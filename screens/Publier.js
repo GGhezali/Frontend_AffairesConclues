@@ -48,7 +48,7 @@ export default function PublierScreen({ navigation }) {
       navigation.navigate("ConnexionInscription");
     }
     (async () => {
-      // Fetch UseurId from the backend -------------------------------
+      // Fetch du backend pour obtenir le UseurId à partir du Token stocké dans le reducer user
       fetch(`${BACKEND_ADDRESS}/users/findUserIdByToken`, {
         method: "POST",
         headers: {
@@ -67,6 +67,7 @@ export default function PublierScreen({ navigation }) {
   }, [isFocused]);
 
   useEffect(() => {
+    // Fetch de l'API data.gouv avec l'input localisation de l'AutocompleteDropdown pour obtenir les données de geolocalisation
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${input}`)
       .then((response) => response.json())
       .then((data) => {
@@ -82,9 +83,12 @@ export default function PublierScreen({ navigation }) {
         setPlaces(table);
       });
   }, [input]);
+  // ----------------------------------------------------------------------
 
+  // fonction appelée lorsque l'utilisateur appuie sur le bouton "Publier"
   const handlePublish = () => {
     if (user.token) {
+      // fetch du backend pour envoyer les données de l'annonce à publier
       fetch(`${BACKEND_ADDRESS}/articles/publish`, {
         method: "POST",
         headers: {
@@ -106,22 +110,28 @@ export default function PublierScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
+            // Si la publication a réussi, on affiche une alerte de succès
             Alert.alert("", "Votre annonce a été publiée avec succès.");
+            // Redirection vers la page de mes publications
             navigation.navigate("MesPublications");
           } else {
             throw new Error(data.error);
           }
         })
         .catch((error) => {
+          // Si la publication a échoué, on affiche une alerte d'erreur
           Alert.alert("Attention", error.message);
+          // Redirection vers la page de publication
           navigation.navigate("Publier");
         });
+      // Si la publication a réussi, on vide le tableau des photos du reducer article
       dispatch(removeAllPhoto());
     } else {
       navigation.navigate("Connexion");
     }
   };
 
+  // Fonctions d'inverse data flow pour récupérer les données des dropdowns
   const handleCategory = (categorie) => {
     setCategorie(categorie);
   };
@@ -138,6 +148,7 @@ export default function PublierScreen({ navigation }) {
   if (!user.token) {
     return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
   } else {
+    // Si l'utilisateur est connecté, on retourne le composant de publication
     return (
       <SafeAreaView style={styles.safeareaview}>
         <KeyboardAvoidingView style={{ width: "100%", height: "100%" }}>
@@ -169,10 +180,7 @@ export default function PublierScreen({ navigation }) {
             <ScrollView horizontal={true}>
               {article.photos.map((data, i) => {
                 return (
-                  <View
-                    key={i}
-                    style={styles.pictureContainer}
-                  >
+                  <View key={i} style={styles.pictureContainer}>
                     <View style={styles.deleteIconContainer}>
                       <TouchableOpacity
                         onPress={() => dispatch(removePhoto(data))}
