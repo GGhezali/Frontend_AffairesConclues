@@ -36,6 +36,8 @@ export default function AnnonceScreen({ route }) {
 
   const [timeRemaining, setTimeRemaining] = useState("");
 
+
+
   let photo = routeParams.photoUrl;
   if (routeParams.photoUrl.length === 0 || routeParams.photoUrl === undefined) {
     photo = [
