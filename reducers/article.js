@@ -16,8 +16,11 @@ export const articleSlice = createSlice({
         (photo) => photo !== action.payload
       );
     },
+    removeAllPhoto: (state, action) => {
+      state.value.photos = [];
+    },
   },
 });
 
-export const { addPhoto, removePhoto } = articleSlice.actions;
+export const { addPhoto, removePhoto, removeAllPhoto } = articleSlice.actions;
 export default articleSlice.reducer;

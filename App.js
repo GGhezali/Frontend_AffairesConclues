@@ -1,18 +1,11 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import article from "./reducers/article";
-import bookmarks from "./reducers/bookmarks"
-
+import bookmarks from "./reducers/bookmarks";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-
-
 import AnnonceScreen from "./screens/Annonce";
 import CarteScreen from "./screens/Carte";
 import ConnexionInscriptionScreen from "./screens/Connexion_inscription";
@@ -28,6 +21,11 @@ import PageAcceuilScreen from "./screens/Page_acceuil";
 import PhotoScreen from "./screens/Photo";
 import PublierScreen from "./screens/Publier";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -68,31 +66,53 @@ const TabNavigator = () => {
   );
 };
 
+const reducers = combineReducers({ user, article, bookmarks });
+
+const persistConfig = {
+  key: "AffairesConclues",
+  storage: AsyncStorage,
+};
+
 const store = configureStore({
-  reducer: { user, article, bookmarks },
+  reducer: persistReducer(persistConfig, reducers),
+  middleware: (getDefaultMiddleware: any) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
+
+const persistor = persistStore(store);
 
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen name="ConnexionInscription" component={ConnexionInscriptionScreen} />
-          <Stack.Screen name="MesInformations" component={MesInformationsScreen} />
-          <Stack.Screen name="MesPublications" component={MesPublicationsScreen} />
-          <Stack.Screen name="MesFavoris" component={MesFavorisScreen} />
-          <Stack.Screen name="MesEncheres" component={MesEncheresScreen} />
-          <Stack.Screen name="Connexion" component={ConnexionScreen} />
-          <Stack.Screen name="Inscription" component={InscriptionScreen} />
-          <Stack.Screen name="MonProfil" component={MonProfilScreen} />
-          <Stack.Screen name="Annonce" component={AnnonceScreen} />
-          <Stack.Screen name="Carte" component={CarteScreen} />
-          <Stack.Screen name="Photo" component={PhotoScreen} />
-          <Stack.Screen name="Gallerie" component={GallerieScreen} />
-          <Stack.Screen name="Publier" component={PublierScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen
+              name="ConnexionInscription"
+              component={ConnexionInscriptionScreen}
+            />
+            <Stack.Screen
+              name="MesInformations"
+              component={MesInformationsScreen}
+            />
+            <Stack.Screen
+              name="MesPublications"
+              component={MesPublicationsScreen}
+            />
+            <Stack.Screen name="MesFavoris" component={MesFavorisScreen} />
+            <Stack.Screen name="MesEncheres" component={MesEncheresScreen} />
+            <Stack.Screen name="Connexion" component={ConnexionScreen} />
+            <Stack.Screen name="Inscription" component={InscriptionScreen} />
+            <Stack.Screen name="MonProfil" component={MonProfilScreen} />
+            <Stack.Screen name="Annonce" component={AnnonceScreen} />
+            <Stack.Screen name="Carte" component={CarteScreen} />
+            <Stack.Screen name="Photo" component={PhotoScreen} />
+            <Stack.Screen name="Gallerie" component={GallerieScreen} />
+            <Stack.Screen name="Publier" component={PublierScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }

@@ -19,6 +19,8 @@ import {
   AutocompleteDropdown,
 } from "react-native-autocomplete-dropdown";
 import { useIsFocused } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { removeAllPhoto } from "../reducers/article";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -36,6 +38,7 @@ export default function PublierScreen({ navigation }) {
   const [places, setPlaces] = useState([]);
   const [userId, setUserId] = useState(""); // ANNONCEUR A transmettre à la route publish //
   const isFocused = useIsFocused(); // Permet de savoir si la page est focus ou non
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!user.token) {
@@ -110,6 +113,7 @@ export default function PublierScreen({ navigation }) {
           Alert.alert("Attetion", error.message);
           navigation.navigate("Publier");
         });
+      dispatch(removeAllPhoto());
     } else {
       navigation.navigate("Connexion");
     }
@@ -229,7 +233,11 @@ export default function PublierScreen({ navigation }) {
               />
             </AutocompleteDropdownContextProvider>
 
-            <TouchableOpacity title="Publier" style={styles.button2} onPress={() => handlePublish()}>
+            <TouchableOpacity
+              title="Publier"
+              style={styles.button2}
+              onPress={() => handlePublish()}
+            >
               <Text style={styles.textButton}>Publier</Text>
             </TouchableOpacity>
           </ScrollView>
