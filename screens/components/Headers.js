@@ -23,10 +23,10 @@ export default function Headers({
 }) {
   const user = useSelector((state) => state.user.value);
 
-  let connectIcon = "user-circle";
+  let connectIcon = "user-times";
 
   if (user.token) {
-    connectIcon = "check-circle";
+    connectIcon = "user-circle";
   }
 const handleConnexion = () => {
   if (user.token) {
