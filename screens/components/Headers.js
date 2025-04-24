@@ -24,10 +24,10 @@ export default function Headers({
 }) {
   const user = useSelector((state) => state.user.value);
 
-  let connectIcon = "user-times";
+  let connectIcon = "user";
 
   if (user.token) {
-    connectIcon = "user-ninja";
+    connectIcon = "user-cog";
   }
 const handleConnexion = () => {
   if (user.token) {
