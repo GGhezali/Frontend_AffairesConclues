@@ -83,14 +83,15 @@ export default function Article(props) {
   // Si l'article est marqué comme favori, on change l'icône et son style.
   let bookmarkStyle = styles.notBookmarked;
   if (bookmarkedColor) {
-    bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;  // Icône de favoris sélectionné (bookmark).
+    bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />  // Icône de favoris sélectionné (bookmark).
     bookmarkStyle = styles.bookmarked;  // Style appliqué si l'article est favori.
   }
 
   // Définir l'icône à afficher dans la vue.
   let icon = (
     <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
-      {bookmarkIcon}  // Lorsque l'icône est cliquée, on change son état via handleBookmark.
+    {/* Lorsque l'icône est cliquée, on change son état via handleBookmark. */}
+      {bookmarkIcon} 
     </TouchableOpacity>
   );
 
@@ -98,7 +99,8 @@ export default function Article(props) {
   if (props.isPublication) {
     icon = (
       <TouchableOpacity onPress={() => alertSuppresion()} style={styles.trash}>
-        <FontAwesome name={"trash"} size={20} color={"#753742"} />  // Icône de suppression (poubelle).
+        {/* // Icône de suppression (poubelle) */}
+        <FontAwesome name={"trash"} size={20} color={"#753742"} />
       </TouchableOpacity>
     );
   }
@@ -169,20 +171,26 @@ export default function Article(props) {
       }}
     >
       <View style={styles.topContainer}>
-        <Image style={styles.picture} source={{ uri: photo }} />  // Affiche l'image de l'article.
+      {/* // Affiche l'image de l'article. */}
+        <Image style={styles.picture} source={{ uri: photo }} />
       </View>
       <View style={styles.botContainer}>
-        <View style={styles.iconContainer}>{icon}</View>  // Affiche l'icône (favori ou poubelle selon le contexte).
+      {/* // Affiche l'icône (favori ou poubelle selon le contexte). */}
+        <View style={styles.iconContainer}>{icon}</View>
         <View style={styles.information}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>  // Affiche le titre de l'article.
+          {/* // Affiche le titre de l'article. */}
+            <Text style={styles.title}>{title}</Text>
           </View>
           <View style={styles.description}>
-            <Text style={styles.descriptionText}>{props.auteur.name}</Text>  // Affiche le nom de l'auteur.
-            <Text style={styles.descriptionTextGrey}>{props.categorie.name}</Text>  // Affiche la catégorie de l'article.
+          {/* // Affiche le nom de l'auteur. */}
+          {/* // Affiche la catégorie de l'article. */}
+            <Text style={styles.descriptionTextGrey}>{props.categorie.name}</Text>
             <View style={styles.bookStatus}>
-              <Text style={styles.descriptionTextGrey}>{props.etat.condition}</Text>  // Affiche l'état de l'article.
-              <Text style={styles.descriptionText}>{props.currentPrice} €</Text>  // Affiche le prix actuel de l'article.
+            {/* // Affiche l'état de l'article. */}
+              <Text style={styles.descriptionTextGrey}>{props.etat.condition}</Text>
+              {/* // Affiche le prix actuel de l'article. */}
+              <Text style={styles.descriptionText}>{props.currentPrice} €</Text>
             </View>
           </View>
         </View>

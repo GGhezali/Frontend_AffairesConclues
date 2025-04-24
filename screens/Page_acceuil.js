@@ -38,7 +38,6 @@ export default function PageAcceuilScreen({ navigation }) {
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}/articles/`);
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.data);
->>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
 
       // Vérifie les articles expirés et met à jour leur état "isDone" pour marquer les articles terminés
       let listId = articlesData.data
@@ -59,7 +58,6 @@ export default function PageAcceuilScreen({ navigation }) {
           method: "POST", // Utilise la méthode POST pour envoyer les données au serveur
           headers: { "Content-Type": "application/json" }, // Spécifie que les données envoyées sont au format JSON
           body: JSON.stringify({ id }), // Envoie l'ID de l'article expiré
->>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
         });
       }
     })();
@@ -73,7 +71,6 @@ export default function PageAcceuilScreen({ navigation }) {
       method: "POST", // Envoie une requête POST
       headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
       body: JSON.stringify({ category, sort }), // Envoie la catégorie et le tri au serveur
->>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
       .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
@@ -89,7 +86,6 @@ export default function PageAcceuilScreen({ navigation }) {
       method: "POST", // Envoie une requête POST
       headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
       body: JSON.stringify({ category, sort }), // Envoie la catégorie et le critère de tri
->>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
       .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
@@ -103,7 +99,6 @@ export default function PageAcceuilScreen({ navigation }) {
       method: "POST", // Envoie une requête POST
       headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
       body: JSON.stringify({ title: text, author: text, category }), // Envoie les informations de recherche
->>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
       .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
