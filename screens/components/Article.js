@@ -79,15 +79,13 @@ export default function Article(props) {
   let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#753742"} />  // Icône de favoris non sélectionné (bookmark-o).
   );
-
-  // Si l'article est marqué comme favori, on change l'icône et son style.
   let bookmarkStyle = styles.notBookmarked;
+
   if (bookmarkedColor) {
     bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />  // Icône de favoris sélectionné (bookmark).
     bookmarkStyle = styles.bookmarked;  // Style appliqué si l'article est favori.
   }
 
-  // Définir l'icône à afficher dans la vue.
   let icon = (
     <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
     {/* Lorsque l'icône est cliquée, on change son état via handleBookmark. */}
@@ -95,7 +93,6 @@ export default function Article(props) {
     </TouchableOpacity>
   );
 
-  // Si l'écran est "Mes Publications", on change l'icône de favori en une icône de poubelle pour la suppression.
   if (props.isPublication) {
     icon = (
       <TouchableOpacity onPress={() => alertSuppresion()} style={styles.trash}>

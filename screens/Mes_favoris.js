@@ -106,9 +106,8 @@ export default function MesFavorisScreen({ navigation }) {
   } else {
     // Si des articles sont présents, les trier par date (du plus récent au plus ancien) et les afficher
     article = allArticles
-      .sort((a, b) => b.timer - a.timer) // Trie les articles par la date de création
+      .sort((a, b) => b.timer - a.timer)
       .map((data) => {
-        // Affiche chaque article tant qu'il n'est pas terminé
         if (!data.isDone) {
           return (
             <Article
