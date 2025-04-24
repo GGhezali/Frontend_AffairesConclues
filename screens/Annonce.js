@@ -98,7 +98,7 @@ export default function AnnonceScreen({ route }) {
 
   useEffect(() => {
     //------- fetch articles from the backend---------------------------
-    fetch(`${BACKEND_ADDRESS}:3000/articles/`)
+    fetch(`${BACKEND_ADDRESS}/articles/`)
       .then((response) => response.json())
       .then((articlesData) => {
         const articles = articlesData.data.find(
@@ -126,7 +126,7 @@ export default function AnnonceScreen({ route }) {
     (async () => {
       // Fetch useurId from the backend -------------------------------
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST",
           headers: {
@@ -146,7 +146,7 @@ export default function AnnonceScreen({ route }) {
   const handleBookmark = async () => {
     if (user.token) {
       const bookmarkResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
+        `${BACKEND_ADDRESS}/users/updateBookmark/${userId}`,
         {
           method: "PUT",
           headers: {
