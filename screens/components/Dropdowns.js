@@ -68,7 +68,6 @@ export default function Dropdowns(props) {
 
       // Récupérer les états depuis le backend
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
-      // Fetch les états depuis le backend
       const stateData = await stateResponse.json();
       setState(stateData.etats);
 
@@ -78,7 +77,7 @@ export default function Dropdowns(props) {
       const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
       setAuthor(sortedAuthorlist);
 
-      // Fetch les editeurs depuis le backend
+      // Récupérer les editeurs depuis le backend
       const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editorData = await editorResponse.json();
       const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
