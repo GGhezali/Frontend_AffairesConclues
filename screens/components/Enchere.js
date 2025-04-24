@@ -86,8 +86,8 @@ export default function Enchere(props) {
       <View style={styles.rightContent}>
         <View style={styles.icon}>
           <View style={styles.iconTextContainer}>
-            <Text style={styles.iconText}>{stateSale}   </Text>
-          <FontAwesome6 name={iconName} size={15} color={iconeColor} />
+            <Text style={styles.iconText}>{stateSale} </Text>
+            <FontAwesome6 name={iconName} size={15} color={iconeColor} />
           </View>
         </View>
         <Text style={styles.titre}>{titre}</Text>
@@ -95,11 +95,18 @@ export default function Enchere(props) {
           <Text style={styles.timer}>{timeRemaining}</Text>
         </View>
         <View style={styles.priceContent}>
-          <Text style={styles.text}>Prix de départ - {props.startPrice} €</Text>
-          <Text style={styles.text}>
-            Prix en cours - {props.currentPrice} € Dernière mise -{" "}
-            {lastBuyer.username}
-          </Text>
+          <View style={styles.priceRow}>
+            <Text style={styles.textTitle}>Prix de départ : </Text>
+            <Text style={styles.text}>{props.startPrice} €</Text>
+          </View>
+          <View style={styles.priceRow}>
+            <Text style={styles.textTitle}>Prix en cours : </Text>
+            <Text style={styles.text}>{props.currentPrice} €</Text>
+          </View>
+          <View style={styles.priceRow}>
+            <Text style={styles.textTitle}>Dernière mise : </Text>
+            <Text style={styles.text}>{lastBuyer.username}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -153,6 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "center",
+    marginBottom: 5,
   },
   iconTextContainer: {
     backgroundColor: "#E5E5E5",
@@ -172,14 +180,32 @@ const styles = StyleSheet.create({
   sellContent: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 50,
+    alignItems: "center",
+    height: "40%",
   },
   timer: {
     fontSize: 13,
     fontWeight: "600",
     color: "#AA5042",
   },
+  priceContent: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  priceRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textTitle: {
+    fontSize: 13,
+    fontWeight: "500",
+    fontStyle: "italic",
+  },
   text: {
     fontSize: 13,
+    color: "#AA5042",
+    fontStyle: "italic",
+
   },
 });
