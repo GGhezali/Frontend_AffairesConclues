@@ -28,7 +28,13 @@ export default function Headers({
   if (user.token) {
     connectIcon = "check-circle";
   }
-
+const handleConnexion = () => {
+  if (user.token) {
+    navigation.navigate("MonProfil");
+  } else {
+    navigation.navigate("ConnexionInscription");
+  }
+}
   if (isReturn) {
     return (
       <ImageBackground
@@ -67,7 +73,7 @@ export default function Headers({
             name={connectIcon}
             size={30}
             color={"#753742"}
-            onPress={() => navigation.navigate("ConnexionInscription")}
+            onPress={() => handleConnexion()}
           />
         </TouchableOpacity>
       </ImageBackground>
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   header: {
-    height: 125,
+    height: 100,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
