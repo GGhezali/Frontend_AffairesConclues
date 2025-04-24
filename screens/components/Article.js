@@ -22,8 +22,8 @@ export default function Article(props) {
   const dispatch = useDispatch();
 
   let title = "";
-  if (props.titre && props.titre.length > 40) {
-    title = props.titre.substring(0, 40) + "...";
+  if (props.titre && props.titre.length > 29) {
+    title = props.titre.substring(0, 29) + "...";
   } else {
     title = props.titre;
   }
@@ -80,6 +80,20 @@ export default function Article(props) {
     bookmarkStyle = styles.bookmarked;
   }
 
+  let icon = (
+    <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
+      {bookmarkIcon}
+    </TouchableOpacity>
+  );
+
+  if (props.isPublication) {
+    icon = (
+      <TouchableOpacity onPress={() => alertSuppresion()} style={styles.trash}>
+        <FontAwesome name={"trash"} size={20} color={"#753742"} />
+      </TouchableOpacity>
+    );
+  }
+
   const handleBookmark = async () => {
     if (user.token) {
       setBookmarkedColor(!bookmarkedColor);
@@ -108,12 +122,6 @@ export default function Article(props) {
     props.refreshOnBookmark(props._id);
   };
 
-  let titleContent = (
-    <View style={styles.titreContainer}>
-      <Text style={styles.titre}>{title}</Text>
-    </View>
-  );
-
   const alertSuppresion = () => {
     Alert.alert("Suppression", "Voulez vous vraiment supprimer cet article ?", [
       {
@@ -135,20 +143,6 @@ export default function Article(props) {
     props.refresherOnDelete(props._id);
   };
 
-  if (props.isPublication) {
-    titleContent = (
-      <View style={styles.titreContainer}>
-        <Text style={styles.titre}>{title}</Text>
-        <TouchableOpacity
-          onPress={() => alertSuppresion()}
-          style={styles.trash}
-        >
-          <FontAwesome name={"trash"} size={20} color={"#753742"} />
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
   return (
     <TouchableOpacity
       title="Annonce"
@@ -161,18 +155,15 @@ export default function Article(props) {
         <Image style={styles.picture} source={{ uri: photo }} />
       </View>
       <View style={styles.botContainer}>
-        <View style={styles.bookmarkContainer}>
-          <TouchableOpacity
-            style={bookmarkStyle}
-            onPress={() => handleBookmark()}
-          >
-            {bookmarkIcon}
-          </TouchableOpacity>
+        <View style={styles.iconContainer}>
+          {icon}
         </View>
         <View style={styles.information}>
-          {titleContent}
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{title}</Text>
+          </View>
           <View style={styles.description}>
-              <Text style={styles.descriptiontext}>{props.auteur.name}</Text>
+            <Text style={styles.descriptiontext}>{props.auteur.name}</Text>
             <View style={styles.bookStatus}>
               <Text style={styles.descriptiontext}>{props.categorie.name}</Text>
               <Text style={styles.descriptiontext}>{props.currentPrice} €</Text>
@@ -218,10 +209,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderColor: "#DCDEDF",
   },
-  bookmarkContainer: {
+  iconContainer: {
     width: "100%",
     alignItems: "flex-end",
     marginTop: -35,
+    marginRight: 10,
   },
   notBookmarked: {
     borderWidth: 1,
@@ -251,14 +243,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: -20,
   },
-  titreContainer: {
+  titleContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
     height: "30%",
     width: "72%",
   },
-  titre: {
+  title: {
     fontSize: 12,
     fontWeight: "bold",
     justifyContent: "center",
@@ -267,11 +259,14 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   trash: {
-    width: "18%",
-    height: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
-    margin: 5,
+    borderWidth: 1,
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#753742",
+    backgroundColor: "white",
   },
   description: {
     width: "90%",

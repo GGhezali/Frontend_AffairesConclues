@@ -31,6 +31,8 @@ export default function AnnonceScreen({ route }) {
   const bookmarks = useSelector((state) => state.bookmarks.value);
   const dispatch = useDispatch();
   const [timeRemaining, setTimeRemaining] = useState("");
+  const [timeLeftMs, setTimeLeftMs] = useState("");
+
 
 
 
@@ -74,6 +76,7 @@ export default function AnnonceScreen({ route }) {
       new Date(routeParams.timer).getTime() + 24 * 60 * 60 * 1000
     ); // Add 24 hours to creation date
     const timeLeft = endTime.getTime() - now.getTime();
+    setTimeLeftMs(timeLeft);
 
     if (timeLeft <= 0) {
       setTimeRemaining("Vente terminée");
@@ -169,6 +172,12 @@ export default function AnnonceScreen({ route }) {
       Alert.alert("Notification", "Veuillez vous connecter pour ajouter un article aux favoris.");
     }
   };
+
+  let timerStyle = styles.timer;
+
+  if (timeLeftMs < 3600000) {
+    timerStyle = { ...styles.timer, color: "red" };
+  }
 
   return (
     <SafeAreaView style={styles.safeareaview}>
@@ -279,8 +288,8 @@ export default function AnnonceScreen({ route }) {
             </View>
           </View>
           <View style={styles.timerContainer}>
-            <Text style={styles.timer}>Temps restant</Text>
-            <Text style={styles.timer}>{timeRemaining}</Text>
+            <Text style={timerStyle}>Temps restant</Text>
+            <Text style={timerStyle}>{timeRemaining}</Text>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -449,8 +458,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   timer: {
-    color: "grey",
+    color: "#AA5042",
+    fontWeight: "bold",
     fontSize: 18,
+
   },
   buttonContainer: {
     width: "90%",
