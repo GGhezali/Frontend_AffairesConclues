@@ -57,6 +57,10 @@ export default function Article(props) {
       setUserId(userIdData.userId);  // Sauvegarde l'ID utilisateur dans l'état.
 
       // 2. Récupérer les articles sauvegardés (favoris) de l'utilisateur.
+      if (userIdData.userId === undefined) {
+        return;  // Si l'ID utilisateur est indéfini, on ne fait rien.
+      }
+      // Envoie une requête pour récupérer les favoris de l'utilisateur.
       const articlesIdResponse = await fetch(
         `${BACKEND_ADDRESS}/users/getBookmarks/${userIdData.userId}`
       );
