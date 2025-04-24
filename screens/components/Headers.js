@@ -28,7 +28,13 @@ export default function Headers({
   if (user.token) {
     connectIcon = "check-circle";
   }
-
+const handleConnexion = () => {
+  if (user.token) {
+    navigation.navigate("MonProfil");
+  } else {
+    navigation.navigate("ConnexionInscription");
+  }
+}
   if (isReturn) {
     return (
       <ImageBackground
@@ -67,7 +73,7 @@ export default function Headers({
             name={connectIcon}
             size={30}
             color={"#753742"}
-            onPress={() => navigation.navigate("ConnexionInscription")}
+            onPress={() => handleConnexion()}
           />
         </TouchableOpacity>
       </ImageBackground>

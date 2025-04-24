@@ -118,8 +118,9 @@ const styles = StyleSheet.create({
   textbutton: {
     color: "#fff",
     fontSize: 16,
-    marginRight: 10,
     textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
     width: "80%",
   },
   logout: {
