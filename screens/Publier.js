@@ -23,6 +23,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { removeAllPhoto } from "../reducers/article";
 import { removePhoto } from "../reducers/article";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import ImageModal from "react-native-image-modal";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -168,24 +169,33 @@ export default function PublierScreen({ navigation }) {
             <ScrollView horizontal={true}>
               {article.photos.map((data, i) => {
                 return (
-                  <View key={i} style={styles.pictureContainer}>
+                  <View
+                    key={i}
+                    style={styles.pictureContainer}
+                  >
                     <View style={styles.deleteIconContainer}>
-
-                    <TouchableOpacity
-                      onPress={() => dispatch(removePhoto(data))}
-                      style={styles.deleteIconButton}
-                    >
-                      <FontAwesome
-                        name="trash-o"
-                        size={20}
-                        color="#000000"
-                        style={styles.deleteIcon}
-                      />
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => dispatch(removePhoto(data))}
+                        style={styles.deleteIconButton}
+                      >
+                        <FontAwesome
+                          name="trash-o"
+                          size={20}
+                          color="#000000"
+                          style={styles.deleteIcon}
+                        />
+                      </TouchableOpacity>
                     </View>
-                    <Image
-                      source={{ uri: data }}
-                      style={{ width: 100, height: 100 }}
+                    <ImageModal
+                      resizeMode="cover"
+                      imageBackgroundColor="#000000"
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                      source={{
+                        uri: `${data}`,
+                      }}
                     />
                   </View>
                 );
@@ -193,13 +203,17 @@ export default function PublierScreen({ navigation }) {
             </ScrollView>
           </View>
           <View style={styles.alignDropdowns}>
-            <Dropdowns isCategory={true} handleCategory={handleCategory} />
-            <Dropdowns isState={true} handleState={handleState} />
+            <Dropdowns
+              key={0}
+              isCategory={true}
+              handleCategory={handleCategory}
+            />
+            <Dropdowns key={1} isState={true} handleState={handleState} />
           </View>
 
           <View style={styles.alignDropdowns}>
-            <Dropdowns isAuthor={true} handleAuthor={handleAuthor} />
-            <Dropdowns isEditor={true} handleEditor={handleEditor} />
+            <Dropdowns key={2} isAuthor={true} handleAuthor={handleAuthor} />
+            <Dropdowns key={3} isEditor={true} handleEditor={handleEditor} />
           </View>
 
           <ScrollView style={styles.container}>

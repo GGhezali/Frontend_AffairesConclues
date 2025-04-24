@@ -137,11 +137,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     resizeMode: "cover",
   },
-  titre: {
-    textAlign: "left",
-    fontWeight: "600",
-    height: 40,
-  },
   rightContent: {
     flexDirection: "column",
     justifyContent: "space-between",
@@ -171,6 +166,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    
   },
   iconText: {
     fontSize: 10,
@@ -181,7 +177,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "40%",
+    height: "35%",
+  },
+  titre: {
+    marginTop: 5,
+    textAlign: "left",
+    fontWeight: "600",
+    height: 40,
   },
   timer: {
     fontSize: 13,
@@ -191,7 +193,6 @@ const styles = StyleSheet.create({
   priceContent: {
     flexDirection: "column",
     justifyContent: "space-between",
-    marginBottom: 10,
   },
   priceRow: {
     flexDirection: "row",

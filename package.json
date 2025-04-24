@@ -37,7 +37,8 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "react-native-image-modal": "^3.0.13"
   },
   "private": true
 }

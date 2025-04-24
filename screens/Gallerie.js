@@ -45,7 +45,7 @@ export default function GallerieScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <TouchableOpacity onPress={() => handleGoBack()}>
+        <TouchableOpacity onPress={() => handleGoBack()} style={styles.returnButton}>
           <FontAwesome name="arrow-left" size={35} color={"black"} />
         </TouchableOpacity>
         <Text style={styles.title}>Gallerie</Text>
@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     backgroundColor: "#FFF8EF",
+  },
+  returnButton: {
+    marginLeft: 15,
+    
   },
   title: {
     fontSize: 45,
