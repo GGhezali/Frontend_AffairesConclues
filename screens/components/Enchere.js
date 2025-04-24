@@ -2,10 +2,11 @@ import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useSelector } from "react-redux";
-
+import { useState, useEffect } from "react";
 
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
+  const [timeRemaining, setTimeRemaining] = useState("");
 
   let lastBuyer = "";
   if (props.acheteur && props.acheteur.length > 0) {
@@ -13,8 +14,8 @@ export default function Enchere(props) {
   }
 
   let titre = "";
-  if (props.titre.length > 40) {
-    titre = props.titre.substring(0, 40) + "...";
+  if (props.titre.length > 46) {
+    titre = props.titre.substring(0, 46) + "...";
   } else {
     titre = props.titre;
   }
@@ -48,17 +49,31 @@ export default function Enchere(props) {
     stateSale = "Enchère perdue";
   }
 
-  const convertTime = (time) => {
-    const date = new Date(time);
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return date.toLocaleString("fr-FR", options);
+  const calculateTimeRemaining = () => {
+    const now = new Date();
+    const endTime = new Date(
+      new Date(props.timer).getTime() + 24 * 60 * 60 * 1000
+    ); // Add 24 hours to creation date
+    const timeLeft = endTime.getTime() - now.getTime();
+
+    if (timeLeft <= 0) {
+      setTimeRemaining("Vente terminée");
+      return;
+    }
+
+    const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    setTimeRemaining(`${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`);
   };
+
+  useEffect(() => {
+    calculateTimeRemaining(); // Initial calculation
+    const interval = setInterval(calculateTimeRemaining, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [props.timer]);
 
   return (
     <TouchableOpacity
@@ -70,12 +85,14 @@ export default function Enchere(props) {
       </View>
       <View style={styles.rightContent}>
         <View style={styles.icon}>
-          <Text>{stateSale} </Text>
-          <FontAwesome6 name={iconName} size={20} color={iconeColor} />
+          <View style={styles.iconTextContainer}>
+            <Text style={styles.iconText}>{stateSale}   </Text>
+          <FontAwesome6 name={iconName} size={15} color={iconeColor} />
+          </View>
         </View>
         <Text style={styles.titre}>{titre}</Text>
         <View style={styles.sellContent}>
-          <Text style={styles.text}>{convertTime(props.timer)}</Text>
+          <Text style={styles.timer}>{timeRemaining}</Text>
         </View>
         <View style={styles.priceContent}>
           <Text style={styles.text}>Prix de départ - {props.startPrice} €</Text>
@@ -125,17 +142,42 @@ const styles = StyleSheet.create({
     width: "60%",
     paddingHorizontal: 5,
     paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+    borderLeftWidth: 0,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
   },
   icon: {
-    height: 20,
+    height: 21,
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "center",
+  },
+  iconTextContainer: {
+    backgroundColor: "#E5E5E5",
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    marginRight: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  iconText: {
+    fontSize: 10,
+    fontWeight: "600",
+    color: "grey",
   },
   sellContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 50,
+  },
+  timer: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#AA5042",
   },
   text: {
     fontSize: 13,
