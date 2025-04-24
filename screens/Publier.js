@@ -197,6 +197,8 @@ export default function PublierScreen({ navigation }) {
                     <ImageModal
                       resizeMode="cover"
                       imageBackgroundColor="#000000"
+                      modalImageResizeMode="contain"
+                      isTranslucent={true}
                       style={{
                         width: 100,
                         height: 100,

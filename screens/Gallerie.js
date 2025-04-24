@@ -39,6 +39,8 @@ export default function GallerieScreen({ navigation }) {
         <ImageModal
           resizeMode="cover"
           imageBackgroundColor="#000000"
+          modalImageResizeMode="contain"
+          isTranslucent={true}
           style={{
             width: 150,
             height: 150,

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
-
+//commentaire surprise !
 export default function Dropdowns(props) {
   const { isCategory, isSorting, isState, isAuthor, isEditor } = props;
   const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
