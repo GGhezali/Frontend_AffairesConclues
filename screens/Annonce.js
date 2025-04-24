@@ -21,19 +21,15 @@ import { addBookmark, removeBookmark } from "../reducers/bookmarks";
 export default function AnnonceScreen({ route }) {
   const routeParams = route.params;
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
-
   const [contactModalVisible, setContactModalVisible] = useState(false);
-  const [miseModalVisible, setMiseModalVisible] = useState(false);
+  const [bidModalVisible, setBidModalVisible] = useState(false);
   const [price, setPrice] = useState(routeParams.currentPrice);
   const [buyer, setBuyer] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
   const isFocused = useIsFocused();
   const user = useSelector((state) => state.user.value);
   const bookmarks = useSelector((state) => state.bookmarks.value);
   const dispatch = useDispatch();
-
   const [timeRemaining, setTimeRemaining] = useState("");
 
 
@@ -45,25 +41,31 @@ export default function AnnonceScreen({ route }) {
     ];
   }
 
-  const toggleVendeur = () => {
+  const toggleVendor = () => {
     if (!user.token) {
       Alert.alert("", "Veuillez vous connecter pour contacter le vendeur !")
     } else {
       setContactModalVisible(true);
     }
   };
-  const toggleCloseVendeur = () => {
+  const toggleCloseVendor = () => {
     setContactModalVisible(false);
   };
-  const toggleMise = () => {
+  const toggleBid = () => {
     if (routeParams.isDone) {
       Alert.alert("", "Cette annonce est terminée, vous ne pouvez plus enchérir !");
       return;
     }
-    setMiseModalVisible(true);
+    
+    if (!user.token) {
+      Alert.alert("", "Veuillez vous connecter pour enchérir !")
+    }
+    else {
+      setBidModalVisible(true);
+    }
   };
-  const toggleCloseMise = () => {
-    setMiseModalVisible(false);
+  const toggleCloseBid = () => {
+    setBidModalVisible(false);
   };
 
   const calculateTimeRemaining = () => {
@@ -106,7 +108,7 @@ export default function AnnonceScreen({ route }) {
           setBuyer(articles.acheteur[articles.acheteur.length - 1].username);
         }
       });
-  }, [!miseModalVisible]);
+  }, [!bidModalVisible]);
 
   let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#753742"} />
@@ -199,9 +201,9 @@ export default function AnnonceScreen({ route }) {
                         onPress={() => move(index)}
                         style={styles.button}
                       >
-                        <Text style={position === index && styles.buttonSelected}>
-                        
-                        </Text>
+                        <Text
+                          style={position === index && styles.buttonSelected}
+                        ></Text>
                       </TouchableHighlight>
                     );
                   })}
@@ -251,10 +253,7 @@ export default function AnnonceScreen({ route }) {
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Auteur:</Text>
-              <Text style={styles.description}>
-                {" "}
-                {routeParams.auteur.name}
-              </Text>
+              <Text style={styles.description}> {routeParams.auteur.name}</Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Editeur:</Text>
@@ -267,12 +266,16 @@ export default function AnnonceScreen({ route }) {
               <Text style={styles.priceInfoLeft}>Prix de départ:</Text>
               <Text style={styles.priceInfo}> {routeParams.startPrice} €</Text>
               <Text style={styles.priceInfoRight}>
-               <Text style={styles.priceInfoLeft}>Vendu par:</Text> {routeParams.annonceur.username}</Text>
+                <Text style={styles.priceInfoLeft}>Vendu par:</Text>{" "}
+                {routeParams.annonceur.username}
+              </Text>
             </View>
             <View style={styles.priceContainer}>
               <Text style={styles.priceInfoLeft}>Prix actuel:</Text>
               <Text style={styles.priceInfo}> {price} €</Text>
-              <Text style={styles.priceInfoRight}><Text style={styles.priceInfoLeft}>Dernière mise:</Text> {buyer}</Text>
+              <Text style={styles.priceInfoRight}>
+                <Text style={styles.priceInfoLeft}>Dernière mise:</Text> {buyer}
+              </Text>
             </View>
           </View>
           <View style={styles.timerContainer}>
@@ -282,23 +285,30 @@ export default function AnnonceScreen({ route }) {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.buttonContact}
-              onPress={() => toggleVendeur()}
+              onPress={() => toggleVendor()}
             >
               <Text style={styles.buttonTextContact}>Contacter le vendeur</Text>
             </TouchableOpacity>
             <Modals
-              contactVendeur={true}
+              contactVendor={true}
               visibleContact={contactModalVisible}
-              onCloseContact={toggleCloseVendeur}
-              annonceurInfo={routeParams.annonceur}
+              onCloseContact={toggleCloseVendor}
+              announceurInfo={routeParams.annonceur}
             />
             <TouchableOpacity
               style={styles.buttonBid}
-              onPress={() => toggleMise()}
+              onPress={() => toggleBid()}
             >
               <Text style={styles.buttonTextBid}>Faire une enchère</Text>
             </TouchableOpacity>
-            <Modals mise={true} visibleMise={miseModalVisible} toggleCloseMise={toggleCloseMise} onCloseMise={toggleCloseMise} articleId={routeParams._id} price={routeParams.currentPrice} />
+            <Modals
+              bid={true}
+              visibleBid={bidModalVisible}
+              toggleCloseBid={toggleCloseBid}
+              onCloseBid={toggleCloseBid}
+              articleId={routeParams._id}
+              price={routeParams.currentPrice}
+            />
           </View>
         </View>
       </ScrollView>

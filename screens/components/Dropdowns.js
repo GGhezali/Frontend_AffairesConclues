@@ -7,16 +7,12 @@ import {
   View,
   SafeAreaView,
   Platform,
-  StatusBar,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 
 export default function Dropdowns(props) {
-  // Destructure les props pour obtenir les valeurs nécessaires
   const { isCategory, isSorting, isState, isAuthor, isEditor } = props;
-
-  // Etats pour gérer la visibilité des dropdowns et les valeurs sélectionnées
   const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
     false
   );
@@ -75,13 +71,17 @@ export default function Dropdowns(props) {
       // Fetch les auteurs depuis le backend
       const authorResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const authorData = await authorResponse.json();
-      const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedAuthorlist = authorData.auteurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setAuthor(sortedAuthorlist);
 
       // Fetch les editeurs depuis le backend
       const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editorData = await editorResponse.json();
-      const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedEditorList = editorData.editeurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setEditor(sortedEditorList);
     })();
   }, []);
@@ -172,7 +172,9 @@ export default function Dropdowns(props) {
         style={styles.categoryContainer}
         isVisible={isCategoryDropdownVisible}
         toggleVisibility={toggleCategoryDropdown}
-        data={categories.map((categoryValue) => ({ value: categoryValue.name }))}
+        data={categories.map((categoryValue) => ({
+          value: categoryValue.name,
+        }))}
         onSelect={(item) => selectCategory(item)}
         placeholder="Catégorie"
         selectedValue={selectedCategory}
@@ -186,7 +188,12 @@ export default function Dropdowns(props) {
         style={styles.sortingContainer}
         isVisible={isSortingDropdownVisible}
         toggleVisibility={toggleSortingDropdown}
-        data={[{ value: "Le plus récent" }, { value: "Le plus ancien" }, { value: "Prix croissant" }, { value: "Prix décroissant" }]}
+        data={[
+          { value: "Le plus récent" },
+          { value: "Le plus ancien" },
+          { value: "Prix croissant" },
+          { value: "Prix décroissant" },
+        ]}
         onSelect={(item) => selectSorting(item)}
         placeholder="Trier par"
         selectedValue={selectedSorting}

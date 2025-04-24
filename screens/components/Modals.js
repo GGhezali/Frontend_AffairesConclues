@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-    StyleSheet,
-    View,
-    Text,
-    Modal,
-    TextInput,
-    TouchableOpacity,
-    Alert,
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  TextInput,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useSelector } from "react-redux";
@@ -14,23 +14,22 @@ import { useSelector } from "react-redux";
 export default function Modals(props) {
   const {
     visibleContact,
-    visibleMise,
+    visibleBid,
     onCloseContact,
-    onCloseMise,
-    annonceurInfo,
+    onCloseBid,
+    announceurInfo,
     articleId,
-    price,
-    contactVendeur,
-    mise,
+    contactVendor,
+    bid,
   } = props;
 
-  const [miseValue, setMiseValue] = useState("");
-  const [messageEnchere, setMessageEnchere] = useState("");
+  const [bidValue, setBidValue] = useState("");
+  const [messageBid, setMessageBid] = useState("");
   const [colorMessage, setColorMessage] = useState("");
   const user = useSelector((state) => state.user.value);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
-  const addMise = () => {
+  const addBid = () => {
     fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -53,7 +52,7 @@ export default function Modals(props) {
                 userData.userData.donneeBancaire === "" ||
                 userData.userData.donneeBancaire === null
               ) {
-                props.toggleCloseMise();
+                props.toggleCloseBid();
                 Alert.alert("Attention", "Veuillez renseigner vos données bancaires");
                 bool = false;
               }
@@ -62,22 +61,22 @@ export default function Modals(props) {
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    newPrice: miseValue,
+                    newPrice: bidValue,
                     newBuyer: data.userId,
                     id: articleId,
                   }),
                 })
                   .then((response) => response.json())
                   .then((data) => {
-                    setMessageEnchere(data.message);
+                    setMessageBid(data.message);
                     if (data.message === "Prix mis à jour avec succès") {
-                      props.toggleCloseMise();
-                      setMessageEnchere("");
+                      props.toggleCloseBid();
+                      setMessageBid("");
                       Alert.alert("Enchère", "Prix mis à jour avec succès !");
                     }
                     if (data.message !== "Prix mis à jour avec succès") {
-                      props.toggleCloseMise();
-                      setMessageEnchere("");
+                      props.toggleCloseBid();
+                      setMessageBid("");
                       Alert.alert("Attention","Le prix actuel doit respecter la mise minimale");
                     }
                   })
@@ -87,19 +86,14 @@ export default function Modals(props) {
               }
             });
         } else {
-          props.toggleCloseMise();
-          setMessageEnchere("");
+          props.toggleCloseBid();
+          setMessageBid("");
           Alert.alert("Attention","Veuillez vous connecter pour enchérir !");
         }
       });
   };
 
-  const closeMise = () => {
-    setMiseValue("");
-    onCloseMise = true;
-  };
-
-  if (contactVendeur) {
+  if (contactVendor) {
     return (
       <Modal
         visible={visibleContact}
@@ -118,17 +112,17 @@ export default function Modals(props) {
               />
             </View>
             <Text style={styles.infoText}>Contacter le vendeur</Text>
-            {annonceurInfo && (
+            {announceurInfo && (
               <View style={styles.contactInfo}>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.infoName}>Email :</Text>
-                  <Text style={styles.infoText}> {annonceurInfo.email}</Text>
+                  <Text style={styles.infoText}> {announceurInfo.email}</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.infoName}>Téléphone :</Text>
                   <Text style={styles.infoText}>
                     {" "}
-                    {annonceurInfo.telephone}
+                    {announceurInfo.telephone}
                   </Text>
                 </View>
               </View>
@@ -139,13 +133,13 @@ export default function Modals(props) {
     );
   }
 
-  if (mise) {
+  if (bid) {
     return (
       <Modal
-        visible={visibleMise}
+        visible={visibleBid}
         animationType="fade"
         transparent
-        onRequestClose={onCloseMise}
+        onRequestClose={onCloseBid}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -153,30 +147,30 @@ export default function Modals(props) {
             <View style={styles.contactInfo}>
               <TextInput
                 placeholder="Entrez votre mise (min 0,50€ en plus)"
-                style={styles.miseInput}
-                onChangeText={(number) => setMiseValue(number)}
-                value={miseValue}
+                style={styles.bidInput}
+                onChangeText={(number) => setBidValue(number)}
+                value={bidValue}
               />
-              {messageEnchere !== "" && (
+              {messageBid !== "" && (
                 <Text
                   style={{ color: colorMessage, fontSize: 14, marginLeft: 7 }}
                 >
-                  {messageEnchere}
+                  {messageBid}
                 </Text>
               )}
             </View>
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.cancelBtn}
-                onPress={onCloseMise}
+                onPress={onCloseBid}
                 activeOpacity={0.8}
               >
                 <Text>Annuler</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  addMise();
-                  setMiseValue("");
+                  addBid();
+                  setBidValue("");
                 }}
                 style={styles.confirmBtn}
                 activeOpacity={0.8}
@@ -238,7 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-  miseInput: {
+  bidInput: {
     width: "100%",
     height: 40,
     backgroundColor: "#ffffff",

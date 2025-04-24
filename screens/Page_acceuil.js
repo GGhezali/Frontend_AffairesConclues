@@ -182,6 +182,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 50,
   },
+  placeholderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
   placeholderImage: {
     width: 120,
     height: 120,

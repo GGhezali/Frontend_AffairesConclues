@@ -1,13 +1,10 @@
 import React from "react";
 import {
-  Button,
   StyleSheet,
   View,
   Text,
   Image,
   TouchableOpacity,
-  Platform,
-  StatusBar,
   Alert,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -17,23 +14,18 @@ import { useIsFocused } from "@react-navigation/native";
 import { updateBookmark } from "../../reducers/bookmarks";
 
 export default function Article(props) {
-  console.log(props)
   const [bookmarkedColor, setBookmarkedColor] = useState(false);
   const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
-  const [articleBookmark, setArticleBookmark] = useState(false);
-
   const user = useSelector((state) => state.user.value);
-  const bookmarks = useSelector((state) => state.bookmarks.value);
-  console.log("bookmarks", bookmarks);
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const dispatch = useDispatch();
 
-  let titre = "";
+  let title = "";
   if (props.titre && props.titre.length > 40) {
-    titre = props.titre.substring(0, 40) + "...";
+    title = props.titre.substring(0, 40) + "...";
   } else {
-    titre = props.titre;
+    title = props.titre;
   }
 
   let photo = props.photoUrl[0];
@@ -70,7 +62,6 @@ export default function Article(props) {
       const isBookmarked = articlesIdData.bookmarks.some(
         (article) => article === props._id
       );
-      setArticleBookmark(isBookmarked);
       if (isBookmarked) {
         setBookmarkedColor(true);
       } else {
@@ -105,52 +96,57 @@ export default function Article(props) {
           }),
         }
       );
-      const bookmarkData = await bookmarkResponse.json();
+      await bookmarkResponse.json();
 
       dispatch(updateBookmark(props._id));
     }
     else {
       Alert.alert("Attention", "Veuillez vous connecter pour ajouter un article aux favoris.");
     }
+    props.refreshOnBookmark(props._id)
   };
 
-let title = (
-  <View style={styles.titreContainer}>
-<Text style={styles.titre}>{titre}</Text>
-</View>
-)
+  let titleContent = (
+    <View style={styles.titreContainer}>
+      <Text style={styles.titre}>{title}</Text>
+    </View>
+  );
 
-const alertSuppresion = () => {
-  Alert.alert('Suppression', 'Voulez vous vraiment supprimer cet article ?', [
-    {
-      text: 'Cancel',
-      style: 'cancel',
-    },
-    {text: 'OK', onPress: () => deleteOnClick()},
-  ]);
-}
+  const alertSuppresion = () => {
+    Alert.alert("Suppression", "Voulez vous vraiment supprimer cet article ?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => deleteOnClick() },
+    ]);
+  };
 
-const deleteOnClick = async () => {
-  await fetch(`${BACKEND_ADDRESS}:3000/articles/deleteArticle/${props._id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({})
-  })
-props.refresherOnDelete(props._id)}
+  const deleteOnClick = async () => {
+    await fetch(`${BACKEND_ADDRESS}:3000/articles/deleteArticle/${props._id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    props.refresherOnDelete(props._id);
+  };
 
-if (props.isPublication) {
-  title = (
-    <View style={styles.titreContainer}> 
-    <Text style={styles.titre}>{titre}</Text>
-    <TouchableOpacity onPress={() => alertSuppresion()} style={styles.trash}>
-      <FontAwesome name={"trash"} size={20} color={"#753742"} />
-    </TouchableOpacity>
-  </View>
-  )
-}
-  
+  if (props.isPublication) {
+    titleContent = (
+      <View style={styles.titreContainer}>
+        <Text style={styles.titre}>{title}</Text>
+        <TouchableOpacity
+          onPress={() => alertSuppresion()}
+          style={styles.trash}
+        >
+          <FontAwesome name={"trash"} size={20} color={"#753742"} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <TouchableOpacity
       title="Annonce"
@@ -159,7 +155,7 @@ if (props.isPublication) {
         props.navigation.navigate("Annonce", props);
       }}
     >
-      {title}
+      {titleContent}
       <Image style={styles.picture} source={{ uri: photo }} />
       <View style={styles.bookmarkContainer}>
         <TouchableOpacity

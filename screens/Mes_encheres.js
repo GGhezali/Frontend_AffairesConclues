@@ -16,21 +16,22 @@ import Enchere from "./components/Enchere";
 
 export default function MesEncheresScreen({ navigation }) {
   const [userId, setUserId] = useState(null);
-  const [ongletActif, setOngletActif] = useState("enCours");
+  const [activeTab, setActiveTab] = useState("enCours");
   const [allArticles, setAllArticles] = useState([]);
   const [nbArticles, setNbArticles] = useState(0);
   const [total, setTotal] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
-
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
   const user = useSelector((state) => state.user.value);
   const isFocused = useIsFocused();
 
-  const handleEnCours = async () => {
+  const handleOpen = async () => {
     try {
-      setOngletActif("enCours");
-  
-      const response = await fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`);
+      setActiveTab("enCours");
+
+      const response = await fetch(
+        `${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`
+      );
       const data = await response.json();
       setAllArticles(data.articles);
     } catch (error) {
@@ -38,11 +39,13 @@ export default function MesEncheresScreen({ navigation }) {
     }
   };
 
-  const handleTerminees = async () => {
+  const handleClosed = async () => {
     try {
-      setOngletActif("terminees");
-  
-      const response = await fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`);
+      setActiveTab("terminees");
+
+      const response = await fetch(
+        `${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`
+      );
       const data = await response.json();
       setAllArticles(data.articles);
     } catch (error) {
@@ -57,29 +60,34 @@ export default function MesEncheresScreen({ navigation }) {
           navigation.navigate("ConnexionInscription");
           return;
         }
-  
+
         // Récupérer l'userId à partir du token
-        const userIdResponse = await fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            token: user.token,
-          }),
-        });
+        const userIdResponse = await fetch(
+          `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: user.token,
+            }),
+          }
+        );
         const userIdData = await userIdResponse.json();
         setUserId(userIdData.userId);
-  
+
         // Récupérer les enchères en cours pour cet userId
-        const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/mes-encheres/open/${userIdData.userId}`);
+        const articlesResponse = await fetch(
+          `${BACKEND_ADDRESS}:3000/mes-encheres/open/${userIdData.userId}`
+        );
         const articlesData = await articlesResponse.json();
         setAllArticles(articlesData.articles);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [refreshing, isFocused]);
 
@@ -91,12 +99,12 @@ export default function MesEncheresScreen({ navigation }) {
     if (allArticles.length > 0) {
       setNbArticles(allArticles.length);
 
-      let totalPrix = 0;
+      let totalPrice = 0;
       for (let i = 0; i < allArticles.length; i++) {
-        totalPrix += Number(allArticles[i].currentPrice);
+        totalPrice += Number(allArticles[i].currentPrice);
       }
 
-      setTotal(totalPrix.toFixed(2));
+      setTotal(totalPrice.toFixed(2));
     } else {
       setNbArticles(0);
       setTotal("0.00");
@@ -104,10 +112,10 @@ export default function MesEncheresScreen({ navigation }) {
   }, [allArticles]);
 
   // Placeholder ou enchères
-  let encheres;
+  let bid;
 
   if (allArticles.length === 0) {
-    encheres = (
+    bid = (
       <View style={styles.placeholderContainer}>
         <Image
           source={{
@@ -116,18 +124,17 @@ export default function MesEncheresScreen({ navigation }) {
           style={styles.placeholderImage}
         />
         <Text style={styles.placeholderText}>
-          Aucune enchère {ongletActif === "enCours" ? "en cours" : "terminée"}{" "}
-          📦
+          Aucune enchère {activeTab === "enCours" ? "en cours" : "terminée"} 📦
         </Text>
       </View>
     );
   } else {
-    encheres = allArticles.map((data, i) => (
+    bid = allArticles.map((data, i) => (
       <Enchere
         key={i}
         navigation={navigation}
         {...data}
-        ongletActif={ongletActif}
+        activeTab={activeTab}
       />
     ));
   }
@@ -142,79 +149,83 @@ export default function MesEncheresScreen({ navigation }) {
   if (!user.token) {
     return null; // Si l'utilisateur n'est pas connecté, on ne retourne rien
   } else {
-  return (
-    <SafeAreaView style={styles.safeareaview}>
-      <Headers navigation={navigation} isReturn={true} title={"Mes enchères"} />
+    return (
+      <SafeAreaView style={styles.safeareaview}>
+        <Headers
+          navigation={navigation}
+          isReturn={true}
+          title={"Mes enchères"}
+        />
 
-      <View style={styles.container}>
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={[
-              styles.greenButton,
-              ongletActif === "enCours" && styles.selectedButton,
-            ]}
-            onPress={handleEnCours}
-          >
-            <Text
+        <View style={styles.container}>
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
               style={[
-                styles.greenButtonText,
-                ongletActif === "enCours" && styles.selectedButtonText,
+                styles.greenButton,
+                activeTab === "enCours" && styles.selectedButton,
               ]}
+              onPress={handleOpen}
             >
-              Ventes en cours
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.greenButtonText,
+                  activeTab === "enCours" && styles.selectedButtonText,
+                ]}
+              >
+                Ventes en cours
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[
-              styles.greenButton,
-              ongletActif === "terminees" && styles.selectedButton,
-            ]}
-            onPress={handleTerminees}
-          >
-            <Text
+            <TouchableOpacity
               style={[
-                styles.greenButtonText,
-                ongletActif === "terminees" && styles.selectedButtonText,
+                styles.greenButton,
+                activeTab === "terminees" && styles.selectedButton,
               ]}
+              onPress={handleClosed}
             >
-              Ventes terminées
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[
+                  styles.greenButtonText,
+                  activeTab === "terminees" && styles.selectedButtonText,
+                ]}
+              >
+                Ventes terminées
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.content} />
+          <View style={styles.content} />
 
-        <ScrollView
-          style={styles.scrollview}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.encheres}>{encheres}</View>
-        </ScrollView>
-
-        <View style={styles.separator} />
-
-        <View style={styles.total}>
-          <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
-          <Text style={styles.text}>Total : {total} €</Text>
-        </View>
-
-        <View style={{ marginTop: 20, marginBottom: 40 }}>
-          <TouchableOpacity
-            style={styles.greenButton}
-            onPress={() =>
-              navigation.navigate("TabNavigator", { screen: "Acceuil" })
+          <ScrollView
+            style={styles.scrollview}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           >
-            <Text style={styles.greenButtonText}>Continuer mes achats</Text>
-          </TouchableOpacity>
+            <View style={styles.bid}>{bid}</View>
+          </ScrollView>
+
+          <View style={styles.separator} />
+
+          <View style={styles.total}>
+            <Text style={styles.text}>Nombre d'articles : {nbArticles}</Text>
+            <Text style={styles.text}>Total : {total} €</Text>
+          </View>
+
+          <View style={{ marginTop: 20, marginBottom: 40 }}>
+            <TouchableOpacity
+              style={styles.greenButton}
+              onPress={() =>
+                navigation.navigate("TabNavigator", { screen: "Acceuil" })
+              }
+            >
+              <Text style={styles.greenButtonText}>Continuer mes achats</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
-  );
-}
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -268,7 +279,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  encheres: {
+  bid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
