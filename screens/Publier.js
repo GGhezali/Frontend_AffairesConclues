@@ -9,9 +9,10 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Alert,
+  Image,
 } from "react-native";
 import Headers from "./components/Headers";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import Dropdowns from "./components/Dropdowns";
 import {
@@ -19,8 +20,9 @@ import {
   AutocompleteDropdown,
 } from "react-native-autocomplete-dropdown";
 import { useIsFocused } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
 import { removeAllPhoto } from "../reducers/article";
+import { removePhoto } from "../reducers/article";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function PublierScreen({ navigation }) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
@@ -110,7 +112,7 @@ export default function PublierScreen({ navigation }) {
           }
         })
         .catch((error) => {
-          Alert.alert("Attetion", error.message);
+          Alert.alert("Attention", error.message);
           navigation.navigate("Publier");
         });
       dispatch(removeAllPhoto());
@@ -162,7 +164,34 @@ export default function PublierScreen({ navigation }) {
               <Text style={styles.textButton}>Photo</Text>
             </TouchableOpacity>
           </View>
+          <View>
+            <ScrollView horizontal={true}>
+              {article.photos.map((data, i) => {
+                return (
+                  <View key={i} style={styles.pictureContainer}>
+                    <View style={styles.deleteIconContainer}>
 
+                    <TouchableOpacity
+                      onPress={() => dispatch(removePhoto(data))}
+                      style={styles.deleteIconButton}
+                    >
+                      <FontAwesome
+                        name="trash-o"
+                        size={20}
+                        color="#000000"
+                        style={styles.deleteIcon}
+                      />
+                    </TouchableOpacity>
+                    </View>
+                    <Image
+                      source={{ uri: data }}
+                      style={{ width: 100, height: 100 }}
+                    />
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
           <View style={styles.alignDropdowns}>
             <Dropdowns isCategory={true} handleCategory={handleCategory} />
             <Dropdowns isState={true} handleState={handleState} />
@@ -287,6 +316,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
     marginBottom: 20,
+  },
+  pictureContainer: {
+    margin: 10,
+    alignItems: "flex-end",
+  },
+  deleteIconContainer: {
+    position: "absolute",
+    borderRadius: 15,
+    zIndex: 1,
+    backgroundColor: "white",
+  },
+  deleteIconButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 25,
+    width: 25,
+    borderRadius: 50,
   },
   alignDropdowns: {
     display: "flex",

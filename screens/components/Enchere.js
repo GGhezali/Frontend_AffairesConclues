@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import { useSelector } from "react-redux";
 
+
 export default function Enchere(props) {
   const user = useSelector((state) => state.user.value);
 
@@ -12,8 +13,8 @@ export default function Enchere(props) {
   }
 
   let titre = "";
-  if (props.titre.length > 25) {
-    titre = props.titre.substring(0, 25) + "...";
+  if (props.titre.length > 40) {
+    titre = props.titre.substring(0, 40) + "...";
   } else {
     titre = props.titre;
   }
@@ -65,7 +66,6 @@ export default function Enchere(props) {
       onPress={() => props.navigation.navigate("Annonce", props)}
     >
       <View style={styles.leftContent}>
-        <Text style={styles.titre}>{titre}</Text>
         <Image style={styles.picture} source={{ uri: photo }} />
       </View>
       <View style={styles.rightContent}>
@@ -73,6 +73,7 @@ export default function Enchere(props) {
           <Text>{stateSale} </Text>
           <FontAwesome6 name={iconName} size={20} color={iconeColor} />
         </View>
+        <Text style={styles.titre}>{titre}</Text>
         <View style={styles.sellContent}>
           <Text style={styles.text}>{convertTime(props.timer)}</Text>
         </View>
@@ -93,11 +94,7 @@ const styles = StyleSheet.create({
     height: 210,
     width: "100%",
     backgroundColor: "white",
-    borderWidth: 1,
-    borderRadius: 25,
-    borderColor: "#dcdedf",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    borderRadius: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -110,10 +107,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   picture: {
-    width: 110,
-    height: 130,
-    borderRadius: 10,
-    resizeMode: "contain",
+    width: "100%",
+    height: "100%",
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    resizeMode: "cover",
   },
   titre: {
     textAlign: "left",
@@ -125,12 +123,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: "100%",
     width: "60%",
+    paddingHorizontal: 5,
+    paddingVertical: 10,
   },
   icon: {
     height: 20,
     flexDirection: "row",
     width: "100%",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   sellContent: {
     flexDirection: "row",

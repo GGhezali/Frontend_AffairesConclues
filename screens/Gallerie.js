@@ -39,7 +39,7 @@ export default function GallerieScreen({ navigation }) {
   });
 
   const handleGoBack = () => {
-    navigation.navigate("Photo");
+    navigation.goBack();
   };
 
   return (
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    backgroundColor: "#F5FCEE",
+    backgroundColor: "#FFF8EF",
   },
   title: {
     fontSize: 45,

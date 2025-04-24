@@ -155,20 +155,18 @@ export default function Article(props) {
         <Image style={styles.picture} source={{ uri: photo }} />
       </View>
       <View style={styles.botContainer}>
-        <View style={styles.iconContainer}>
-          {icon}
-        </View>
+        <View style={styles.iconContainer}>{icon}</View>
         <View style={styles.information}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{title}</Text>
           </View>
           <View style={styles.description}>
-            <Text style={styles.descriptiontext}>{props.auteur.name}</Text>
+            <Text style={styles.descriptionText}>{props.auteur.name}</Text>
+              <Text style={styles.descriptionTextGrey}>{props.categorie.name}</Text>
             <View style={styles.bookStatus}>
-              <Text style={styles.descriptiontext}>{props.categorie.name}</Text>
-              <Text style={styles.descriptiontext}>{props.currentPrice} €</Text>
+            <Text style={styles.descriptionTextGrey}>{props.etat.condition}</Text>
+              <Text style={styles.descriptionText}>{props.currentPrice} €</Text>
             </View>
-            <Text style={styles.descriptiontext}>{props.etat.condition}</Text>
           </View>
         </View>
       </View>
@@ -179,8 +177,8 @@ const styles = StyleSheet.create({
   annonce: {
     height: 350,
     width: 170,
-    backgroundColor: "white",
     borderRadius: 25,
+    borderTopLeftRadius: 25,
     alignItems: "center",
     marginHorizontal: 5,
     marginBottom: 20,
@@ -208,6 +206,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderTopWidth: 0,
     borderColor: "#DCDEDF",
+    backgroundColor: "white",
   },
   iconContainer: {
     width: "100%",
@@ -279,10 +278,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  descriptiontext: {
+  descriptionText: {
     fontSize: 11,
     color: "#753742",
     fontWeight: "bold",
     marginBottom: 5,
   },
+  descriptionTextGrey: {
+    fontSize: 11,
+    color: "#753742",
+    marginBottom: 5,
+  }
 });
