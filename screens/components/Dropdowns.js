@@ -12,111 +12,103 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useEffect, useState } from "react";
 //commentaire surprise !
 export default function Dropdowns(props) {
+  // Les "props" sont des informations envoyées au composant depuis un autre composant parent.
+  // Elles nous indiquent quels types de menus déroulants (dropdowns) afficher. Par exemple, si `isCategory` est vrai, on affiche le dropdown pour les catégories.
   const { isCategory, isSorting, isState, isAuthor, isEditor } = props;
-  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
-    false
-  );
+
+  // Déclaration des états pour chaque menu déroulant
+  // Chaque état garde une information sur la visibilité du dropdown (affiché ou caché) et sur l'option sélectionnée
+  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
   const [isSortingDropdownVisible, setSortingDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
   const [isAuthorDropdownVisible, setAuthorDropdownVisible] = useState(false);
   const [isEditorDropdownVisible, setEditorDropdownVisible] = useState(false);
+
+  // Les états ci-dessous stockent la valeur de l'option sélectionnée dans chaque dropdown
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSorting, setSelectedSorting] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const [selectedEditor, setSelectedEditor] = useState("");
+
+  // Déclaration des états pour stocker les données provenant du backend (catégories, états, auteurs, éditeurs)
   const [categories, setCategories] = useState([]);
   const [state, setState] = useState([]);
   const [author, setAuthor] = useState([]);
   const [editor, setEditor] = useState([]);
+
+
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
-  // Ouvre le dropdown "Catégorie"
+  // Ces fonctions ouvrent ou ferment chaque menu déroulant en modifiant la visibilité
   const toggleCategoryDropdown = () => {
-    setCategoryDropdownVisible(!isCategoryDropdownVisible);
+    setCategoryDropdownVisible(!isCategoryDropdownVisible); // Inverse la visibilité du dropdown "Catégorie"
   };
-  // Ouvre le dropdown "Trier par"
   const toggleSortingDropdown = () => {
-    setSortingDropdownVisible(!isSortingDropdownVisible);
+    setSortingDropdownVisible(!isSortingDropdownVisible); // Inverse la visibilité du dropdown "Trier par"
   };
-  // Ouvre le dropdown "Etat"
   const toggleStateDropdown = () => {
-    setStateDropdownVisible(!isStateDropdownVisible);
+    setStateDropdownVisible(!isStateDropdownVisible); // Inverse la visibilité du dropdown "Etat"
   };
-  // Ouvre le dropdown "Auteur"
   const toggleAuthorDropdown = () => {
-    setAuthorDropdownVisible(!isAuthorDropdownVisible);
+    setAuthorDropdownVisible(!isAuthorDropdownVisible); // Inverse la visibilité du dropdown "Auteur"
   };
-  // Ouvre le dropdown "Editeur"
   const toggleEditorDropdown = () => {
-    setEditorDropdownVisible(!isEditorDropdownVisible);
+    setEditorDropdownVisible(!isEditorDropdownVisible); // Inverse la visibilité du dropdown "Editeur"
   };
 
+  // useEffect permet de récupérer les données depuis le backend dès que le composant est monté (affiché à l'écran)
   useEffect(() => {
     (async () => {
-      // Fetch les catégories depuis le backend
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}/categories`
-      );
+      // Récupérer les catégories depuis le backend
+      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}:3000/categories`);
       const categoriesData = await categoriesResponse.json();
-      setCategories(
-        categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name))
-      );
+      // Trier les catégories par ordre alphabétique et les stocker
+      setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
 
-      // Fetch les états depuis le backend
-      const stateResponse = await fetch(`${BACKEND_ADDRESS}/etats`);
+      // Récupérer les états depuis le backend
+      const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       const stateData = await stateResponse.json();
       setState(stateData.etats);
 
-      // Fetch les auteurs depuis le backend
-      const authorResponse = await fetch(`${BACKEND_ADDRESS}/auteurs`);
+      // Récupérer les auteurs depuis le backend
+      const authorResponse = await fetch(`${BACKEND_ADDRESS}:3000/auteurs`);
       const authorData = await authorResponse.json();
-      const sortedAuthorlist = authorData.auteurs.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
       setAuthor(sortedAuthorlist);
 
-      // Fetch les editeurs depuis le backend
-      const editorResponse = await fetch(`${BACKEND_ADDRESS}/editeurs`);
+      // Récupérer les editeurs depuis le backend
+      const editorResponse = await fetch(`${BACKEND_ADDRESS}:3000/editeurs`);
       const editorData = await editorResponse.json();
-      const sortedEditorList = editorData.editeurs.sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
+      const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
       setEditor(sortedEditorList);
     })();
-  }, []);
+  }, []); // L'array vide [] signifie que cette fonction ne se déclenche qu'une seule fois, lors du chargement initial du composant
 
-  // Fonctions pour gérer la sélection de l'élément "Catégorie"
-  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Catégorie"
+  // Ces fonctions sont appelées lorsque l'utilisateur sélectionne une option dans l'un des menus déroulants
+  // Elles mettent à jour l'état du composant (la valeur sélectionnée) et appellent des fonctions passées en props pour informer le parent de la sélection
   const selectCategory = (item) => {
-    setSelectedCategory(item.value);
-    props.handleCategory(item.value);
+    setSelectedCategory(item.value); // Met à jour la catégorie sélectionnée
+    props.handleCategory(item.value); // Appelle la fonction du parent pour informer du choix
   };
-  // Fonction pour gérer la sélection de l'élément "Trier par"
-  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Trier par"
   const selectSorting = (item) => {
-    setSelectedSorting(item.value);
-    props.handleSort(item.value);
+    setSelectedSorting(item.value); // Met à jour le critère de tri sélectionné
+    props.handleSort(item.value); // Appelle la fonction du parent pour informer du choix
   };
-  // Fonction pour gérer la sélection de l'élément "Etat"
-  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Etat"
   const selectState = (item) => {
-    setSelectedState(item.value);
-    props.handleState(item.value);
+    setSelectedState(item.value); // Met à jour l'état sélectionné
+    props.handleState(item.value); // Appelle la fonction du parent pour informer du choix
   };
-  // Fonction pour gérer la sélection de l'élément "Auteur"
-  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Auteur"
   const selectAuthor = (item) => {
-    setSelectedAuthor(item.value);
-    props.handleAuthor(item.value);
+    setSelectedAuthor(item.value); // Met à jour l'auteur sélectionné
+    props.handleAuthor(item.value); // Appelle la fonction du parent pour informer du choix
   };
-  // Fonction pour gérer la sélection de l'élément "Editeur"
-  // Cette fonction est appelée lorsque l'utilisateur sélectionne une option dans le dropdown "Editeur"
   const selectEditor = (item) => {
-    setSelectedEditor(item.value);
-    props.handleEditor(item.value);
+    setSelectedEditor(item.value); // Met à jour l'éditeur sélectionné
+    props.handleEditor(item.value); // Appelle la fonction du parent pour informer du choix
   };
 
+  // Le composant Dropdown est utilisé pour afficher chaque menu déroulant (catégorie, tri, état, etc.)
   function Dropdown({
     isVisible,
     toggleVisibility,
@@ -128,35 +120,36 @@ export default function Dropdowns(props) {
   }) {
     return (
       <SafeAreaView style={[styles.dropdownContainer, style]}>
+        {/* Ce bouton permet d'ouvrir ou de fermer le menu déroulant */}
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
-          <Text>{selectedValue || placeholder}</Text>
-          <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} />
+          <Text>{selectedValue || placeholder}</Text> {/* Affiche la valeur sélectionnée ou un texte par défaut */}
+          <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} /> {/* Icône pour ouvrir/fermer le menu */}
         </TouchableOpacity>
+        
+        {/* Si le menu est visible, on affiche la liste des options */}
         {isVisible && (
           <View
             style={[
               styles.dropdownList,
-              Platform.OS === "ios"
-                ? styles.iosDropdown
-                : styles.androidDropdown,
+              Platform.OS === "ios" ? styles.iosDropdown : styles.androidDropdown,
             ]}
           >
             <FlatList
-              keyExtractor={(item) => item.value}
-              data={data}
+              keyExtractor={(item) => item.value} // Utilise la valeur comme identifiant unique pour chaque élément
+              data={data} // Les options du menu sont données ici
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={styles.dropdownItem}
+                  activeOpacity={0.8} // Ajoute un effet lorsqu'on clique sur une option
+                  style={styles.dropdownItem} // Style pour chaque élément du menu
                   onPress={() => {
-                    onSelect(item);
-                    toggleVisibility();
+                    onSelect(item); // Appelle la fonction qui gère la sélection
+                    toggleVisibility(); // Ferme le menu après la sélection
                   }}
                 >
-                  <Text>{item.value}</Text>
+                  <Text>{item.value}</Text> {/* Affiche la valeur de l'option */}
                 </TouchableOpacity>
               )}
-              ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+              ItemSeparatorComponent={() => <View style={{ height: 10 }} />} // Séparateur entre les options du menu
             />
           </View>
         )}
@@ -164,43 +157,43 @@ export default function Dropdowns(props) {
     );
   }
 
-  // Rendu conditionnel des dropdowns en fonction des props
-  // Si isCategory est vrai, afficher le dropdown "Catégorie"
+  // Rendu conditionnel : on affiche le dropdown approprié en fonction des props reçues
   if (isCategory) {
     return (
       <Dropdown
-        style={styles.categoryContainer}
-        isVisible={isCategoryDropdownVisible}
-        toggleVisibility={toggleCategoryDropdown}
+        style={styles.categoryContainer} // Style pour le dropdown "Catégorie"
+        isVisible={isCategoryDropdownVisible} // L'état de visibilité du dropdown
+        toggleVisibility={toggleCategoryDropdown} // Fonction pour ouvrir/fermer le menu
         data={categories.map((categoryValue) => ({
           value: categoryValue.name,
-        }))}
-        onSelect={(item) => selectCategory(item)}
-        placeholder="Catégorie"
-        selectedValue={selectedCategory}
+        }))} // Données pour le menu : les catégories
+        onSelect={(item) => selectCategory(item)} // Fonction pour gérer la sélection de la catégorie
+        placeholder="Catégorie" // Texte affiché si rien n'est sélectionné
+        selectedValue={selectedCategory} // Valeur sélectionnée dans le dropdown
       />
     );
   }
-  // Si isSorting est vrai, afficher le dropdown "Trier par"
+
+  // De même pour les autres types de menus déroulants (Trier par, Etat, Auteur, Editeur)
   if (isSorting) {
     return (
       <Dropdown
-        style={styles.sortingContainer}
-        isVisible={isSortingDropdownVisible}
-        toggleVisibility={toggleSortingDropdown}
+        style={styles.sortingContainer} // Style pour le dropdown "Trier par"
+        isVisible={isSortingDropdownVisible} // L'état de visibilité du dropdown
+        toggleVisibility={toggleSortingDropdown} // Fonction pour ouvrir/fermer le menu
         data={[
           { value: "Le plus récent" },
           { value: "Le plus ancien" },
           { value: "Prix croissant" },
           { value: "Prix décroissant" },
-        ]}
-        onSelect={(item) => selectSorting(item)}
-        placeholder="Trier par"
-        selectedValue={selectedSorting}
+        ]} // Données pour le menu : les options de tri
+        onSelect={(item) => selectSorting(item)} // Fonction pour gérer la sélection du tri
+        placeholder="Trier par" // Texte affiché si rien n'est sélectionné
+        selectedValue={selectedSorting} // Valeur sélectionnée dans le dropdown
       />
     );
   }
-  // Si isState est vrai, afficher le dropdown "Etat"
+
   if (isState) {
     return (
       <Dropdown
@@ -214,7 +207,7 @@ export default function Dropdowns(props) {
       />
     );
   }
-  // Si isAuthor est vrai, afficher le dropdown "Auteur"
+
   if (isAuthor) {
     return (
       <Dropdown
@@ -228,7 +221,7 @@ export default function Dropdowns(props) {
       />
     );
   }
-  // Si isEditor est vrai, afficher le dropdown "Editeur"
+
   if (isEditor) {
     return (
       <Dropdown
@@ -243,6 +236,7 @@ export default function Dropdowns(props) {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   //  dropdownContainer: {

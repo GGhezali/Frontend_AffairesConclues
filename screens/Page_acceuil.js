@@ -14,105 +14,152 @@ import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [allArticles, setAllArticles] = useState([]);
-  const [category, setCategory] = useState(null);
-  const [sort, setSort] = useState(null);
-  const [refreshing, setRefreshing] = React.useState(false);
-  const isFocused = useIsFocused();
+  const [allArticles, setAllArticles] = useState([]);  // Contient la liste de tous les articles
+  const [category, setCategory] = useState(null);       // Catégorie sélectionnée pour filtrer les articles
+  const [sort, setSort] = useState(null);               // Critère de tri pour les articles
+  const [refreshing, setRefreshing] = React.useState(false); 
+  const isFocused = useIsFocused();                     // Détecte si la page est actuellement visible
 
+  // Fonction qui sera appelée pour rafraîchir les articles
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    setRefreshing(true); // Active le rafraîchissement
     setTimeout(() => {
-      setRefreshing(false);
+      setRefreshing(false); // Désactive le rafraîchissement après 2 secondes
     }, 2000);
   }, []);
 
+  // Adresse du backend (où les articles sont stockés)
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
+  // useEffect : Un effet secondaire qui s'exécute lorsque le composant est monté ou lorsque l'état `refreshing` ou `isFocused` change
   useEffect(() => {
     (async () => {
+<<<<<<< HEAD
+      // Récupère les articles depuis le serveur backend
+      const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
+      const articlesData = await articlesResponse.json(); 
+      setAllArticles(articlesData.data); // Met à jour la liste des articles avec les données récupérées
+=======
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}/articles/`);
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.data);
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
 
-      // ✅ Vérifie les articles expirés et met à jour `isDone`
+      // Vérifie les articles expirés et met à jour leur état "isDone" pour marquer les articles terminés
       let listId = articlesData.data
         .map((data) => {
-          const now = new Date();
+          const now = new Date(); 
           const end = new Date(
-            new Date(data.timer).getTime() + 60 * 60 * 24 * 1000
+            new Date(data.timer).getTime() + 60 * 60 * 24 * 1000 // Ajoute 24h à l'heure de l'article
           );
-          if (end.getTime() < now.getTime()) {
-            return data._id;
+          if (end.getTime() < now.getTime()) { // Si la date de fin de l'article est passée
+            return data._id; // Retourne l'ID de l'article expiré
           }
         })
-        .filter((e) => e !== undefined);
+        .filter((e) => e !== undefined); // Filtre les articles pour ne garder que ceux qui sont expirés
 
+      // Met à jour l'état de ces articles expirés dans le backend
       for (let id of listId) {
+<<<<<<< HEAD
+        await fetch(`${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
+          method: "POST", // Utilise la méthode POST pour envoyer les données au serveur
+          headers: { "Content-Type": "application/json" }, // Spécifie que les données envoyées sont au format JSON
+          body: JSON.stringify({ id }), // Envoie l'ID de l'article expiré
+=======
         await fetch(`${BACKEND_ADDRESS}/articles/updateIsDone`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
         });
       }
     })();
-  }, [refreshing, isFocused]);
+  }, [refreshing, isFocused]); // Cela s'exécute chaque fois que `refreshing` ou `isFocused` change
 
+  // Fonction qui gère le changement de catégorie et récupère les articles associés à cette catégorie
   const handleCategory = (category) => {
+<<<<<<< HEAD
+    setCategory(category); // Met à jour l'état de la catégorie sélectionnée
+    // Récupère les articles filtrés par catégorie et tri
+    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategory`, {
+      method: "POST", // Envoie une requête POST
+      headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
+      body: JSON.stringify({ category, sort }), // Envoie la catégorie et le tri au serveur
+=======
     setCategory(category);
     fetch(`${BACKEND_ADDRESS}/articles/searchByCategory`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category, sort }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
-      .then((response) => response.json())
+      .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
-        setAllArticles(data.data);
+        setAllArticles(data.data); // Met à jour la liste des articles avec les nouveaux articles filtrés
       });
   };
 
+  // Fonction qui gère le tri des articles
   const handleSort = (sort) => {
+<<<<<<< HEAD
+    setSort(sort); // Met à jour l'état du critère de tri sélectionné
+    // Récupère les articles triés selon le critère choisi
+    fetch(`${BACKEND_ADDRESS}:3000/articles/searchBySort`, {
+      method: "POST", // Envoie une requête POST
+      headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
+      body: JSON.stringify({ category, sort }), // Envoie la catégorie et le critère de tri
+=======
     setSort(sort);
     fetch(`${BACKEND_ADDRESS}/articles/searchBySort`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category, sort }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
-      .then((response) => response.json())
+      .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
-        setAllArticles(data.data);
+        setAllArticles(data.data); // Met à jour la liste des articles avec les articles triés
       });
   };
 
+  // Fonction pour effectuer une recherche d'articles par titre, auteur ou catégorie
   const handleSearch = (text) => {
+<<<<<<< HEAD
+    // Envoie une requête pour rechercher des articles en fonction du texte saisi
+    fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
+      method: "POST", // Envoie une requête POST
+      headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
+      body: JSON.stringify({ title: text, author: text, category }), // Envoie les informations de recherche
+=======
     fetch(`${BACKEND_ADDRESS}/articles/search`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: text, author: text, category }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
-      .then((response) => response.json())
+      .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
-        setAllArticles(data.data);
+        setAllArticles(data.data); // Met à jour la liste des articles avec les résultats de la recherche
       })
-      .catch((error) => console.error("Erreur lors de la recherche :", error));
+      .catch((error) => console.error("Erreur lors de la recherche :", error)); // En cas d'erreur
   };
 
-  //  Récupère uniquement les articles encore actifs (non terminés)
+  // Filtre les articles pour ne récupérer que ceux qui sont encore actifs (non terminés)
   let articleList = allArticles
-    .filter((a) => !a.isDone)
-    .sort((a, b) => b.timer - a.timer);
+    .filter((a) => !a.isDone) // Garder les articles qui ne sont pas terminés
+    .sort((a, b) => b.timer - a.timer); // Trier les articles par date (du plus récent au plus ancien)
 
   let article;
 
-  // Si aucun article actif : afficher un placeholder
+  // Si aucun article actif n'est trouvé, afficher un message de "placeholder" indiquant qu'aucun article n'est disponible
   if (articleList.length === 0) {
     article = (
       <View style={styles.placeholderContainer}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png",
+            uri: "https://cdn-icons-png.flaticon.com/512/4076/4076503.png", // Image de placeholder (icône)
           }}
-          style={styles.placeholderImage}
+          style={styles.placeholderImage} // Style de l'image
         />
         <Text style={styles.placeholderText}>
           Aucun article en vente pour le moment 💤
@@ -120,7 +167,7 @@ export default function PageAcceuilScreen({ navigation }) {
       </View>
     );
   } else {
-    // Sinon, afficher les articles normalement
+    // Si des articles actifs sont trouvés, les afficher normalement
     article = articleList.map((data, i) => (
       <Article key={i} navigation={navigation} {...data} />
     ));
@@ -128,6 +175,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safeareaview}>
+      {/* Composant Header avec barre de recherche */}
       <Headers
         navigation={navigation}
         isHome={true}
@@ -136,9 +184,12 @@ export default function PageAcceuilScreen({ navigation }) {
       />
       <View style={styles.container}>
         <View style={styles.dropdownInputs}>
+          {/* Dropdown pour sélectionner la catégorie des articles */}
           <Dropdown isCategory={true} handleCategory={handleCategory} />
+          {/* Dropdown pour sélectionner le critère de tri */}
           <Dropdown isSorting={true} handleSort={handleSort} />
         </View>
+        {/* Liste d'articles avec fonction de rafraîchissement */}
         <ScrollView
           style={styles.scrollview}
           refreshControl={
@@ -151,6 +202,7 @@ export default function PageAcceuilScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   safeareaview: {
