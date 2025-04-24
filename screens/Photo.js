@@ -63,17 +63,26 @@ export default function PhotoScreen({ navigation }) {
     <CameraView style={{ flex: 1 }} ref={(ref) => (cameraRef.current = ref)}>
       <View style={styles.container1}>
         <View style={styles.container2}>
-          <TouchableOpacity onPress={() => handleGoBack()} style={styles.goBackButton}>
+          <TouchableOpacity
+            onPress={() => handleGoBack()}
+            style={styles.goBackButton}
+          >
             <FontAwesome name="arrow-left" size={35} color={"white"} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => handleGallerie()} style={styles.gallerieButton}>
+          <TouchableOpacity
+            onPress={() => handleGallerie()}
+            style={styles.gallerieButton}
+          >
             <FontAwesome name="image" size={35} color={"white"} />
           </TouchableOpacity>
         </View>
 
         <View>
-          <TouchableOpacity onPress={() => takePicture()}>
+          <TouchableOpacity
+            onPress={() => takePicture()}
+            style={styles.PhotoButton}
+          >
             <FontAwesome name="circle-thin" size={95} color="white" />
           </TouchableOpacity>
         </View>
@@ -110,5 +119,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 50,
     padding: 10,
+  },
+  PhotoButton: {
+    marginBottom: 10,
   },
 });
