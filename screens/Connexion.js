@@ -24,7 +24,7 @@ export default function ConnexionScreen({ navigation }) {
     if (!email || !password) {
       return;
     }
-    fetch(`${BACKEND_ADDRESS}:3000/users/sign-in`, {
+    fetch(`${BACKEND_ADDRESS}/users/sign-in`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

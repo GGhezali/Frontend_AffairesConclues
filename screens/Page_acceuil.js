@@ -31,7 +31,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
+      const articlesResponse = await fetch(`${BACKEND_ADDRESS}/articles/`);
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.data);
 
@@ -49,7 +49,7 @@ export default function PageAcceuilScreen({ navigation }) {
         .filter((e) => e !== undefined);
 
       for (let id of listId) {
-        await fetch(`${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
+        await fetch(`${BACKEND_ADDRESS}/articles/updateIsDone`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id }),
@@ -60,7 +60,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   const handleCategory = (category) => {
     setCategory(category);
-    fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategory`, {
+    fetch(`${BACKEND_ADDRESS}/articles/searchByCategory`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category, sort }),
@@ -73,7 +73,7 @@ export default function PageAcceuilScreen({ navigation }) {
 
   const handleSort = (sort) => {
     setSort(sort);
-    fetch(`${BACKEND_ADDRESS}:3000/articles/searchBySort`, {
+    fetch(`${BACKEND_ADDRESS}/articles/searchBySort`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category, sort }),
@@ -85,7 +85,7 @@ export default function PageAcceuilScreen({ navigation }) {
   };
 
   const handleSearch = (text) => {
-    fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
+    fetch(`${BACKEND_ADDRESS}/articles/search`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: text, author: text, category }),

@@ -40,7 +40,7 @@ export default function MesFavorisScreen({ navigation }) {
     (async () => {
       // Fetch useurId from the backend -------------------------------
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST",
           headers: {
@@ -55,13 +55,13 @@ export default function MesFavorisScreen({ navigation }) {
       setUserId(userIdData.userId);
       // --------------------------------------------------------------
       const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
+        `${BACKEND_ADDRESS}/users/getBookmarks/${userIdData.userId}`
       );
       const articlesIdData = await articlesIdResponse.json();
       let articleInfo = [];
       for (let article of articlesIdData.bookmarks) {
         const articleResponse = await fetch(
-          `${BACKEND_ADDRESS}:3000/articles/findArticleById/${article}`
+          `${BACKEND_ADDRESS}/articles/findArticleById/${article}`
         );
         const articleData = await articleResponse.json();
         articleInfo.push(articleData.data);

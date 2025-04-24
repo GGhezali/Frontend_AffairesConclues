@@ -30,7 +30,7 @@ export default function Modals(props) {
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
   const addBid = () => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+    fetch(`${BACKEND_ADDRESS}/users/findUserIdByToken`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -44,7 +44,7 @@ export default function Modals(props) {
         console.log("data.userId", data.userId);
 
         if (data.userId) {
-          fetch(`${BACKEND_ADDRESS}:3000/users/getUserById/${data.userId}`)
+          fetch(`${BACKEND_ADDRESS}/users/getUserById/${data.userId}`)
             .then((response) => response.json())
             .then((userData) => {
               console.log(userData.userData.donneeBancaire);
@@ -57,7 +57,7 @@ export default function Modals(props) {
                 bool = false;
               }
               if (bool) {
-                fetch(`${BACKEND_ADDRESS}:3000/articles/updateCurrentPrice`, {
+                fetch(`${BACKEND_ADDRESS}/articles/updateCurrentPrice`, {
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({

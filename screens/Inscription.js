@@ -24,7 +24,7 @@ export default function InscriptionScreen({ navigation }) {
     if (!email || !username || !password) {
       return;
     }
-    fetch(`${BACKEND_ADDRESS}:3000/users/sign-up`, {
+    fetch(`${BACKEND_ADDRESS}/users/sign-up`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),

@@ -28,7 +28,7 @@ export default function MesInformationsScreen({ navigation }) {
   const [secure, setSecure] = useState(true);
 
   useEffect(() => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/findUserByToken`, {
+    fetch(`${BACKEND_ADDRESS}/users/findUserByToken`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export default function MesInformationsScreen({ navigation }) {
   }, []);
 
   const handleUpdate = () => {
-    fetch(`${BACKEND_ADDRESS}:3000/users/updateInfo/${userId}`, {
+    fetch(`${BACKEND_ADDRESS}/users/updateInfo/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

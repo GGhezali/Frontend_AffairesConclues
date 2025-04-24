@@ -38,7 +38,7 @@ export default function Article(props) {
     (async () => {
       // Fetch useurId from the backend -------------------------------
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ export default function Article(props) {
       // --------------------------------------------------------------
       //Fetch les articlesID des bookmarks de l'utilisateur
       const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
+        `${BACKEND_ADDRESS}/users/getBookmarks/${userIdData.userId}`
       );
       const articlesIdData = await articlesIdResponse.json();
       dispatch(updateBookmark(articlesIdData.bookmarks));
@@ -100,7 +100,7 @@ export default function Article(props) {
       setBookmarkedColor(!bookmarkedColor);
 
       const bookmarkResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
+        `${BACKEND_ADDRESS}/users/updateBookmark/${userId}`,
         {
           method: "PUT",
           headers: {
@@ -134,7 +134,7 @@ export default function Article(props) {
   };
 
   const deleteOnClick = async () => {
-    await fetch(`${BACKEND_ADDRESS}:3000/articles/deleteArticle/${props._id}`, {
+    await fetch(`${BACKEND_ADDRESS}/articles/deleteArticle/${props._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

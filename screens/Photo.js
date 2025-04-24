@@ -32,7 +32,7 @@ export default function PhotoScreen({ navigation }) {
         name: "photo.jpg",
         type: "image/jpeg",
       });
-      fetch(`${BACKEND_ADDRESS}:3000/articles/uploadPhoto`, {
+      fetch(`${BACKEND_ADDRESS}/articles/uploadPhoto`, {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",

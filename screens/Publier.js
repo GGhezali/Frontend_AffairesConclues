@@ -49,7 +49,7 @@ export default function PublierScreen({ navigation }) {
     }
     (async () => {
       // Fetch UseurId from the backend -------------------------------
-      fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      fetch(`${BACKEND_ADDRESS}/users/findUserIdByToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function PublierScreen({ navigation }) {
 
   const handlePublish = () => {
     if (user.token) {
-      fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
+      fetch(`${BACKEND_ADDRESS}/articles/publish`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
