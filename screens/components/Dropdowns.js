@@ -69,7 +69,6 @@ export default function Dropdowns(props) {
       // Récupérer les états depuis le backend
       const stateResponse = await fetch(`${BACKEND_ADDRESS}:3000/etats`);
       // Fetch les états depuis le backend
-      const stateResponse = await fetch(`${BACKEND_ADDRESS}/etats`);
       const stateData = await stateResponse.json();
       setState(stateData.etats);
 
