@@ -15,16 +15,19 @@ export default function PhotoScreen({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // On demande la permission d'accéder à la caméra
     (async () => {
       const result = await Camera.requestCameraPermissionsAsync();
       setHasPermission(result && result?.status === "granted");
     })();
   }, []);
-
+  // Fonction déclenchée lorsque l'utilisateur appuie sur le bouton de prise de photo
   const takePicture = async () => {
+    // Prise de photo
     const photo = await cameraRef.current?.takePictureAsync({ quality: 0.3 });
-    //photo && console.log(photo.uri);
+
     if (photo) {
+      // Envoi de la photo au serveur
       const uri = photo.uri;
       const formData = new FormData();
       formData.append("photoFromFront", {
@@ -41,24 +44,28 @@ export default function PhotoScreen({ navigation }) {
       })
         .then((response) => response.json())
         .then((data) => {
+          // On ajoute l'URL de la photo au reducer article
           data.result && dispatch(addPhoto(data.url));
-          //navigation.navigate("Gallerie");
         });
     }
   };
-
+  // Fonction déclenchée lorsque l'utilisateur appuie sur le bouton de retour
   const handleGoBack = () => {
+    // On retourne à l'écran de publication
     navigation.navigate("Publier");
   };
-
+  // Fonction déclenchée lorsque l'utilisateur appuie sur le bouton de la galerie
   const handleGallerie = () => {
+    // On retourne à l'écran de la galerie
     navigation.navigate("Gallerie");
   };
 
+  // Si la permission n'est pas accordée ou si l'écran n'est pas en focus, on ne rend rien
   if (!hasPermission || !isFocused) {
     return <View />;
   }
 
+  // sinon, on rend la caméra
   return (
     <CameraView style={{ flex: 1 }} ref={(ref) => (cameraRef.current = ref)}>
       <View style={styles.container1}>
