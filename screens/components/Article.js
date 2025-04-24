@@ -99,11 +99,13 @@ export default function Article(props) {
       await bookmarkResponse.json();
 
       dispatch(updateBookmark(props._id));
+    } else {
+      Alert.alert(
+        "Attention",
+        "Veuillez vous connecter pour ajouter un article aux favoris."
+      );
     }
-    else {
-      Alert.alert("Attention", "Veuillez vous connecter pour ajouter un article aux favoris.");
-    }
-    props.refreshOnBookmark(props._id)
+    props.refreshOnBookmark(props._id);
   };
 
   let titleContent = (
@@ -155,68 +157,71 @@ export default function Article(props) {
         props.navigation.navigate("Annonce", props);
       }}
     >
-      {titleContent}
-      <Image style={styles.picture} source={{ uri: photo }} />
-      <View style={styles.bookmarkContainer}>
-        <TouchableOpacity
-          style={bookmarkStyle}
-          onPress={() => handleBookmark()}
-        >
-          {bookmarkIcon}
-        </TouchableOpacity>
+      <View style={styles.topContainer}>
+        <Image style={styles.picture} source={{ uri: photo }} />
       </View>
-      <View style={styles.description}>
-        <Text style={styles.descriptiontext}>{props.categorie.name}</Text>
-        <Text style={styles.descriptiontext}>{props.etat.condition}</Text>
-        <Text style={styles.descriptiontext}>{props.currentPrice} €</Text>
+      <View style={styles.botContainer}>
+        <View style={styles.bookmarkContainer}>
+          <TouchableOpacity
+            style={bookmarkStyle}
+            onPress={() => handleBookmark()}
+          >
+            {bookmarkIcon}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.information}>
+          {titleContent}
+          <View style={styles.description}>
+              <Text style={styles.descriptiontext}>{props.auteur.name}</Text>
+            <View style={styles.bookStatus}>
+              <Text style={styles.descriptiontext}>{props.categorie.name}</Text>
+              <Text style={styles.descriptiontext}>{props.currentPrice} €</Text>
+            </View>
+            <Text style={styles.descriptiontext}>{props.etat.condition}</Text>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
   annonce: {
-    height: 280,
+    height: 350,
     width: 170,
     backgroundColor: "white",
-    borderWidth: 1,
     borderRadius: 25,
-    borderColor: "#dcdedf",
-    padding: 10,
     alignItems: "center",
     marginHorizontal: 5,
     marginBottom: 20,
   },
-  titreContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    height: "20%",
+  topContainer: {
     width: "100%",
-  },
-  titre: {
-    fontSize: 12,
-    fontWeight: "bold",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "left",
-    width: "80%",
-  },
-  trash: {
-    width: "18%",
-    height: "100%",
-    justifyContent: "flex-start",
-    alignItems: "flex-end",
-    margin: 5,
+    height: "70%",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
   },
   picture: {
-    width: "90%",
-    height: "55%",
-    resizeMode: "contain",
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+  botContainer: {
+    width: "100%",
+    height: "30%",
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    justifyContent: "space-around",
+    alignItems: "center",
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderColor: "#DCDEDF",
   },
   bookmarkContainer: {
     width: "100%",
     alignItems: "flex-end",
-    margin: -20,
+    marginTop: -35,
   },
   notBookmarked: {
     borderWidth: 1,
@@ -238,19 +243,49 @@ const styles = StyleSheet.create({
     borderColor: "#753742",
     backgroundColor: "#753742",
   },
+  information: {
+    width: "100%",
+    height: "90%",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginLeft: 10,
+    marginTop: -20,
+  },
+  titreContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: "30%",
+    width: "72%",
+  },
+  titre: {
+    fontSize: 12,
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "left",
+    width: "80%",
+  },
+  trash: {
+    width: "18%",
+    height: "100%",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    margin: 5,
+  },
   description: {
     width: "90%",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginTop: 5,
   },
-  information: {
-    width: "50%",
-    justifyContent: "space-around",
+  bookStatus: {
+    flexDirection: "row",
+    width: "90%",
+    justifyContent: "space-between",
     alignItems: "flex-start",
   },
   descriptiontext: {
-    fontSize: 12,
+    fontSize: 11,
     color: "#753742",
     fontWeight: "bold",
     marginBottom: 5,
