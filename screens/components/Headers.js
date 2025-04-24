@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useSelector } from "react-redux";
 
 export default function Headers({
@@ -26,7 +27,7 @@ export default function Headers({
   let connectIcon = "user-times";
 
   if (user.token) {
-    connectIcon = "user-circle";
+    connectIcon = "user-ninja";
   }
 const handleConnexion = () => {
   if (user.token) {
@@ -69,7 +70,7 @@ const handleConnexion = () => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.connection}>
-          <FontAwesome
+          <FontAwesome5
             name={connectIcon}
             size={30}
             color={"#753742"}
