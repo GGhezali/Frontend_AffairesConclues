@@ -22,8 +22,8 @@ export default function Article(props) {
   const dispatch = useDispatch();
 
   let title = "";
-  if (props.titre && props.titre.length > 29) {
-    title = props.titre.substring(0, 29) + "...";
+  if (props.titre && props.titre.length > 20) {
+    title = props.titre.substring(0, 20) + "...";
   } else {
     title = props.titre;
   }
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    height: "30%",
+    height: "35%",
     width: "72%",
   },
   title: {
