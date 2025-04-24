@@ -49,7 +49,7 @@ export default function PublierScreen({ navigation }) {
     }
     (async () => {
       // Fetch du backend pour obtenir le UseurId à partir du Token stocké dans le reducer user
-      fetch(`${BACKEND_ADDRESS}:3000/users/findUserIdByToken`, {
+      fetch(`${BACKEND_ADDRESS}/users/findUserIdByToken`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export default function PublierScreen({ navigation }) {
   const handlePublish = () => {
     if (user.token) {
       // fetch du backend pour envoyer les données de l'annonce à publier
-      fetch(`${BACKEND_ADDRESS}:3000/articles/publish`, {
+      fetch(`${BACKEND_ADDRESS}/articles/publish`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

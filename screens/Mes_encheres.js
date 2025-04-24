@@ -30,7 +30,7 @@ export default function MesEncheresScreen({ navigation }) {
       setActiveTab("enCours");
 
       const response = await fetch(
-        `${BACKEND_ADDRESS}:3000/mes-encheres/open/${userId}`
+        `${BACKEND_ADDRESS}/mes-encheres/open/${userId}`
       );
       const data = await response.json();
       setAllArticles(data.articles);
@@ -44,7 +44,7 @@ export default function MesEncheresScreen({ navigation }) {
       setActiveTab("terminees");
 
       const response = await fetch(
-        `${BACKEND_ADDRESS}:3000/mes-encheres/closed/${userId}`
+        `${BACKEND_ADDRESS}/mes-encheres/closed/${userId}`
       );
       const data = await response.json();
       setAllArticles(data.articles);
@@ -63,7 +63,7 @@ export default function MesEncheresScreen({ navigation }) {
 
         // Récupérer l'userId à partir du token
         const userIdResponse = await fetch(
-          `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+          `${BACKEND_ADDRESS}/users/findUserIdByToken`,
           {
             method: "POST",
             headers: {
@@ -79,7 +79,7 @@ export default function MesEncheresScreen({ navigation }) {
 
         // Récupérer les enchères en cours pour cet userId
         const articlesResponse = await fetch(
-          `${BACKEND_ADDRESS}:3000/mes-encheres/open/${userIdData.userId}`
+          `${BACKEND_ADDRESS}/mes-encheres/open/${userIdData.userId}`
         );
         const articlesData = await articlesResponse.json();
         setAllArticles(articlesData.articles);

@@ -34,10 +34,16 @@ export default function PageAcceuilScreen({ navigation }) {
   // useEffect : Un effet secondaire qui s'exécute lorsque le composant est monté ou lorsque l'état `refreshing` ou `isFocused` change
   useEffect(() => {
     (async () => {
+<<<<<<< HEAD
       // Récupère les articles depuis le serveur backend
       const articlesResponse = await fetch(`${BACKEND_ADDRESS}:3000/articles/`);
       const articlesData = await articlesResponse.json(); 
       setAllArticles(articlesData.data); // Met à jour la liste des articles avec les données récupérées
+=======
+      const articlesResponse = await fetch(`${BACKEND_ADDRESS}/articles/`);
+      const articlesData = await articlesResponse.json();
+      setAllArticles(articlesData.data);
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
 
       // Vérifie les articles expirés et met à jour leur état "isDone" pour marquer les articles terminés
       let listId = articlesData.data
@@ -54,10 +60,17 @@ export default function PageAcceuilScreen({ navigation }) {
 
       // Met à jour l'état de ces articles expirés dans le backend
       for (let id of listId) {
+<<<<<<< HEAD
         await fetch(`${BACKEND_ADDRESS}:3000/articles/updateIsDone`, {
           method: "POST", // Utilise la méthode POST pour envoyer les données au serveur
           headers: { "Content-Type": "application/json" }, // Spécifie que les données envoyées sont au format JSON
           body: JSON.stringify({ id }), // Envoie l'ID de l'article expiré
+=======
+        await fetch(`${BACKEND_ADDRESS}/articles/updateIsDone`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
         });
       }
     })();
@@ -65,12 +78,20 @@ export default function PageAcceuilScreen({ navigation }) {
 
   // Fonction qui gère le changement de catégorie et récupère les articles associés à cette catégorie
   const handleCategory = (category) => {
+<<<<<<< HEAD
     setCategory(category); // Met à jour l'état de la catégorie sélectionnée
     // Récupère les articles filtrés par catégorie et tri
     fetch(`${BACKEND_ADDRESS}:3000/articles/searchByCategory`, {
       method: "POST", // Envoie une requête POST
       headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
       body: JSON.stringify({ category, sort }), // Envoie la catégorie et le tri au serveur
+=======
+    setCategory(category);
+    fetch(`${BACKEND_ADDRESS}/articles/searchByCategory`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category, sort }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
       .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
@@ -80,12 +101,20 @@ export default function PageAcceuilScreen({ navigation }) {
 
   // Fonction qui gère le tri des articles
   const handleSort = (sort) => {
+<<<<<<< HEAD
     setSort(sort); // Met à jour l'état du critère de tri sélectionné
     // Récupère les articles triés selon le critère choisi
     fetch(`${BACKEND_ADDRESS}:3000/articles/searchBySort`, {
       method: "POST", // Envoie une requête POST
       headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
       body: JSON.stringify({ category, sort }), // Envoie la catégorie et le critère de tri
+=======
+    setSort(sort);
+    fetch(`${BACKEND_ADDRESS}/articles/searchBySort`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category, sort }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
       .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {
@@ -95,11 +124,18 @@ export default function PageAcceuilScreen({ navigation }) {
 
   // Fonction pour effectuer une recherche d'articles par titre, auteur ou catégorie
   const handleSearch = (text) => {
+<<<<<<< HEAD
     // Envoie une requête pour rechercher des articles en fonction du texte saisi
     fetch(`${BACKEND_ADDRESS}:3000/articles/search`, {
       method: "POST", // Envoie une requête POST
       headers: { "Content-Type": "application/json" }, // Envoie des données en JSON
       body: JSON.stringify({ title: text, author: text, category }), // Envoie les informations de recherche
+=======
+    fetch(`${BACKEND_ADDRESS}/articles/search`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: text, author: text, category }),
+>>>>>>> f53b8ceedbea396ebf11b517027a334c7621d934
     })
       .then((response) => response.json()) // Attend la réponse du serveur en format JSON
       .then((data) => {

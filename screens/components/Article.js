@@ -42,7 +42,7 @@ export default function Article(props) {
     (async () => {
       // 1. Récupérer l'ID utilisateur depuis le backend en envoyant le token d'utilisateur.
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST",
           headers: {
@@ -58,7 +58,7 @@ export default function Article(props) {
 
       // 2. Récupérer les articles sauvegardés (favoris) de l'utilisateur.
       const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
+        `${BACKEND_ADDRESS}/users/getBookmarks/${userIdData.userId}`
       );
       const articlesIdData = await articlesIdResponse.json();
       dispatch(updateBookmark(articlesIdData.bookmarks));  // Met à jour les favoris dans Redux.
@@ -110,7 +110,7 @@ export default function Article(props) {
 
       // Envoie une requête pour ajouter ou retirer l'article des favoris.
       const bookmarkResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/updateBookmark/${userId}`,
+        `${BACKEND_ADDRESS}/users/updateBookmark/${userId}`,
         {
           method: "PUT",
           headers: {

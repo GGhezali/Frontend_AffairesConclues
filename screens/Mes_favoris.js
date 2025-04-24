@@ -47,7 +47,7 @@ export default function MesFavorisScreen({ navigation }) {
     (async () => {
       // 1. Récupère l'ID de l'utilisateur à partir du backend en utilisant son token
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST", // Méthode POST pour envoyer des données
           headers: {
@@ -63,7 +63,7 @@ export default function MesFavorisScreen({ navigation }) {
 
       // 2. Récupère les articles favoris de l'utilisateur depuis le backend
       const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
+        `${BACKEND_ADDRESS}/users/getBookmarks/${userIdData.userId}`
       );
       const articlesIdData = await articlesIdResponse.json(); // Parse la réponse du serveur
 
@@ -71,7 +71,7 @@ export default function MesFavorisScreen({ navigation }) {
       let articleInfo = [];
       for (let article of articlesIdData.bookmarks) {
         const articleResponse = await fetch(
-          `${BACKEND_ADDRESS}:3000/articles/findArticleById/${article}`
+          `${BACKEND_ADDRESS}/articles/findArticleById/${article}`
         );
         const articleData = await articleResponse.json(); // Récupère les données de l'article
         articleInfo.push(articleData.data); // Ajoute l'article récupéré à la liste

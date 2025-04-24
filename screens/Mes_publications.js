@@ -31,7 +31,7 @@ export default function MesPublicationsScreen({ navigation }) {
   useEffect(() => {
     (async () => {
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST",
           headers: {
@@ -45,7 +45,7 @@ export default function MesPublicationsScreen({ navigation }) {
       const userIdData = await userIdResponse.json();
 
       const articlesResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/articles/findVendorArticles/${userIdData.userId}`
+        `${BACKEND_ADDRESS}/articles/findVendorArticles/${userIdData.userId}`
       );
       const articlesData = await articlesResponse.json();
       setAllArticles(articlesData.articles);
