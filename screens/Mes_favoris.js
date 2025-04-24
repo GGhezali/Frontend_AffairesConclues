@@ -29,8 +29,8 @@ export default function MesFavorisScreen({ navigation }) {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
-  }, []);
+    }, 1000);
+  }, [isFocused]);
 
   useEffect(() => {
     if (!user.token) {
@@ -55,7 +55,7 @@ export default function MesFavorisScreen({ navigation }) {
       setUserId(userIdData.userId);
       // --------------------------------------------------------------
       const articlesIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userId}`
+        `${BACKEND_ADDRESS}:3000/users/getBookmarks/${userIdData.userId}`
       );
       const articlesIdData = await articlesIdResponse.json();
       let articleInfo = [];
@@ -93,11 +93,11 @@ export default function MesFavorisScreen({ navigation }) {
   } else {
     article = allArticles
       .sort((a, b) => b.timer - a.timer)
-      .map((data, i) => {
+      .map((data) => {
         if (!data.isDone) {
           return (
             <Article
-              key={i}
+              key={data._id}
               navigation={navigation}
               {...data}
               refreshOnBookmark={refreshOnBookmark}

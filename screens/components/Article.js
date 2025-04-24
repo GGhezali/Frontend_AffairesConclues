@@ -73,19 +73,20 @@ export default function Article(props) {
   let bookmarkIcon = (
     <FontAwesome name={"bookmark-o"} size={25} color={"#753742"} />
   );
+  // Style for the bookmark icon
+  // If the article is bookmarked, change the icon and style
   let bookmarkStyle = styles.notBookmarked;
-
   if (bookmarkedColor) {
     bookmarkIcon = <FontAwesome name={"bookmark"} size={20} color={"white"} />;
     bookmarkStyle = styles.bookmarked;
   }
 
+  // If the screen is "Mes Publications", change the bookmark icon to a trash can
   let icon = (
     <TouchableOpacity style={bookmarkStyle} onPress={() => handleBookmark()}>
       {bookmarkIcon}
     </TouchableOpacity>
   );
-
   if (props.isPublication) {
     icon = (
       <TouchableOpacity onPress={() => alertSuppresion()} style={styles.trash}>
