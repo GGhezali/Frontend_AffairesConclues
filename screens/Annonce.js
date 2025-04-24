@@ -33,9 +33,6 @@ export default function AnnonceScreen({ route }) {
   const [timeRemaining, setTimeRemaining] = useState("");
   const [timeLeftMs, setTimeLeftMs] = useState("");
 
-
-
-
   let photo = routeParams.photoUrl;
   if (routeParams.photoUrl.length === 0 || routeParams.photoUrl === undefined) {
     photo = [
@@ -45,7 +42,7 @@ export default function AnnonceScreen({ route }) {
 
   const toggleVendor = () => {
     if (!user.token) {
-      Alert.alert("", "Veuillez vous connecter pour contacter le vendeur !")
+      Alert.alert("", "Veuillez vous connecter pour contacter le vendeur !");
     } else {
       setContactModalVisible(true);
     }
@@ -55,14 +52,16 @@ export default function AnnonceScreen({ route }) {
   };
   const toggleBid = () => {
     if (routeParams.isDone) {
-      Alert.alert("", "Cette annonce est terminée, vous ne pouvez plus enchérir !");
+      Alert.alert(
+        "",
+        "Cette annonce est terminée, vous ne pouvez plus enchérir !"
+      );
       return;
     }
-    
+
     if (!user.token) {
-      Alert.alert("", "Veuillez vous connecter pour enchérir !")
-    }
-    else {
+      Alert.alert("", "Veuillez vous connecter pour enchérir !");
+    } else {
       setBidModalVisible(true);
     }
   };
@@ -169,7 +168,10 @@ export default function AnnonceScreen({ route }) {
         Alert.alert("Attention", bookmarkData.error);
       }
     } else {
-      Alert.alert("Notification", "Veuillez vous connecter pour ajouter un article aux favoris.");
+      Alert.alert(
+        "Notification",
+        "Veuillez vous connecter pour ajouter un article aux favoris."
+      );
     }
   };
 
@@ -243,24 +245,6 @@ export default function AnnonceScreen({ route }) {
           </View>
           <View style={styles.informationContainer}>
             <View style={styles.textInfo}>
-              <Text style={styles.textParams}>Etat:</Text>
-              <Text style={styles.description}>
-                {" "}
-                {routeParams.etat.condition}
-              </Text>
-            </View>
-            <View style={styles.textInfo}>
-              <Text style={styles.textParams}>Categorie:</Text>
-              <Text style={styles.description}>
-                {" "}
-                {routeParams.categorie.name}
-              </Text>
-            </View>
-            <View style={styles.textInfoDescription}>
-              <Text style={styles.textParams}>Description:</Text>
-              <Text style={styles.description}>{routeParams.description}</Text>
-            </View>
-            <View style={styles.textInfo}>
               <Text style={styles.textParams}>Auteur:</Text>
               <Text style={styles.description}> {routeParams.auteur.name}</Text>
             </View>
@@ -270,6 +254,25 @@ export default function AnnonceScreen({ route }) {
                 {" "}
                 {routeParams.editeur.name}
               </Text>
+            </View>
+            <View style={styles.textInfo}>
+              <Text style={styles.textParams}>Categorie:</Text>
+              <Text style={styles.description}>
+                {" "}
+                {routeParams.categorie.name}
+              </Text>
+            </View>
+            <View style={styles.textInfo}>
+              <Text style={styles.textParams}>Etat:</Text>
+              <Text style={styles.description}>
+                {" "}
+                {routeParams.etat.condition}
+              </Text>
+            </View>
+
+            <View style={styles.textInfoDescription}>
+              <Text style={styles.textParams}>Description:</Text>
+              <Text style={styles.description}>{routeParams.description}</Text>
             </View>
             <View style={styles.priceContainer}>
               <Text style={styles.priceInfoLeft}>Prix de départ:</Text>
@@ -461,7 +464,6 @@ const styles = StyleSheet.create({
     color: "#AA5042",
     fontWeight: "bold",
     fontSize: 18,
-
   },
   buttonContainer: {
     width: "90%",

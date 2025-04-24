@@ -6013,6 +6013,11 @@ react-native-get-random-values@^1.11.0:
   dependencies:
     fast-base64-decode "^1.0.0"
 
+react-native-image-modal@^3.0.13:
+  version "3.0.13"
+  resolved "https://registry.yarnpkg.com/react-native-image-modal/-/react-native-image-modal-3.0.13.tgz#ff8d425694226e93bdebb03216a00d8436463304"
+  integrity sha512-kezzhfKUSBZNM8jaQVII/3aOT34hrNVvQdCTtJcsx2EGE43UhoRY+GBg7rMQZCOvbPfvk4Zw58yh1JyY6QsE+Q==
+
 react-native-image-slider@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/react-native-image-slider/-/react-native-image-slider-2.0.3.tgz#bbfdb88612d7ecef4da57e3fce7bbd99b4f02504"
