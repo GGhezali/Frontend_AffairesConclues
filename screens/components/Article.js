@@ -38,7 +38,7 @@ export default function Article(props) {
     (async () => {
       // Fetch useurId from the backend -------------------------------
       const userIdResponse = await fetch(
-        `${BACKEND_ADDRESS}:3000/users/findUserIdByToken`,
+        `${BACKEND_ADDRESS}/users/findUserIdByToken`,
         {
           method: "POST",
           headers: {
@@ -134,7 +134,7 @@ export default function Article(props) {
   };
 
   const deleteOnClick = async () => {
-    await fetch(`${BACKEND_ADDRESS}:3000/articles/deleteArticle/${props._id}`, {
+    await fetch(`${BACKEND_ADDRESS}/articles/deleteArticle/${props._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
