@@ -132,8 +132,8 @@ export default function PageAcceuilScreen({ navigation }) {
     );
   } else {
     // Si des articles actifs sont trouvés, les afficher normalement
-    article = articleList.map((data, i) => (
-      <Article key={i} navigation={navigation} {...data} />
+    article = articleList.map((data) => (
+      <Article key={data._id} navigation={navigation} {...data} />
     ));
   }
 
