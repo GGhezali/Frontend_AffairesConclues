@@ -251,21 +251,21 @@ export default function AnnonceScreen({ route }) {
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Editeur:</Text>
               <Text style={styles.description}>
-                {" "}
+                
                 {routeParams.editeur.name}
               </Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Categorie:</Text>
               <Text style={styles.description}>
-                {" "}
+                
                 {routeParams.categorie.name}
               </Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textParams}>Etat:</Text>
               <Text style={styles.description}>
-                {" "}
+                
                 {routeParams.etat.condition}
               </Text>
             </View>
@@ -278,7 +278,7 @@ export default function AnnonceScreen({ route }) {
               <Text style={styles.priceInfoLeft}>Prix de départ:</Text>
               <Text style={styles.priceInfo}> {routeParams.startPrice} €</Text>
               <Text style={styles.priceInfoRight}>
-                <Text style={styles.priceInfoLeft}>Vendu par:</Text>{" "}
+                <Text style={styles.priceInfoLeft}>Vendu par:</Text>
                 {routeParams.annonceur.username}
               </Text>
             </View>

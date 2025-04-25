@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 
 export default function Headers({
@@ -29,13 +29,13 @@ export default function Headers({
   if (user.token) {
     connectIcon = "user-cog";
   }
-const handleConnexion = () => {
-  if (user.token) {
-    navigation.navigate("MonProfil");
-  } else {
-    navigation.navigate("ConnexionInscription");
-  }
-}
+  const handleConnexion = () => {
+    if (user.token) {
+      navigation.navigate("MonProfil");
+    } else {
+      navigation.navigate("ConnexionInscription");
+    }
+  };
   if (isReturn) {
     return (
       <ImageBackground
@@ -62,8 +62,11 @@ const handleConnexion = () => {
         resizeMode="cover"
       >
         <View style={styles.searchcontainer}>
-          <View style={styles.input} >
-          <TextInput placeholder="Rechercher un livre" onChangeText={(text) => onSearch(text)} />
+          <View style={styles.input}>
+            <TextInput
+              placeholder="Rechercher un livre"
+              onChangeText={(text) => onSearch(text)}
+            />
           </View>
           <TouchableOpacity style={styles.search} activeOpacity={1}>
             <AntDesign name={"search1"} size={18} />

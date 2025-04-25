@@ -18,7 +18,9 @@ export default function Dropdowns(props) {
 
   // Déclaration des états pour chaque menu déroulant
   // Chaque état garde une information sur la visibilité du dropdown (affiché ou caché) et sur l'option sélectionnée
-  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
+  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(
+    false
+  );
   const [isSortingDropdownVisible, setSortingDropdownVisible] = useState(false);
   const [isStateDropdownVisible, setStateDropdownVisible] = useState(false);
   const [isAuthorDropdownVisible, setAuthorDropdownVisible] = useState(false);
@@ -36,7 +38,6 @@ export default function Dropdowns(props) {
   const [state, setState] = useState([]);
   const [author, setAuthor] = useState([]);
   const [editor, setEditor] = useState([]);
-
 
   const BACKEND_ADDRESS = process.env.EXPO_PUBLIC_BACKEND_ADDRESS;
 
@@ -61,12 +62,12 @@ export default function Dropdowns(props) {
   useEffect(() => {
     (async () => {
       // Récupérer les catégories depuis le backend
-      const categoriesResponse = await fetch(
-        `${BACKEND_ADDRESS}/categories`
-      );
+      const categoriesResponse = await fetch(`${BACKEND_ADDRESS}/categories`);
       const categoriesData = await categoriesResponse.json();
       // Trier les catégories par ordre alphabétique et les stocker
-      setCategories(categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name)));
+      setCategories(
+        categoriesData.categories.sort((a, b) => a.name.localeCompare(b.name))
+      );
 
       // Récupérer les états depuis le backend
       const stateResponse = await fetch(`${BACKEND_ADDRESS}/etats`);
@@ -76,13 +77,17 @@ export default function Dropdowns(props) {
       // Récupérer les auteurs depuis le backend
       const authorResponse = await fetch(`${BACKEND_ADDRESS}/auteurs`);
       const authorData = await authorResponse.json();
-      const sortedAuthorlist = authorData.auteurs.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedAuthorlist = authorData.auteurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setAuthor(sortedAuthorlist);
 
       // Récupérer les editeurs depuis le backend
       const editorResponse = await fetch(`${BACKEND_ADDRESS}/editeurs`);
       const editorData = await editorResponse.json();
-      const sortedEditorList = editorData.editeurs.sort((a, b) => a.name.localeCompare(b.name));
+      const sortedEditorList = editorData.editeurs.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
       setEditor(sortedEditorList);
     })();
   }, []); // L'array vide [] signifie que cette fonction ne se déclenche qu'une seule fois, lors du chargement initial du composant
@@ -124,16 +129,23 @@ export default function Dropdowns(props) {
       <SafeAreaView style={[styles.dropdownContainer, style]}>
         {/* Ce bouton permet d'ouvrir ou de fermer le menu déroulant */}
         <TouchableOpacity onPress={toggleVisibility} style={styles.dropdown}>
-          <Text>{selectedValue || placeholder}</Text> {/* Affiche la valeur sélectionnée ou un texte par défaut */}
-          <AntDesign name={isVisible ? "caretup" : "caretdown"} size={12} /> {/* Icône pour ouvrir/fermer le menu */}
+          <Text>{selectedValue || placeholder}</Text>
+          {/* Affiche la valeur sélectionnée ou un texte par défaut */}
+          <AntDesign
+            name={isVisible ? "caretup" : "caretdown"}
+            size={12}
+          />
+          {/* Icône pour ouvrir/fermer le menu */}
         </TouchableOpacity>
-        
+
         {/* Si le menu est visible, on affiche la liste des options */}
         {isVisible && (
           <View
             style={[
               styles.dropdownList,
-              Platform.OS === "ios" ? styles.iosDropdown : styles.androidDropdown,
+              Platform.OS === "ios"
+                ? styles.iosDropdown
+                : styles.androidDropdown,
             ]}
           >
             <FlatList
@@ -148,7 +160,8 @@ export default function Dropdowns(props) {
                     toggleVisibility(); // Ferme le menu après la sélection
                   }}
                 >
-                  <Text>{item.value}</Text> {/* Affiche la valeur de l'option */}
+                  <Text>{item.value}</Text>
+                  {/* Affiche la valeur de l'option */}
                 </TouchableOpacity>
               )}
               ItemSeparatorComponent={() => <View style={{ height: 10 }} />} // Séparateur entre les options du menu
@@ -238,7 +251,6 @@ export default function Dropdowns(props) {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   //  dropdownContainer: {

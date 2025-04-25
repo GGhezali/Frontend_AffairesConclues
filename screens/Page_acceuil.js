@@ -14,11 +14,11 @@ import Headers from "./components/Headers";
 import Dropdown from "./components/Dropdowns";
 
 export default function PageAcceuilScreen({ navigation }) {
-  const [allArticles, setAllArticles] = useState([]);  // Contient la liste de tous les articles
-  const [category, setCategory] = useState(null);       // Catégorie sélectionnée pour filtrer les articles
-  const [sort, setSort] = useState(null);               // Critère de tri pour les articles
-  const [refreshing, setRefreshing] = React.useState(false); 
-  const isFocused = useIsFocused();                     // Détecte si la page est actuellement visible
+  const [allArticles, setAllArticles] = useState([]); // Contient la liste de tous les articles
+  const [category, setCategory] = useState(null); // Catégorie sélectionnée pour filtrer les articles
+  const [sort, setSort] = useState(null); // Critère de tri pour les articles
+  const [refreshing, setRefreshing] = React.useState(false);
+  const isFocused = useIsFocused(); // Détecte si la page est actuellement visible
 
   // Fonction qui sera appelée pour rafraîchir les articles
   const onRefresh = React.useCallback(() => {
@@ -42,11 +42,12 @@ export default function PageAcceuilScreen({ navigation }) {
       // Vérifie les articles expirés et met à jour leur état "isDone" pour marquer les articles terminés
       let listId = articlesData.data
         .map((data) => {
-          const now = new Date(); 
+          const now = new Date();
           const end = new Date(
             new Date(data.timer).getTime() + 60 * 60 * 24 * 1000 // Ajoute 24h à l'heure de l'article
           );
-          if (end.getTime() < now.getTime()) { // Si la date de fin de l'article est passée
+          if (end.getTime() < now.getTime()) {
+            // Si la date de fin de l'article est passée
             return data._id; // Retourne l'ID de l'article expiré
           }
         })
@@ -165,7 +166,6 @@ export default function PageAcceuilScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
 
 const styles = StyleSheet.create({
   safeareaview: {
